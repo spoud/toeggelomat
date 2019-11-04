@@ -1,0 +1,7 @@
+version: '3.7'
+services:
+  postgres:
+    container_name: toeggelomat_postgres
+    image: postgres
+    ports:
+      - 5432:5432
