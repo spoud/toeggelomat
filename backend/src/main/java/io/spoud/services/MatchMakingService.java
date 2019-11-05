@@ -3,12 +3,18 @@ package io.spoud.services;
 import io.spoud.entities.CurrentMatchEO;
 import io.spoud.entities.PlayerEO;
 import io.spoud.repositories.PlayerRepository;
+import java.security.SecureRandom;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
+import java.util.UUID;
+import javax.ws.rs.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.ws.rs.NotFoundException;
-import java.util.*;
 
 @Slf4j
 @Service
@@ -18,40 +24,48 @@ public class MatchMakingService {
     private PlayerRepository playerRepository;
 
     @Autowired
-    private Random random = new Random();
+    private Random random = new SecureRandom();
 
-    private List<PlayerEO> queue = new ArrayList<>();
+    private Set<PlayerEO> queue = new HashSet<>();
 
     public void addPlayerToQueue(UUID playerUuid) {
         PlayerEO player = playerRepository.findByUuid(playerUuid).orElseThrow(() -> new NotFoundException("User with uuid '" + playerUuid + "' not found"));
         queue.add(player);
-        //always sort the strength of the player
-        Collections.sort(queue, Comparator.comparing(PlayerEO::getPoints));
-        if (queue.size() == 4) {
-            createNewMatch(1);
+    }
+
+    public void createMatch(Set<UUID> players) {
+        if (players.size() < 4) {
+            throw new IllegalArgumentException("To few players");
         }
+        players.forEach(this::addPlayerToQueue);
+        createNewMatch(2);
     }
 
     private CurrentMatchEO createNewMatch(int retry) {
         ArrayList<PlayerEO> listCopy = new ArrayList<>(queue);
         CurrentMatchEO match = CurrentMatchEO.builder()
-                .playerBlueDefense(listCopy.remove(random.nextInt(4)))
-                .playerBlueOffense(listCopy.remove(random.nextInt(3)))
-                .playerRedDefense(listCopy.get(0))
-                .playerRedOffense(listCopy.get(1))
-                .build();
+            .playerBlueDefense(listCopy.remove(random.nextInt(listCopy.size())))
+            .playerBlueOffense(listCopy.remove(random.nextInt(listCopy.size())))
+            .playerRedDefense(listCopy.remove(random.nextInt(listCopy.size())))
+            .playerRedOffense(listCopy.remove(random.nextInt(listCopy.size()))).build();
 
         if (retry > 0) {
-            // check fairness
-
-            UUID lowPlayer1 = queue.get(0).getUuid();
-            UUID lowPlayer2 = queue.get(1).getUuid();
-            boolean lowPlayer1IsBlue = lowPlayer1.equals(match.getPlayerBlueDefense().getUuid()) || lowPlayer1.equals(match.getPlayerBlueOffense());
-            boolean lowPlayer2IsBlue = lowPlayer2.equals(match.getPlayerBlueDefense().getUuid()) || lowPlayer2.equals(match.getPlayerBlueOffense());
-
-            if (lowPlayer1IsBlue == lowPlayer2IsBlue) {
-                log.info("Match is not fair, retry again: {}", match);
-                return createNewMatch(retry - 1);
+            var activePlayers = new ArrayList<PlayerEO>();
+            activePlayers.add(match.getPlayerBlueDefense());
+            activePlayers.add(match.getPlayerBlueOffense());
+            activePlayers.add(match.getPlayerRedDefense());
+            activePlayers.add(match.getPlayerRedOffense());
+            activePlayers.sort(Comparator.comparing(PlayerEO::getPoints));
+            var lowest = activePlayers.get(0).getUuid();
+            boolean lowestPlayerBlue =
+                lowest.equals(match.getPlayerBlueDefense().getUuid()) || lowest
+                    .equals(match.getPlayerBlueOffense().getUuid());
+            lowest = activePlayers.get(1).getUuid();
+            boolean secondPlayerBlue =
+                lowest.equals(match.getPlayerBlueDefense().getUuid()) || lowest
+                    .equals(match.getPlayerBlueOffense().getUuid());
+            if(lowestPlayerBlue==secondPlayerBlue){
+                createNewMatch(retry-1);
             }
         }
         return match;

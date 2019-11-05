@@ -1,26 +1,35 @@
 package io.spoud.repositories;
 
 import io.spoud.entities.PlayerEO;
-import org.springframework.stereotype.Repository;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class PlayerRepository {
 
     private static List<PlayerEO> db = Arrays.asList(
+        PlayerEO.builder()
+            .uuid(UUID.randomUUID())
+            .nickName("anna")
+            .points(1111)
+            .build(),
+        PlayerEO.builder()
+            .uuid(UUID.randomUUID())
+            .nickName("gaetan")
+            .points(2222)
+            .build(),
+        PlayerEO.builder()
+            .uuid(UUID.randomUUID())
+            .nickName("marcel")
+            .points(3333)
+            .build(),
             PlayerEO.builder()
-                    .uuid(UUID.fromString("34ef53f8-ff1d-11e9-8f0b-362b9e155667"))
-                    .nickName("gaetan")
-                    .points(1000)
-                    .build(),
-            PlayerEO.builder()
-                    .uuid(UUID.fromString("34ef5664-ff1d-11e9-8f0b-362b9e155667"))
+                .uuid(UUID.randomUUID())
                     .nickName("julian")
-                    .points(1000)
+                .points(9999)
                     .build()
     );
 
