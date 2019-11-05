@@ -18,13 +18,13 @@ public class MatchResource {
 
 
 
-  @PostMapping(path="/finish",params = {"match"})
-  public MatchEO finishMatch(@RequestParam("match")MatchEO match) {
+  @PostMapping(path="/finish")
+  public MatchEO finishMatch(MatchEO match) {
     return matchMakingService.evaluate(match);
   }
 
-  @PostMapping(params = {"players"})
-  public MatchEO startMatchWithPlayers(@RequestParam("players")Collection<UUID> uuids) {
-    return matchMakingService.createMatch(uuids);
+  @PostMapping()
+  public MatchEO startMatchWithPlayers(Collection<UUID> players) {
+    return matchMakingService.createMatch(players);
   }
 }
