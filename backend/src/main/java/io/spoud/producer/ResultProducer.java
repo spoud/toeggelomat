@@ -1,6 +1,7 @@
 package io.spoud.producer;
 
-import io.smallrye.reactive.messaging.kafka.KafkaMessage;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.spoud.entities.MatchEO;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletableFuture;
@@ -14,21 +15,22 @@ import org.eclipse.microprofile.reactive.messaging.Outgoing;
 @Slf4j
 public class ResultProducer {
 
+  ObjectMapper mapper = new ObjectMapper();
+
   private BlockingQueue<MatchEO> messages = new LinkedBlockingQueue<>();
 
   public void add(MatchEO message) {
     messages.add(message);
   }
 
-
-  @Outgoing("results")
-  public CompletionStage<KafkaMessage<String, MatchEO>> send() {
+  @Outgoing("match-result")
+  public CompletionStage<String> send() {
     return CompletableFuture.supplyAsync(() -> {
       try {
         MatchEO message = messages.take();
         log.info("Sending message to kafka with the message: " + message.toString());
-        return KafkaMessage.of("results", "key", message);
-      } catch (InterruptedException e) {
+        return mapper.writeValueAsString(message);
+      } catch (InterruptedException | JsonProcessingException e) {
         throw new RuntimeException(e);
       }
     });
