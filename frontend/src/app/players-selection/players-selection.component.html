@@ -1,5 +1,18 @@
-<p>players-selection works!</p>
+<div class="jumbotron">
+  <h1 class="display-3">Who's in ?</h1>
+  <p class="lead">{{playerCount}} Players selected </p>
+  <hr class="my-4">
+  <p class="lead">
+    <button type="button" class="btn btn-primary btn-lg" [disabled]="!enoughToStart" (click)="startMatch()">Start</button>
+  </p>
+</div>
 
-<ul>
-  <li *ngFor="let player of players$|async"> {{player.nickName}}</li>
-</ul>
+<div class="player-list">
+  <div class="player" *ngFor="let player of players">
+    <button type="button"
+            class="btn btn-lg"
+            [class.btn-secondary]="!player.selected"
+            [class.btn-primary]="player.selected"
+            (click)="selectPlayer(player)">{{player.player.nickName}}</button>
+  </div>
+</div>
