@@ -1,0 +1,29 @@
+
+.match-container {
+  display: flex;
+  flex-direction: row;
+  font-size: 2em;
+}
+
+.blue-players, .red-players{
+  flex:1;
+  display: flex;
+  flex-direction: column;
+}
+
+.blue-players {
+  color: #2980BA;
+}
+
+.red-players {
+  color: #BF3A2B;
+  text-align: right;
+}
+
+.offense, .defense{
+  flex: 1;
+}
+
+.soccer-field {
+  flex: 1;
+}

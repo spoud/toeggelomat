@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
-import {PlayerEO} from '../store/players/players.model';
+import {PlayerEO} from '../entities/playersl';
 
 export class SelectablePlayer {
   constructor(public player: PlayerEO, public selected: boolean = false) {
