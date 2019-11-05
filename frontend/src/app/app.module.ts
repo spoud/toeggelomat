@@ -15,12 +15,14 @@ import {PlayersEffect} from './store/players/players.effect';
 import {PlayersApiService} from './services/players-api.service';
 import {StoreDevtoolsModule} from '@ngrx/store-devtools';
 import {environment} from '../environments/environment';
+import { CurrentMatchComponent } from './current-match/current-match.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    PlayersSelectionComponent
+    PlayersSelectionComponent,
+    CurrentMatchComponent
   ],
   imports: [
     BrowserModule,
