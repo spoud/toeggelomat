@@ -1,6 +1,5 @@
 package io.spoud.services;
 
-import static jdk.nashorn.internal.runtime.JSType.toInteger;
 
 import io.spoud.entities.MatchEO;
 import io.spoud.entities.PlayerEO;
@@ -12,16 +11,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 public class PointsCalculatingService {
 
-  private final Double percOfWinnings = 0.01;
+  private final double percOfWinnings = 0.01;
   PlayerEO blueDefense = new PlayerEO();
   PlayerEO blueOffense = new PlayerEO();
   PlayerEO redDefense = new PlayerEO();
   PlayerEO redOffense = new PlayerEO();
   @Autowired
   private PlayerRepository playerRepository;
-  private Integer bluePoints;
-  private Integer redPoints;
-  private Integer gamePoints;
+  private int bluePoints;
+  private int redPoints;
+  private int gamePoints;
 
   public List<PlayerEO> calculatePoints(final MatchEO matchResult) {
     blueDefense = playerRepository.findByUuid(matchResult.getPlayerBlueDefenseUuid())
@@ -41,13 +40,13 @@ public class PointsCalculatingService {
     redPoints = redDefense.getPoints() + redOffense.getPoints();
 
     if (matchResult.getRedScore() > matchResult.getBlueScore()) {
-      gamePoints = toInteger(bluePoints * percOfWinnings);
+      gamePoints = (int)(bluePoints * percOfWinnings);
       redDefense.setPoints(redDefense.getPoints() + gamePoints);
       redOffense.setPoints(redOffense.getPoints() + gamePoints);
       blueDefense.setPoints(blueDefense.getPoints() - gamePoints);
       blueOffense.setPoints(blueOffense.getPoints() - gamePoints);
     } else if (matchResult.getBlueScore() > matchResult.getRedScore()) {
-      gamePoints = toInteger(redPoints * percOfWinnings);
+      gamePoints = (int)(redPoints * percOfWinnings);
       redDefense.setPoints(redDefense.getPoints() - gamePoints);
       redOffense.setPoints(redOffense.getPoints() - gamePoints);
       blueDefense.setPoints(blueDefense.getPoints() + gamePoints);
