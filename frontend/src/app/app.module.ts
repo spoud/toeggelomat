@@ -3,7 +3,7 @@ import {NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
 
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbButtonsModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {HttpClientModule} from '@angular/common/http';
 import {StoreModule} from '@ngrx/store';
 import {playerReducer} from './store/players/players.reducer';
@@ -30,6 +30,7 @@ import {environment} from '../environments/environment';
     ),
 
     NgbModule,
+    NgbButtonsModule,
 
     StoreModule.forRoot({players: playerReducer}),
     EffectsModule.forRoot([PlayersEffect]),
