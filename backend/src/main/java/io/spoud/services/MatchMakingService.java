@@ -71,4 +71,10 @@ public class MatchMakingService {
             .playerRedOffenseUuid(activePlayers.get(3).getUuid())
             .build();
     }
+
+
+    public MatchEO evaluate(MatchEO match){
+
+        return match;
+    }
 }

@@ -5,3 +5,31 @@ services:
     image: postgres
     ports:
       - 5432:5432
+
+  kafka:
+    image: johnnypark/kafka-zookeeper
+    ports:
+      - 2181:2181
+      - 9092:9092
+    environment:
+      ADVERTISED_HOST: kafka
+    networks:
+      sdm:
+
+  kafka_exporter:
+    image: braedon/prometheus-kafka-consumer-group-exporter:0.5.2
+    command: -b kafka
+    ports:
+      - 9208:9208
+    networks:
+      sdm:
+
+  kafka_prometheus:
+    image: prom/prometheus
+    ports:
+      - '9091:9090'
+    networks:
+      sdm:
+    command: --config.file=/etc/prometheus/prometheus.yml
+    volumes:
+      - ./prometheus-kafka.yml:/etc/prometheus/prometheus.yml:ro
