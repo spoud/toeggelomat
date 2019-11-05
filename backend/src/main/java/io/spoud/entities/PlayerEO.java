@@ -25,6 +25,9 @@ public class PlayerEO {
     @Column(name = "nick_name", length = 100, nullable = false)
     private String nickName;
 
+    @Column(name = "email", length = 100, nullable = false)
+    private String email;
+
     @Column(name = "points", nullable = false)
     private Integer points;
 }
