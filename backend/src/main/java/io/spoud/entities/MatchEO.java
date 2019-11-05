@@ -15,8 +15,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "t_match_result")
-public class MatchResultEO {
+@Table(name = "t_match")
+public class MatchEO {
 
     @Id
     @GeneratedValue(generator = "uuid")
@@ -26,6 +26,9 @@ public class MatchResultEO {
 
     @Column(name = "resultTime", nullable = false)
     private ZonedDateTime resultTime;
+
+    @Column(name = "createdTime", nullable = false)
+    private ZonedDateTime createdTime;
 
     @Column(name = "redScore", nullable = false)
     private Integer redScore;

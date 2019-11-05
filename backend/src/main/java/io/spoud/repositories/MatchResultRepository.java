@@ -1,6 +1,6 @@
 package io.spoud.repositories;
 
-import io.spoud.entities.MatchResultEO;
+import io.spoud.entities.MatchEO;
 import org.springframework.stereotype.Repository;
 
 import java.util.Arrays;
@@ -11,15 +11,15 @@ import java.util.UUID;
 @Repository
 public class MatchResultRepository {
 
-    private static List<MatchResultEO> db = Arrays.asList();
+    private static List<MatchEO> db = Arrays.asList();
 
-    public MatchResultEO addMatch(MatchResultEO matchResult){
+    public MatchEO addMatch(MatchEO matchResult){
         matchResult.setUuid(UUID.randomUUID());
         db.add(matchResult);
         return matchResult;
     }
 
-    public List<MatchResultEO> getLastMatches(int count) {
+    public List<MatchEO> getLastMatches(int count) {
         return Collections.emptyList();
     }
 }

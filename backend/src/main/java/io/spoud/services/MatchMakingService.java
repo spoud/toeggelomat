@@ -1,15 +1,16 @@
 package io.spoud.services;
 
-import io.spoud.entities.CurrentMatchEO;
+import io.spoud.entities.MatchEO;
 import io.spoud.entities.PlayerEO;
 import io.spoud.repositories.PlayerRepository;
-import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.IntStream;
 import javax.ws.rs.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
@@ -24,7 +25,7 @@ public class MatchMakingService {
     private PlayerRepository playerRepository;
 
     @Autowired
-    private Random random = new SecureRandom();
+    private Random random;
 
     private Set<PlayerEO> queue = new HashSet<>();
 
@@ -33,41 +34,41 @@ public class MatchMakingService {
         queue.add(player);
     }
 
-    public void createMatch(Set<UUID> players) {
+    public MatchEO createMatch(Collection<UUID> players) {
         if (players.size() < 4) {
             throw new IllegalArgumentException("To few players");
         }
         players.forEach(this::addPlayerToQueue);
-        createNewMatch(2);
+        return createNewMatch(2);
     }
 
-    private CurrentMatchEO createNewMatch(int retry) {
+    public MatchEO createNewMatch(int retry) {
         ArrayList<PlayerEO> listCopy = new ArrayList<>(queue);
-        CurrentMatchEO match = CurrentMatchEO.builder()
-            .playerBlueDefense(listCopy.remove(random.nextInt(listCopy.size())))
-            .playerBlueOffense(listCopy.remove(random.nextInt(listCopy.size())))
-            .playerRedDefense(listCopy.remove(random.nextInt(listCopy.size())))
-            .playerRedOffense(listCopy.remove(random.nextInt(listCopy.size()))).build();
+        var activePlayers = new ArrayList<PlayerEO>();
+        IntStream.range(0, 4)
+            .forEach(i -> activePlayers.add(listCopy.remove(random.nextInt(listCopy.size()))));
+
 
         if (retry > 0) {
-            var activePlayers = new ArrayList<PlayerEO>();
-            activePlayers.add(match.getPlayerBlueDefense());
-            activePlayers.add(match.getPlayerBlueOffense());
-            activePlayers.add(match.getPlayerRedDefense());
-            activePlayers.add(match.getPlayerRedOffense());
-            activePlayers.sort(Comparator.comparing(PlayerEO::getPoints));
-            var lowest = activePlayers.get(0).getUuid();
+            ArrayList<PlayerEO> activeSorted = new ArrayList<>(activePlayers);
+            activeSorted.sort(Comparator.comparing(PlayerEO::getPoints));
+            var lowest = activeSorted.get(0).getUuid();
             boolean lowestPlayerBlue =
-                lowest.equals(match.getPlayerBlueDefense().getUuid()) || lowest
-                    .equals(match.getPlayerBlueOffense().getUuid());
-            lowest = activePlayers.get(1).getUuid();
+                lowest.equals(activePlayers.get(0).getUuid()) || lowest
+                    .equals(activePlayers.get(1).getUuid());
+            lowest = activeSorted.get(1).getUuid();
             boolean secondPlayerBlue =
-                lowest.equals(match.getPlayerBlueDefense().getUuid()) || lowest
-                    .equals(match.getPlayerBlueOffense().getUuid());
+                lowest.equals(activePlayers.get(0).getUuid()) || lowest
+                    .equals(activePlayers.get(1).getUuid());
             if(lowestPlayerBlue==secondPlayerBlue){
-                createNewMatch(retry-1);
+                return createNewMatch(retry-1);
             }
         }
-        return match;
+        return MatchEO.builder()
+            .playerBlueDefenseUuid(activePlayers.get(0).getUuid())
+            .playerBlueOffenseUuid(activePlayers.get(1).getUuid())
+            .playerRedDefenseUuid(activePlayers.get(2).getUuid())
+            .playerRedOffenseUuid(activePlayers.get(3).getUuid())
+            .build();
     }
 }
