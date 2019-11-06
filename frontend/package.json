@@ -23,6 +23,7 @@
     "@ngrx/effects": "^8.4.0",
     "@ngrx/store": "^8.4.0",
     "@ngrx/store-devtools": "^8.4.0",
+    "ngrx-store-localstorage": "^8.0.0",
     "redux-devtools-extension": "^2.13.8",
     "remove": "^0.1.5",
     "rxjs": "~6.4.0",

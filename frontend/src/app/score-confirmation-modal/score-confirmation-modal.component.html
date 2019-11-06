@@ -1,0 +1,24 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title red-team-color"
+        *ngIf="redWon">Red team won</h4>
+    <h4 class="modal-title blue-team-color"
+        *ngIf="!redWon">Blue won</h4>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div *ngIf="redWon" class="form-group red-team-color">
+        {{match.playerRedDefense.nickName}} and {{match.playerBlueDefense.nickName}} won this round {{match.match.redScore}} -
+        {{match.match.blueScore}}
+      </div>
+      <div *ngIf="!redWon" class="form-group blue-team-color">
+        {{match.playerBlueDefense.nickName}} and {{match.playerBlueOffense.nickName}} won this round {{match.match.redScore}} -
+        {{match.match.blueScore}}
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close('cancel')">Shit cancel</button>
+    <button type="button" ngbAutofocus class="btn btn-primary" (click)="modal.close('save')">Confirm ({{timeout}})</button>
+  </div>
+</ng-template>
