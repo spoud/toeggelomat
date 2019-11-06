@@ -1,11 +1,15 @@
-import {PlayersState} from './players.model';
+import {PlayerEO} from '../../entities/playersl';
 import {Action, createReducer, on} from '@ngrx/store';
 import {playersLoaded} from './players.action';
+
+export class PlayersState {
+  public list: PlayerEO[];
+}
 
 export const initialState: PlayersState = new PlayersState();
 initialState.list = [];
 
-export function playerReducer(s: PlayersState | undefined, a: Action) {
+export function playersReducer(s: PlayersState | undefined, a: Action) {
   return createReducer(initialState,
     on(playersLoaded, (state: PlayersState, { players }) => ({
       ...state,

@@ -2,6 +2,7 @@ package io.spoud.services;
 
 import io.spoud.entities.MatchEO;
 import io.spoud.entities.PlayerEO;
+import io.spoud.producer.ResultProducer;
 import io.spoud.repositories.PlayerRepository;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,6 +27,9 @@ public class MatchMakingService {
 
     @Autowired
     private Random random;
+
+    @Autowired
+    private ResultProducer resultProducer;
 
     private Set<PlayerEO> queue = new HashSet<>();
 
@@ -72,9 +76,8 @@ public class MatchMakingService {
             .build();
     }
 
-
     public MatchEO evaluate(MatchEO match){
-
+        resultProducer.add(match);
         return match;
     }
 }

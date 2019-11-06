@@ -70,6 +70,17 @@
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-jdbc-postgresql</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.quarkus</groupId>
+            <artifactId>quarkus-smallrye-reactive-messaging-kafka</artifactId>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.kafka/connect-json -->
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>connect-json</artifactId>
+            <version>2.3.1</version>
+        </dependency>
 
 
         <dependency>
@@ -104,6 +115,14 @@
                     <systemProperties>
                         <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
                     </systemProperties>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>9</source>
+                    <target>9</target>
                 </configuration>
             </plugin>
         </plugins>

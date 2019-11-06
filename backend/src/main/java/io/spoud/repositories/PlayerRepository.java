@@ -29,12 +29,12 @@ public class PlayerRepository {
             .email("marcelo.lastname@spoud.io")
             .points(3333)
             .build(),
-            PlayerEO.builder()
-                .uuid(UUID.randomUUID())
-                .email("julian.thegreatest@spoud.io")
-                    .nickName("julian")
-                .points(9999)
-                    .build()
+        PlayerEO.builder()
+            .uuid(UUID.randomUUID())
+            .email("julian.thegreatest@spoud.io")
+            .nickName("julian")
+            .points(9999)
+            .build()
     );
 
     public List<PlayerEO> getAllPlayers() {
