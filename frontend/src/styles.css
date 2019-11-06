@@ -1,10 +1,12 @@
-<style>
-  #seitenbereich {
-    width: 780px;
-  }
 * {
   margin: 0;
   padding: 0;
+}
+
+body{
+  width: 900px;
+  margin: auto;
+  padding-top: 50px;
 }
 
 .red-team-color {

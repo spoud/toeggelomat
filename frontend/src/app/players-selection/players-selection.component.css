@@ -23,12 +23,6 @@ div.jumbotron {
   width: 10rem;
 }
 
-div.player-list {
-  width: 900px;
-  margin: auto;
-  padding-top: 50px;
-}
-
 .player {
   background: #303030;
   cursor: pointer;
