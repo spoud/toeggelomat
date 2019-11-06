@@ -1,7 +1,7 @@
 div.jumbotron {
-  max-width: 900px;
   margin: auto;
   text-align: center;
+  padding: 5px;
 }
 
 .lead button{
