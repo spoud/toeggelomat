@@ -1,4 +1,4 @@
-import {HttpClient, HttpResponse} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
@@ -7,6 +7,11 @@ import {MatchEO} from '../entities/match';
 
 @Injectable()
 export class MatchesApiService {
+
+  private readonly headers = new HttpHeaders({
+    'Content-Type': 'application/json',
+  });
+
   constructor(private http: HttpClient) {
   }
 
@@ -17,7 +22,8 @@ export class MatchesApiService {
 
     return this.http
       .post<MatchEO>(`/api/v1/matches`, playerUuids, {
-        observe: 'response'
+        observe: 'response',
+        headers: this.headers
       })
       .pipe(
         map((res: HttpResponse<MatchEO>) => res.body)

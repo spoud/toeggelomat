@@ -18,6 +18,7 @@ import {environment} from '../environments/environment';
 import {CurrentMatchComponent} from './current-match/current-match.component';
 import {machesReducer} from './store/matches/matches.reducer';
 import {MatchesApiService} from './services/matches-api.service';
+import {MatchesEffect} from './store/matches/maches.effect';
 
 
 @NgModule({
@@ -37,7 +38,7 @@ import {MatchesApiService} from './services/matches-api.service';
     NgbButtonsModule,
 
     StoreModule.forRoot({players: playersReducer, matches: machesReducer}),
-    EffectsModule.forRoot([PlayersEffect]),
+    EffectsModule.forRoot([PlayersEffect, MatchesEffect]),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production, // Restrict extension to log-only mode

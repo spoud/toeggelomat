@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {PlayerEO} from '../entities/playersl';
+import {startMatch} from '../store/matches/maches.actions';
 
 export class SelectablePlayer {
   constructor(public player: PlayerEO, public selected: boolean = false) {
@@ -15,7 +16,7 @@ export class SelectablePlayer {
 export class PlayersSelectionComponent implements OnInit {
 
   public players: SelectablePlayer[];
-  public enoughToStart = false;
+  public enoughToStart = true; // TODO false
   public playerCount = 0;
 
   constructor(private store: Store<{ count: number }>) {
@@ -34,6 +35,10 @@ export class PlayersSelectionComponent implements OnInit {
   }
 
   public startMatch(): void {
-
+    this.store.dispatch(startMatch({
+      playerUuids: this.players
+        .filter(p => p.selected)
+        .map(p => p.player.uuid)
+    }));
   }
 }
