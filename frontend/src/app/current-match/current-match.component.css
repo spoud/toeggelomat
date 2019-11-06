@@ -1,3 +1,9 @@
+.buttons-container{
+  text-align: center;
+}
+.buttons-container button{
+  margin: 20px;
+}
 
 .match-container {
   display: flex;
@@ -21,11 +27,6 @@
 
 .soccer-field {
   flex: 1;
-}
-
-.save-button-container{
-  margin-top:20px;
-  text-align: center;
 }
 
 .score-list {

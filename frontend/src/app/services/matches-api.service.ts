@@ -30,6 +30,21 @@ export class MatchesApiService {
       );
   }
 
+  public saveScore(match: MatchEO): Observable<MatchEO> {
+    if (environment.mock) {
+      return this.mockMatch();
+    }
+
+    return this.http
+      .post<MatchEO>(`/api/v1/matches/finish`, match, {
+        observe: 'response',
+        headers: this.headers
+      })
+      .pipe(
+        map((res: HttpResponse<MatchEO>) => res.body)
+      );
+  }
+
   private mockMatch(): Observable<MatchEO> {
     return of(
       {

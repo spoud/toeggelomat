@@ -1,37 +1,41 @@
 div.jumbotron {
-    max-width: 900px;
-    margin: auto;
-    text-align: center;
-  }
+  max-width: 900px;
+  margin: auto;
+  text-align: center;
+}
 
-  .btn-primary:disabled {
-    color: #ffffff;
-    background-color: #375a7f;
-    border-color: #375a7f;
-    width: 10rem;
+.lead button{
+  margin: 10px;
+}
+
+.btn-primary:disabled {
+  color: #ffffff;
+  background-color: #375a7f;
+  border-color: #375a7f;
+  width: 10rem;
 }
 
 .btn-lg, .btn-group-lg > .btn {
-    font-size: 1rem;
-    line-height: 2rem;
-    padding: 0.5rem 1rem;
-    border-radius: 0.3rem;
-    width: 10rem;
+  font-size: 1rem;
+  line-height: 2rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.3rem;
+  width: 10rem;
 }
 
-  div.player-list{
-    width: 900px;
-    margin: auto;
-    padding-top: 50px;
-  }
+div.player-list {
+  width: 900px;
+  margin: auto;
+  padding-top: 50px;
+}
 
-  .player{
-      background: #303030;
-      cursor: pointer;
-      margin-top: 1rem;
-      border-radius: 0.3rem;
-  }
+.player {
+  background: #303030;
+  cursor: pointer;
+  margin-top: 1rem;
+  border-radius: 0.3rem;
+}
 
-  .player.selected{
-      background: #375a7f;
-  }
+.player.selected {
+  background: #375a7f;
+}

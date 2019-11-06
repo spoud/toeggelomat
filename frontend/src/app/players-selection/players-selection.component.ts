@@ -4,7 +4,7 @@ import {PlayerEO} from '../entities/playersl';
 import {startMatch} from '../store/matches/maches.actions';
 
 export class SelectablePlayer {
-  constructor(public player: PlayerEO, public selected: boolean = true) { // TODO false
+  constructor(public player: PlayerEO, public selected: boolean = false) {
   }
 }
 
@@ -20,15 +20,17 @@ export class PlayersSelectionComponent implements OnInit {
   public playerCount = 0;
 
   constructor(private store: Store<{ count: number }>) {
-    // FIXME unsubscribe
-    store.pipe(select('players'), select('list'))
-      .subscribe(list => {
-        this.players = list.map(p => new SelectablePlayer(p));
-        this.updateConditions();
-      });
   }
 
   ngOnInit() {
+    // FIXME unsubscribe
+    this.store.pipe(select('players'), select('list'))
+      .subscribe((list: PlayerEO[]) => {
+        this.players = list
+          .sort((l, r) => l.nickName.localeCompare(r.nickName))
+          .map(p => new SelectablePlayer(p));
+        this.updateConditions();
+      });
   }
 
   private updateConditions(): void {

@@ -1,4 +1,11 @@
-<button type="button" class="btn btn-secondary btn-lg" routerLink="/players-selection">Back</button>
+<div class="buttons-container">
+  <button type="button" class="btn btn-secondary btn-lg" routerLink="/scoreboard">Cancel</button>
+  <button type="button"
+          class="save-score-button btn btn-primary btn-lg"
+          (click)="saveScore()"
+          [disabled]="currentMatch && (redScore===-1 || blueScore===-1)">Save score
+  </button>
+</div>
 
 
 <!--TODO make a component for this-->
@@ -47,13 +54,4 @@
        (click)="blueScore=s"
        *ngFor="let s of blueScoreList"
        [class.selected]="s===blueScore">{{s}}</div>
-</div>
-
-
-<div class="save-button-container">
-  <button type="button"
-          class="save-score-button btn btn-primary btn-lg"
-          (click)="saveScore()"
-          [disabled]="currentMatch && (redScore===-1 || blueScore===-1)">Save score
-  </button>
 </div>

@@ -19,13 +19,17 @@ import {CurrentMatchComponent} from './current-match/current-match.component';
 import {machesReducer} from './store/matches/matches.reducer';
 import {MatchesApiService} from './services/matches-api.service';
 import {MatchesEffect} from './store/matches/maches.effect';
+import { ScoreboardComponent } from './scoreboard/scoreboard.component';
+import { SpoudAvatarComponent } from './spoud-avatar/spoud-avatar.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     PlayersSelectionComponent,
-    CurrentMatchComponent
+    CurrentMatchComponent,
+    ScoreboardComponent,
+    SpoudAvatarComponent
   ],
   imports: [
     BrowserModule,

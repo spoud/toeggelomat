@@ -2,17 +2,16 @@
   <h1 class="display-3">Who's in ?</h1>
   <p class="lead">{{playerCount}} Players selected </p>
   <p class="lead">
+    <button type="button" class="btn btn-secondary btn-lg" routerLink="scoreboard">Cancel</button>
     <button type="button" class="btn btn-primary btn-lg" [disabled]="!enoughToStart" (click)="startMatch()">Start</button>
   </p>
 </div>
 
 <div class="player-list">
-  <div class="player" *ngFor="let player of players"
-  (click)="selectPlayer(player)"
-  [class.selected]="player.selected">
+  <div class="player" *ngFor="let player of players" (click)="selectPlayer(player)" [class.selected]="player.selected">
 
-  <img width="45px" src="assets/avatar.png" alt="avatar">
-  
-            {{player.player.nickName}}
+    <!--    <img width="45px" src="assets/avatar.png" alt="avatar">-->
+    <app-spoud-avatar [email]="player.player.email"></app-spoud-avatar>
+    {{player.player.nickName}}
   </div>
 </div>
