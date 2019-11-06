@@ -6,3 +6,21 @@
   margin: 0;
   padding: 0;
 }
+
+.red-team-color {
+  color: #BF3A2B;
+}
+
+.blue-team-color {
+  color: #2980BA;
+}
+
+.red-team-backgroundcolor {
+  background-color: #BF3A2B;
+  color: white;
+}
+
+.blue-team-backgroundcolor {
+  background-color: #2980BA;
+  color: white;
+}

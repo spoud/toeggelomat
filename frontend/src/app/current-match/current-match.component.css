@@ -5,25 +5,48 @@
   font-size: 2em;
 }
 
-.blue-players, .red-players{
-  flex:1;
+.blue-players, .red-players {
+  flex: 1;
   display: flex;
   flex-direction: column;
 }
 
-.blue-players {
-  color: #2980BA;
-}
-
 .red-players {
-  color: #BF3A2B;
   text-align: right;
 }
 
-.offense, .defense{
+.offense, .defense {
   flex: 1;
 }
 
 .soccer-field {
   flex: 1;
+}
+
+.save-button-container{
+  margin-top:20px;
+  text-align: center;
+}
+
+.score-list {
+  display: flex;
+  justify-content: center;
+}
+
+.score-item {
+  margin: 10px;
+  display: block;
+  border: 1px solid white;
+  border-radius: 20px;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 2em;
+  cursor: pointer;
+}
+
+.score-item.selected {
+  background: white;
+  color: black;
 }

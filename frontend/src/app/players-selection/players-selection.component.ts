@@ -4,7 +4,7 @@ import {PlayerEO} from '../entities/playersl';
 import {startMatch} from '../store/matches/maches.actions';
 
 export class SelectablePlayer {
-  constructor(public player: PlayerEO, public selected: boolean = false) {
+  constructor(public player: PlayerEO, public selected: boolean = true) { // TODO false
   }
 }
 
@@ -16,22 +16,29 @@ export class SelectablePlayer {
 export class PlayersSelectionComponent implements OnInit {
 
   public players: SelectablePlayer[];
-  public enoughToStart = true; // TODO false
+  public enoughToStart = false;
   public playerCount = 0;
 
   constructor(private store: Store<{ count: number }>) {
     // FIXME unsubscribe
     store.pipe(select('players'), select('list'))
-      .subscribe(list => this.players = list.map(p => new SelectablePlayer(p)));
+      .subscribe(list => {
+        this.players = list.map(p => new SelectablePlayer(p));
+        this.updateConditions();
+      });
   }
 
   ngOnInit() {
   }
 
-  public selectPlayer(player: SelectablePlayer) {
-    player.selected = !player.selected;
+  private updateConditions(): void {
     this.playerCount = this.players.filter(p => p.selected).length;
     this.enoughToStart = this.playerCount >= 4;
+  }
+
+  public selectPlayer(player: SelectablePlayer) {
+    player.selected = !player.selected;
+    this.updateConditions();
   }
 
   public startMatch(): void {
