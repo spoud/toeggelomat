@@ -79,7 +79,7 @@
         if (! connected) {
             var name = $("#name").val();
             console.log("Val: " + name);
-            socket = new WebSocket("ws://" + location.host + "/chat/" + name);
+            socket = new WebSocket("ws://" + location.host + "/api/v1/ws");
             socket.onopen = function() {
                 connected = true;
                 console.log("Connected to the web socket");

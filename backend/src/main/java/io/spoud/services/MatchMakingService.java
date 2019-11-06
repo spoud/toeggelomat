@@ -34,6 +34,9 @@ public class MatchMakingService {
     @Autowired
     private ResultProducer resultProducer;
 
+    @Autowired
+    private EventService eventService;
+
     private Set<PlayerEO> queue = new HashSet<>();
 
     public void addPlayerToQueue(UUID playerUuid) {
@@ -47,7 +50,9 @@ public class MatchMakingService {
             throw new IllegalArgumentException("To few players");
         }
         players.forEach(this::addPlayerToQueue);
-        return createNewMatch(2);
+        MatchEO match = createNewMatch(2);
+        eventService.newMatch(match);
+        return match;
     }
 
     public MatchEO createNewMatch(int retry) {
