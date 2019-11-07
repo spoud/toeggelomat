@@ -2,6 +2,7 @@ package io.spoud.rest;
 
 import io.spoud.entities.PlayerEO;
 import io.spoud.repositories.PlayerRepository;
+import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +23,12 @@ public class PlayerResource {
 
     @RequestMapping()
     public List<PlayerEO> findAll() {
+
+        try {
+            playerRepository.writeFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return playerRepository.getAllPlayers();
     }
 }
