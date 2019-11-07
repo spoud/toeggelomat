@@ -28,6 +28,11 @@ public class PlayerEO {
     @Column(name = "email", length = 100, nullable = false)
     private String email;
 
-    @Column(name = "points", nullable = false)
-    private Integer points;
+    @Column(name = "defense_points", nullable = false)
+    private Integer defensePoints;
+
+    @Column(name = "offense_points", nullable = false)
+    private Integer offensePoints;
+
+
 }

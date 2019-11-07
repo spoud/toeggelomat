@@ -23,12 +23,6 @@ public class PlayerResource {
 
     @RequestMapping()
     public List<PlayerEO> findAll() {
-
-        try {
-            playerRepository.writeFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         return playerRepository.getAllPlayers();
     }
 }

@@ -1,4 +1,4 @@
-package io.spoud.producer;
+package io.spoud.consumer;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;

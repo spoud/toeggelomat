@@ -19,7 +19,6 @@ import io.spoud.entities.PlayerEO;
 import io.spoud.producer.ResultProducer;
 import io.spoud.repositories.PlayerRepository;
 import lombok.extern.slf4j.Slf4j;
-import lombok.var;
 
 @Slf4j
 @Service

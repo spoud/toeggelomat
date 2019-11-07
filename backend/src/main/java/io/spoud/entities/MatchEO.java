@@ -50,4 +50,6 @@ public class MatchEO {
 
     @Column(name = "player_blue_offense_uuid", nullable = false)
     private UUID playerBlueOffenseUuid;
+
+
 }
