@@ -34,5 +34,7 @@ public class PlayerEO {
     @Column(name = "offense_points", nullable = false)
     private Integer offensePoints;
 
-
+    public Integer getPoints(){
+        return offensePoints + defensePoints;
+    }
 }
