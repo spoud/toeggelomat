@@ -24,21 +24,28 @@ public class PointsCalculatingConsumer {
   public CompletionStage<Void> consumeAsync(String input) {
     return CompletableFuture.runAsync(() -> {
       try {
+        System.out.println(input);
+        System.out.println("RESULTS STARTING");
         var match = mapper.readValue(input, MatchEO.class);
+        System.out.println("MATCH PARSED");
         if (match.getRedScore() > match.getBlueScore()) {
+          System.out.println("RED WON");
           calc(match,
               mapUuid(match.getPlayerRedOffenseUuid()),
               mapUuid(match.getPlayerRedDefenseUuid()),
               mapUuid(match.getPlayerBlueOffenseUuid()),
               mapUuid(match.getPlayerBlueDefenseUuid()),
-              match.getBlueScore() == 0, false);
+              match.getBlueScore() == 0,
+              false);
         } else {
+          System.out.println("BLUE WON");
           calc(match,
               mapUuid(match.getPlayerBlueOffenseUuid()),
               mapUuid(match.getPlayerBlueDefenseUuid()),
               mapUuid(match.getPlayerRedOffenseUuid()),
               mapUuid(match.getPlayerRedDefenseUuid()),
-              match.getRedScore() == 0, false);
+              match.getRedScore() == 0,
+              false);
         }
       } catch (IOException e) {
         e.printStackTrace();
@@ -47,7 +54,13 @@ public class PointsCalculatingConsumer {
   }
 
   private PlayerEO mapUuid(UUID playerUuid) {
-    return playerRepository.findByUuid(playerUuid).orElseThrow();
+    System.out.println("START FETCH");
+    return playerRepository.findByUuid(playerUuid).orElseThrow(() ->
+        {
+          System.out.println("you are stupid");
+          return new IllegalArgumentException();
+        }
+    );
   }
 
   private void calc(MatchEO match,
@@ -57,10 +70,13 @@ public class PointsCalculatingConsumer {
       PlayerEO looserDefense,
       boolean wonByZero,
       boolean dryRun) {
+    System.out.println("START CALC");
+
     double winnerPoints = winnerDefense.getDefensePoints() + winnerOffense.getOffensePoints();
     double looserPoints = looserDefense.getDefensePoints() + looserOffense.getOffensePoints();
     double total = winnerPoints + looserPoints;
     int winnings = (int) ((winnerPoints / total) * 40) * (wonByZero ? 2 : 1);
+    System.out.println(winnings);
     if (!dryRun) {
       winnerOffense.setOffensePoints(winnerOffense.getOffensePoints() + winnings);
       winnerDefense.setDefensePoints(winnerDefense.getDefensePoints() + winnings);

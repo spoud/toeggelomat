@@ -1,14 +1,17 @@
 package io.spoud.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.UUID;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.*;
-import java.time.ZonedDateTime;
-import java.util.UUID;
 
 @Data
 @Builder
@@ -24,11 +27,13 @@ public class MatchEO {
     @Column(name = "match_result_uuid", unique = true)
     private UUID uuid;
 
+    @JsonIgnore
     @Column(name = "resultTime", nullable = false)
-    private ZonedDateTime resultTime;
+    private Integer resultTime;
 
+    @JsonIgnore
     @Column(name = "createdTime", nullable = false)
-    private ZonedDateTime createdTime;
+    private Integer createdTime;
 
     @Column(name = "redScore", nullable = false)
     private Integer redScore;

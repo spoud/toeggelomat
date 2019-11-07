@@ -1,5 +1,9 @@
 package io.spoud.services;
 
+import io.spoud.entities.MatchEO;
+import io.spoud.entities.PlayerEO;
+import io.spoud.producer.ResultProducer;
+import io.spoud.repositories.PlayerRepository;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -8,17 +12,10 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.IntStream;
-
 import javax.ws.rs.NotFoundException;
-
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import io.spoud.entities.MatchEO;
-import io.spoud.entities.PlayerEO;
-import io.spoud.producer.ResultProducer;
-import io.spoud.repositories.PlayerRepository;
-import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
