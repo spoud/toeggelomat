@@ -1,32 +1,61 @@
+<div class="buttons-container">
+  <button type="button" class="btn btn-secondary btn-lg" routerLink="/scoreboard">Cancel</button>
+  <button type="button"
+          class="save-score-button btn btn-primary btn-lg"
+          (click)="saveScore()"
+          [disabled]="currentMatch && (redScore===-1 || blueScore===-1)">Save score
+  </button>
+</div>
+
+
+<!--TODO make a component for this-->
+<div class="score-list">
+  <div class="score-item red-team-backgroundcolor"
+       (click)="redScore=s"
+       *ngFor="let s of redScoreList"
+       [class.selected]="s===redScore">{{s}}</div>
+</div>
+
 <div class="match-container">
-  <div class="red-players">
+  <div class="red-players red-team-color">
     <div class="defense">
-      <!--      TODO UGLY !!!-->
-      <br/>
+      <!--      TODO UGLY !!!--><br/>
       <br/>
       Defense <br/>
-      ANNA
+      {{currentMatch?.playerRedDefense.nickName}}
     </div>
     <div class="offense">
       <br/>
       <br/>
       Offense<br/>
-      GAETAN
+      {{currentMatch?.playerRedOffense.nickName}}
     </div>
   </div>
   <img class="soccer-field" src="assets/soccer-table.png"/>
-  <div class="blue-players">
+  <div class="blue-players blue-team-color">
     <div class="offense">
       <br/>
       <br/>
       Offense<br/>
-      JULIAN
+      {{currentMatch?.playerBlueOffense.nickName}}
     </div>
     <div class="defense">
       <br/>
       <br/>
       Defense <br/>
-      MARCEL
+      {{currentMatch?.playerBlueDefense.nickName}}
     </div>
   </div>
 </div>
+
+<!--TODO make a component for this-->
+<div class="score-list">
+  <div class="score-item blue-team-backgroundcolor"
+       (click)="blueScore=s"
+       *ngFor="let s of blueScoreList"
+       [class.selected]="s===blueScore">{{s}}</div>
+</div>
+
+<app-score-confirmation-modal #confirm></app-score-confirmation-modal>
+
+

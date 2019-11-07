@@ -3,9 +3,9 @@ import {NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
 
-import {NgbButtonsModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {NgbButtonsModule, NgbModalModule, NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {HttpClientModule} from '@angular/common/http';
-import {StoreModule} from '@ngrx/store';
+import {ActionReducer, ActionReducerMap, MetaReducer, StoreModule} from '@ngrx/store';
 import {playersReducer} from './store/players/players.reducer';
 import {PlayersSelectionComponent} from './players-selection/players-selection.component';
 import {RouterModule} from '@angular/router';
@@ -18,13 +18,32 @@ import {environment} from '../environments/environment';
 import {CurrentMatchComponent} from './current-match/current-match.component';
 import {machesReducer} from './store/matches/matches.reducer';
 import {MatchesApiService} from './services/matches-api.service';
+import {MatchesEffect} from './store/matches/maches.effect';
+import {ScoreboardComponent} from './scoreboard/scoreboard.component';
+import {SpoudAvatarComponent} from './spoud-avatar/spoud-avatar.component';
+import {ScoreConfirmationModalComponent} from './score-confirmation-modal/score-confirmation-modal.component';
+import {localStorageSync} from 'ngrx-store-localstorage';
 
+
+const reducers: ActionReducerMap<any> = {players: playersReducer, matches: machesReducer};
+
+export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
+  return localStorageSync({
+    keys: ['players', 'matches'],
+    rehydrate: true
+  })(reducer);
+}
+
+const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
 
 @NgModule({
   declarations: [
     AppComponent,
     PlayersSelectionComponent,
-    CurrentMatchComponent
+    CurrentMatchComponent,
+    ScoreboardComponent,
+    SpoudAvatarComponent,
+    ScoreConfirmationModalComponent
   ],
   imports: [
     BrowserModule,
@@ -35,9 +54,10 @@ import {MatchesApiService} from './services/matches-api.service';
 
     NgbModule,
     NgbButtonsModule,
+    NgbModalModule,
 
-    StoreModule.forRoot({players: playersReducer, matches: machesReducer}),
-    EffectsModule.forRoot([PlayersEffect]),
+    StoreModule.forRoot(reducers, {metaReducers}),
+    EffectsModule.forRoot([PlayersEffect, MatchesEffect]),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production, // Restrict extension to log-only mode
