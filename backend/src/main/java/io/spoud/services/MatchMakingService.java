@@ -62,7 +62,7 @@ public class MatchMakingService {
 
         if (retry > 0) {
             ArrayList<PlayerEO> activeSorted = new ArrayList<>(activePlayers);
-            activeSorted.sort(Comparator.comparing(PlayerEO::getPoints));
+            activeSorted.sort(Comparator.comparing(player->player.getOffensePoints() + player.getDefensePoints()));
             var lowest = activeSorted.get(0).getUuid();
             boolean lowestPlayerBlue =
                     lowest.equals(activePlayers.get(0).getUuid()) || lowest.equals(activePlayers.get(1).getUuid());

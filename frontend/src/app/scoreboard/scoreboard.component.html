@@ -5,20 +5,20 @@
 
 <table class="table table-striped">
   <thead>
-  <tr>
-    <th scope="col">#</th>
-    <th scope="col">Nickname</th>
-    <th scope="col">Point</th>
-  </tr>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Nickname</th>
+      <th scope="col">Points</th>
+    </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let player of players; let i=index">
-    <th scope="row">{{i + 1}}</th>
-    <td>
-      <app-spoud-avatar [email]="player.email"></app-spoud-avatar>
-      {{player.nickName}}</td>
-    <td>{{player.points}}</td>
-  </tr>
+    <tr *ngFor="let player of players; let i=index">
+      <th scope="row">{{i + 1}}</th>
+      <td>
+        <app-spoud-avatar [email]="player.email"></app-spoud-avatar>
+        {{player.nickName}}
+      </td>
+      <td>{{player.offensePoints + player.defensePoints}}</td>
+    </tr>
   </tbody>
 </table>
-
