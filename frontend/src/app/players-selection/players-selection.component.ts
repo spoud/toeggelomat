@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
 import {PlayerEO} from '../entities/playersl';
 import {startMatch} from '../store/matches/maches.actions';
+import {SubscriptionHelper} from '../utils/subscription-helper';
 
 export class SelectablePlayer {
   constructor(public player: PlayerEO, public selected: boolean = false) {
@@ -13,24 +14,28 @@ export class SelectablePlayer {
   templateUrl: './players-selection.component.html',
   styleUrls: ['./players-selection.component.css']
 })
-export class PlayersSelectionComponent implements OnInit {
+export class PlayersSelectionComponent extends SubscriptionHelper implements OnInit, OnDestroy {
 
   public players: SelectablePlayer[];
   public enoughToStart = false;
   public playerCount = 0;
 
   constructor(private store: Store<{ count: number }>) {
+    super();
   }
 
   ngOnInit() {
-    // FIXME unsubscribe
-    this.store.pipe(select('players'), select('list'))
+    this.addSubscription(this.store.pipe(select('players'), select('list'))
       .subscribe((list: PlayerEO[]) => {
         this.players = list
           .sort((l, r) => l.nickName.localeCompare(r.nickName))
           .map(p => new SelectablePlayer(p));
         this.updateConditions();
-      });
+      }));
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribeAll();
   }
 
   private updateConditions(): void {
