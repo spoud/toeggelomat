@@ -1,30 +1,41 @@
 package io.spoud.services;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
-
-import org.springframework.stereotype.Service;
-
 import io.spoud.entities.MatchEO;
+import org.reactivestreams.Publisher;
+import org.reactivestreams.Subscriber;
+import org.springframework.stereotype.Service;
 
 @Service
 public class EventService {
-    private PropertyChangeSupport changeListener;
+
+    private Publisher<MatchEO> matchPublisher;
+    private Subscriber<? super MatchEO> matchSubscriber;
+
+    private Publisher<String> scoreChangePublisher;
+    private Subscriber<? super String> scoreChangeSubscriber;
 
     public EventService() {
-        this.changeListener = new PropertyChangeSupport(this);
+        this.matchPublisher = subscriber -> {
+            this.matchSubscriber = subscriber;
+        };
+        this.scoreChangePublisher = subscriber -> {
+            this.scoreChangeSubscriber = subscriber;
+        };
     }
 
-    public void addPropertyChangeListener(PropertyChangeListener pcl) {
-        changeListener.addPropertyChangeListener(pcl);
+    public void newMatchEvent(MatchEO match) {
+        matchSubscriber.onNext(match);
     }
 
-    public void removePropertyChangeListener(PropertyChangeListener pcl) {
-        changeListener.removePropertyChangeListener(pcl);
+    public Publisher<MatchEO> newMatchStream() {
+        return matchPublisher;
     }
 
-    public void newMatch(MatchEO match){
-        changeListener.firePropertyChange("match", null, match);
+    public void scoreChangedEvent() {
+        scoreChangeSubscriber.onNext("newScore");
     }
 
+    public Publisher<String> scoreChangedStream() {
+        return scoreChangePublisher;
+    }
 }

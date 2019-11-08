@@ -42,7 +42,7 @@ public class MatchMakingService {
         }
         players.forEach(this::addPlayerToQueue);
         MatchEO match = createNewMatch(2);
-        eventService.newMatch(match);
+        eventService.newMatchEvent(match);
         return match;
     }
 
