@@ -1,9 +1,13 @@
 import {Observable} from 'rxjs';
-import {Injectable} from '@angular/core';
+import {Injectable, NgZone} from '@angular/core';
 import {MatchEO} from '../entities/match';
 
 @Injectable()
 export class EventApiService {
+
+  public constructor(private zone: NgZone) {
+
+  }
 
   public matchStream(): Observable<MatchEO> {
     return this.createSSEObervable('/api/v1/sse/matches');
@@ -16,8 +20,8 @@ export class EventApiService {
   private createSSEObervable<T>(url: string): any {
     const observable = new Observable<T>(observer => {
       const eventSource = new EventSource(url);
-      eventSource.onmessage = x => observer.next(JSON.parse(x.data));
-      eventSource.onerror = x => observer.error(x);
+      eventSource.onmessage = x => this.zone.run(() => observer.next(JSON.parse(x.data)));
+      eventSource.onerror = x => this.zone.run(() => observer.error(x));
 
       return () => {
         eventSource.close();
