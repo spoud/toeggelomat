@@ -1,2 +1,2 @@
 #!/bin/bash
-./mvnw package -Dnative -Dquarkus.native.container-build=true
+./mvnw package -Pnative -Dquarkus.native.container-build=true

@@ -4,13 +4,8 @@ import io.spoud.entities.MatchEO;
 import io.spoud.entities.PlayerEO;
 import io.spoud.producer.ResultProducer;
 import io.spoud.repositories.PlayerRepository;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
-import java.util.UUID;
+
+import java.util.*;
 import java.util.stream.IntStream;
 import javax.ws.rs.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -53,14 +48,14 @@ public class MatchMakingService {
 
     public MatchEO createNewMatch(int retry) {
         ArrayList<PlayerEO> listCopy = new ArrayList<>(queue);
-        var activePlayers = new ArrayList<PlayerEO>();
+        List<PlayerEO> activePlayers = new ArrayList<PlayerEO>();
         IntStream.range(0, 4).forEach(i -> activePlayers.add(listCopy.remove(random.nextInt(listCopy.size()))));
 
 
         if (retry > 0) {
             ArrayList<PlayerEO> activeSorted = new ArrayList<>(activePlayers);
             activeSorted.sort(Comparator.comparing(player->player.getOffensePoints() + player.getDefensePoints()));
-            var lowest = activeSorted.get(0).getUuid();
+            UUID lowest = activeSorted.get(0).getUuid();
             boolean lowestPlayerBlue =
                     lowest.equals(activePlayers.get(0).getUuid()) || lowest.equals(activePlayers.get(1).getUuid());
             lowest = activeSorted.get(1).getUuid();

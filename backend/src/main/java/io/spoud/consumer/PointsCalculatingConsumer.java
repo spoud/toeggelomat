@@ -26,7 +26,7 @@ public class PointsCalculatingConsumer {
       try {
         System.out.println(input);
         System.out.println("RESULTS STARTING");
-        var match = mapper.readValue(input, MatchEO.class);
+        MatchEO match = mapper.readValue(input, MatchEO.class);
         System.out.println("MATCH PARSED");
         if (match.getRedScore() > match.getBlueScore()) {
           System.out.println("RED WON");
