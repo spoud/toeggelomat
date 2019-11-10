@@ -1,12 +1,26 @@
 version: '3.7'
 services:
+  traefik:
+    container_name: toeggelomat_traefik
+    image: traefik:v2.0
+    ports:
+      - 80:80
+      - 8080:8080
+    volumes:
+      - ./traefik/traefik.yml:/etc/traefik/traefik.yml
+      - /var/run/docker.sock:/var/run/docker.sock
+
 
   frontend:
     container_name: toeggelomat_frontend
     image: spoud/toeggelomat-frontend
     build: frontend/
     ports:
-      - 80:80
+      - 81:80
+    labels:
+      - traefik.http.routers.toeggelomat_frontend.rule=PathPrefix(`/`)
+      - traefik.http.services.toeggelomat_frontend-service.loadbalancer.server.port=80
+      - traefik.enable=true
 
   backend:
     container_name: toeggelomat_backend
@@ -16,6 +30,10 @@ services:
       dockerfile: src/main/docker/Dockerfile.native
     ports:
       - 8080
+    labels:
+      - traefik.http.routers.toeggelomat_backend.rule=PathPrefix(`/api`)
+      - traefik.http.services.toeggelomat_backend-service.loadbalancer.server.port=8080
+      - traefik.enable=true
 
   postgres:
     container_name: toeggelomat_postgres
