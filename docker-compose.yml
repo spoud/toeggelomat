@@ -1,5 +1,22 @@
 version: '3.7'
 services:
+
+  frontend:
+    container_name: toeggelomat_frontend
+    image: spoud/toeggelomat-frontend
+    build: frontend/
+    ports:
+      - 80:80
+
+  backend:
+    container_name: toeggelomat_backend
+    image: spoud/toeggelomat-backend
+    build: 
+      context: backend/
+      dockerfile: src/main/docker/Dockerfile.native
+    ports:
+      - 8080
+
   postgres:
     container_name: toeggelomat_postgres
     image: postgres
@@ -7,6 +24,7 @@ services:
       - 5432:5432
 
   kafka:
+    container_name: toeggelomat_kafka
     image: johnnypark/kafka-zookeeper
     ports:
       - 2181:2181
@@ -14,8 +32,8 @@ services:
     environment:
       ADVERTISED_HOST: kafka
 
-  kafka_exporter:
-    image: braedon/prometheus-kafka-consumer-group-exporter:0.5.2
-    command: -b kafka
-    ports:
-      - 9208:9208
+#  kafka_exporter:
+#    image: braedon/prometheus-kafka-consumer-group-exporter:0.5.2
+#    command: -b kafka
+#    ports:
+#      - 9208:9208
