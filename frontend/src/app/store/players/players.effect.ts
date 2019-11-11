@@ -4,6 +4,7 @@ import {PlayersApiService} from '../../services/players-api.service';
 import {EMPTY} from 'rxjs';
 import {playersLoaded, reloadPlayers} from './players.action';
 import {catchError, map, mergeMap} from 'rxjs/operators';
+import {EventApiService} from '../../services/event-api.service';
 
 @Injectable()
 export class PlayersEffect {
@@ -11,6 +12,15 @@ export class PlayersEffect {
     this.actions$.pipe(
       ofType(ROOT_EFFECTS_INIT),
       map(() => reloadPlayers())
+    )
+  );
+
+  scoreStreams = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ROOT_EFFECTS_INIT),
+      mergeMap(() => this.eventApiService.scoreChangeStream().pipe(
+        map(() => reloadPlayers())
+      ))
     )
   );
 
@@ -26,7 +36,8 @@ export class PlayersEffect {
 
   constructor(
     private actions$: Actions,
-    private playerApiService: PlayersApiService
+    private playerApiService: PlayersApiService,
+    private eventApiService: EventApiService
   ) {
   }
 }
