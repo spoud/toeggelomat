@@ -1,15 +1,19 @@
 package io.spoud.producer;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.spoud.entities.MatchEO;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.LinkedBlockingQueue;
+
 import javax.enterprise.context.ApplicationScoped;
-import lombok.extern.slf4j.Slf4j;
+
 import org.eclipse.microprofile.reactive.messaging.Outgoing;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.spoud.entities.MatchEO;
+import lombok.extern.slf4j.Slf4j;
 
 @ApplicationScoped
 @Slf4j

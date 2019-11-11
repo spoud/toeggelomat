@@ -1,20 +1,26 @@
 package io.spoud.services;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.IntStream;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import io.spoud.entities.MatchEO;
 import io.spoud.entities.PlayerEO;
 import io.spoud.producer.ResultProducer;
 import io.spoud.repositories.PlayerRepository;
-
-import java.util.*;
-import java.util.stream.IntStream;
-import javax.ws.rs.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
-public class MatchMakingService {
+public class MatchService {
 
     @Autowired
     private PlayerRepository playerRepository;
@@ -28,33 +34,24 @@ public class MatchMakingService {
     @Autowired
     private EventService eventService;
 
-    private Set<PlayerEO> queue = new HashSet<>();
-
-    public void addPlayerToQueue(UUID playerUuid) {
-        PlayerEO player = playerRepository.findByUuid(playerUuid)
-                .orElseThrow(() -> new NotFoundException("User with uuid '" + playerUuid + "' not found"));
-        queue.add(player);
-    }
-
-    public MatchEO createMatch(Collection<UUID> players) {
-        if (players.size() < 4) {
+    public MatchEO createMatch(List<UUID> playersUuid) {
+        if (playersUuid.size() < 4) {
             throw new IllegalArgumentException("To few players");
         }
-        players.forEach(this::addPlayerToQueue);
-        MatchEO match = createNewMatch(2);
+        MatchEO match = createNewMatch(2, new HashSet<>(playerRepository.findByUuids(playersUuid)));
         eventService.newMatchEvent(match);
         return match;
     }
 
-    public MatchEO createNewMatch(int retry) {
-        ArrayList<PlayerEO> listCopy = new ArrayList<>(queue);
+    private MatchEO createNewMatch(int retry, Set<PlayerEO> players) {
+        ArrayList<PlayerEO> listCopy = new ArrayList<>(players);
         List<PlayerEO> activePlayers = new ArrayList<PlayerEO>();
         IntStream.range(0, 4).forEach(i -> activePlayers.add(listCopy.remove(random.nextInt(listCopy.size()))));
 
 
         if (retry > 0) {
             ArrayList<PlayerEO> activeSorted = new ArrayList<>(activePlayers);
-            activeSorted.sort(Comparator.comparing(player->player.getOffensePoints() + player.getDefensePoints()));
+            activeSorted.sort(Comparator.comparing(player -> player.getOffensePoints() + player.getDefensePoints()));
             UUID lowest = activeSorted.get(0).getUuid();
             boolean lowestPlayerBlue =
                     lowest.equals(activePlayers.get(0).getUuid()) || lowest.equals(activePlayers.get(1).getUuid());
@@ -62,7 +59,7 @@ public class MatchMakingService {
             boolean secondPlayerBlue =
                     lowest.equals(activePlayers.get(0).getUuid()) || lowest.equals(activePlayers.get(1).getUuid());
             if (lowestPlayerBlue == secondPlayerBlue) {
-                return createNewMatch(retry - 1);
+                return createNewMatch(retry - 1, players);
             }
         }
         return MatchEO.builder()
