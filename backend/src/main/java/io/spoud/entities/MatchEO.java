@@ -1,6 +1,8 @@
 package io.spoud.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.time.ZonedDateTime;
 import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,25 +26,21 @@ public class MatchEO {
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @Column(name = "match_result_uuid", unique = true)
+    @Column(name = "match_uuid", unique = true)
     private UUID uuid;
 
     @JsonIgnore
-    @Column(name = "resultTime", nullable = false)
-    private Integer resultTime;
+    @Column(name = "match_time", nullable = false)
+    private ZonedDateTime matchTime;
 
-    @JsonIgnore
-    @Column(name = "createdTime", nullable = false)
-    private Integer createdTime;
-
-    @Column(name = "redScore", nullable = false)
+    @Column(name = "red_score", nullable = false)
     private Integer redScore;
 
-    @Column(name = "blueScore", nullable = false)
+    @Column(name = "blue_score", nullable = false)
     private Integer blueScore;
 
-    @Column(name = "point", nullable = false)
-    private Integer point;
+    @Column(name = "points", nullable = false)
+    private Integer points;
 
     @Column(name = "player_red_defense_uuid", nullable = false)
     private UUID playerRedDefenseUuid;

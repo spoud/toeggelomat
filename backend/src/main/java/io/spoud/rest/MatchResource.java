@@ -17,13 +17,13 @@ public class MatchResource {
     @Autowired
     private MatchService matchService;
 
-    @PostMapping(path = "/set-score")
+    @PostMapping(path = "set-score")
     public MatchEO finishMatch(MatchEO match) {
-        return matchService.evaluate(match);
+        return matchService.saveMatchResults(match);
     }
 
-    @PostMapping( path = "/randomize")
+    @PostMapping( path = "randomize")
     public MatchEO startMatchWithPlayers(List<UUID> players) {
-        return matchService.createMatch(players);
+        return matchService.randomizeMatch(players);
     }
 }

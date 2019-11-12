@@ -2,15 +2,13 @@ export class MatchEO {
 
   public uuid: string;
 
-  public resultTime: Date;
-
-  public createdTime: Date;
+  public matchTime: Date;
 
   public redScore: number;
 
   public blueScore: number;
 
-  public point: number;
+  public points: number;
 
   public playerRedDefenseUuid: string;
 

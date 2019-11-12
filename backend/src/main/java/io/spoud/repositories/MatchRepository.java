@@ -2,6 +2,7 @@ package io.spoud.repositories;
 
 import java.util.List;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.persistence.EntityManager;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import io.spoud.entities.MatchEO;
 import io.spoud.entities.QMatchEO;
 
-@Repository
+@ApplicationScoped
 public class MatchRepository {
 
   public static final QMatchEO MATCH = QMatchEO.matchEO;
@@ -24,7 +25,7 @@ public class MatchRepository {
   private EntityManager em;
 
   public List<MatchEO> getLastMatches(int nb) {
-    return jpaQueryFactory.selectFrom(MATCH).orderBy(MATCH.resultTime.desc()).limit(nb).fetch();
+    return jpaQueryFactory.selectFrom(MATCH).orderBy(MATCH.matchTime.desc()).limit(nb).fetch();
   }
 
   public MatchEO addMatch(MatchEO match){
