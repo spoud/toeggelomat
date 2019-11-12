@@ -15,15 +15,15 @@ import io.spoud.services.MatchService;
 @RequestMapping("/api/v1/matches")
 public class MatchResource {
     @Autowired
-    private MatchService matchMakingService;
+    private MatchService matchService;
 
-    @PostMapping(path = "/finish")
+    @PostMapping(path = "/set-score")
     public MatchEO finishMatch(MatchEO match) {
-        return matchMakingService.evaluate(match);
+        return matchService.evaluate(match);
     }
 
-    @PostMapping()
+    @PostMapping( path = "/randomize")
     public MatchEO startMatchWithPlayers(List<UUID> players) {
-        return matchMakingService.createMatch(players);
+        return matchService.createMatch(players);
     }
 }

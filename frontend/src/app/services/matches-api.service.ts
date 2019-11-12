@@ -21,7 +21,7 @@ export class MatchesApiService {
     }
 
     return this.http
-      .post<MatchEO>(`/api/v1/matches`, playerUuids, {
+      .post<MatchEO>(`/api/v1/matche/randomizes`, playerUuids, {
         observe: 'response',
         headers: this.headers
       })
@@ -36,7 +36,7 @@ export class MatchesApiService {
     }
 
     return this.http
-      .post<MatchEO>(`/api/v1/matches/finish`, match, {
+      .post<MatchEO>(`/api/v1/matches/set-score`, match, {
         observe: 'response',
         headers: this.headers
       })

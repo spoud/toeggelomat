@@ -23,6 +23,7 @@ public class ResultProducer {
 
   private BlockingQueue<MatchEO> messages = new LinkedBlockingQueue<>();
 
+  // TODO create a new entity to have players before and player after match
   public void add(MatchEO message) {
     messages.add(message);
   }
