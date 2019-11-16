@@ -6,6 +6,7 @@ import java.util.concurrent.CompletionStage;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 import org.eclipse.microprofile.reactive.messaging.Outgoing;
 
@@ -19,7 +20,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ResultProducer {
 
-  ObjectMapper mapper = new ObjectMapper();
+  @Inject
+  private ObjectMapper mapper;
 
   private BlockingQueue<MatchEO> messages = new LinkedBlockingQueue<>();
 
@@ -28,16 +30,16 @@ public class ResultProducer {
     messages.add(message);
   }
 
-  @Outgoing("match-result")
-  public CompletionStage<String> send() {
-    return CompletableFuture.supplyAsync(() -> {
-      try {
-        MatchEO message = messages.take();
-        log.info("Sending message to kafka with the message: " + message.toString());
-        return mapper.writeValueAsString(message);
-      } catch (InterruptedException | JsonProcessingException e) {
-        throw new RuntimeException(e);
-      }
-    });
-  }
+//  @Outgoing("match-result")
+//  public CompletionStage<String> send() {
+//    return CompletableFuture.supplyAsync(() -> {
+//      try {
+//        MatchEO message = messages.take();
+//        log.info("Sending message to kafka with the message: " + message.toString());
+//        return mapper.writeValueAsString(message);
+//      } catch (InterruptedException | JsonProcessingException e) {
+//        throw new RuntimeException(e);
+//      }
+//    });
+//  }
 }
