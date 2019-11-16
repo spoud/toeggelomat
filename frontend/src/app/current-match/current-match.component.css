@@ -52,3 +52,9 @@
   background: white;
   color: black;
 }
+
+.potential-points{
+  margin-top: 20px;
+  text-align: center;
+  font-size: 2em;
+}

@@ -11,7 +11,7 @@
 <!--TODO make a component for this-->
 <div class="score-list">
   <div class="score-item red-team-backgroundcolor"
-       (click)="redScore=s"
+       (click)="redScore=s; autoFill()"
        *ngFor="let s of redScoreList"
        [class.selected]="s===redScore">{{s}}</div>
 </div>
@@ -51,9 +51,13 @@
 <!--TODO make a component for this-->
 <div class="score-list">
   <div class="score-item blue-team-backgroundcolor"
-       (click)="blueScore=s"
+       (click)="blueScore=s; autoFill()"
        *ngFor="let s of blueScoreList"
        [class.selected]="s===blueScore">{{s}}</div>
+</div>
+
+<div class="potential-points">
+  Points: {{currentMatch.match.points}}
 </div>
 
 <app-score-confirmation-modal #confirm></app-score-confirmation-modal>
