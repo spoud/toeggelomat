@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.Random;
 
 @Configuration
-public class RandomConfig {
+public class RandomConfiguration {
     @Bean
     public Random random(){
         return new SecureRandom();

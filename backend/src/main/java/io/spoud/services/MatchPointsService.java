@@ -1,21 +1,42 @@
 package io.spoud.services;
 
-import javax.inject.Inject;
-
-import org.springframework.stereotype.Service;
-
 import io.spoud.entities.MatchEO;
 import io.spoud.entities.PlayerEO;
 import io.spoud.repositories.PlayerRepository;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import javax.inject.Inject;
+import java.util.Arrays;
+import java.util.List;
 
 @Slf4j
 @Service
 public class MatchPointsService {
 
+  public static final int ADDITIONAL_POINT_FOR_PLAYING = 1;
+
   @Inject
   private PlayerRepository playerRepository;
+
+  public MatchEO computePointsAndUpdatePlayers(MatchEO matchEO) {
+    PlayersHelper playersHelper = new PlayersHelper(playerRepository, matchEO);
+    int points = computePotentialPoints(playersHelper);
+    if (matchEO.getRedScore() == 0 || matchEO.getBlueScore() == 0) {
+      // double the points if game is win/lost to zero
+      points *= 2;
+    }
+
+    playersHelper.getWinnerDeffence().setDefensePoints(playersHelper.getWinnerDeffence().getDefensePoints() + points + ADDITIONAL_POINT_FOR_PLAYING);
+    playersHelper.getWinnerOffense().setOffensePoints(playersHelper.getWinnerOffense().getOffensePoints() + points + ADDITIONAL_POINT_FOR_PLAYING);
+    playersHelper.getLooserDeffence().setDefensePoints(playersHelper.getLooserDeffence().getDefensePoints() - points + ADDITIONAL_POINT_FOR_PLAYING);
+    playersHelper.getLooserOffense().setOffensePoints(playersHelper.getLooserOffense().getOffensePoints() - points + ADDITIONAL_POINT_FOR_PLAYING);
+    playersHelper.getAll().forEach(p -> playerRepository.updatePointsOfPlayer(p));
+
+    matchEO.setPoints(points);
+    return matchEO;
+  }
 
   public MatchEO computePotentialPoints(MatchEO matchEO) {
     PlayersHelper playersHelper = new PlayersHelper(playerRepository, matchEO);
@@ -34,16 +55,6 @@ public class MatchPointsService {
     double total = winnerPoints + looserPoints;
     int point = (int) ((winnerPoints / total) * 40);
     return point;
-  }
-
-  private void calc(MatchEO match, PlayerEO winnerOffense, PlayerEO winnerDefense,
-    PlayerEO looserOffense, PlayerEO looserDefense, boolean wonByZero, boolean dryRun) {
-
-    double winnerPoints = winnerDefense.getDefensePoints() + winnerOffense.getOffensePoints();
-    double looserPoints = looserDefense.getDefensePoints() + looserOffense.getOffensePoints();
-    double total = winnerPoints + looserPoints;
-    int winnings = (int) ((winnerPoints / total) * 40) * (wonByZero ? 2 : 1);
-
   }
 
   @Getter
@@ -79,6 +90,10 @@ public class MatchPointsService {
 
     public PlayerEO getLooserOffense() {
       return !wonByBlue ? blueOffense : redOffense;
+    }
+
+    public List<PlayerEO> getAll() {
+      return Arrays.asList(blueDeffense, blueOffense, redDeffense, redOffense);
     }
   }
 }

@@ -48,9 +48,13 @@ public class MatchService {
 
   public MatchEO saveMatchResults(MatchEO match) {
     match.setMatchTime(ZonedDateTime.now());
-    match.setPoints(0);    // TODO compute point
+    match = matchPointsService.computePointsAndUpdatePlayers(match);
     matchRepository.addMatch(match);
-    resultProducer.add(match);
+    resultProducer.add(match); // TODO compute object with complete player before and after
     return match;
+  }
+
+  public List<MatchEO> getLastMatchOfTheSeason() {
+    return matchRepository.getLastMatches(20);
   }
 }

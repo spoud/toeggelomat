@@ -3,22 +3,13 @@
   <button type="button" class="btn btn-primary btn-lg" routerLink="/players-selection">Start a game</button>
 </div>
 
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Nickname</th>
-      <th scope="col">Points</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let player of players; let i=index">
-      <th scope="row">{{i + 1}}</th>
-      <td>
-        <app-spoud-avatar [email]="player.email"></app-spoud-avatar>
-        {{player.nickName}}
-      </td>
-      <td>{{player.offensePoints + player.defensePoints}}</td>
-    </tr>
-  </tbody>
-</table>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-6">
+      <app-players-scoreboard></app-players-scoreboard>
+    </div>
+    <div class="col-md-6">
+      <app-last-matches></app-last-matches>
+    </div>
+  </div>
+</div>

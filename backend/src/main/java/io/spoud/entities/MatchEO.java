@@ -29,7 +29,6 @@ public class MatchEO {
     @Column(name = "match_uuid", unique = true)
     private UUID uuid;
 
-    @JsonIgnore
     @Column(name = "match_time", nullable = false)
     private ZonedDateTime matchTime;
 

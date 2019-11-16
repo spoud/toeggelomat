@@ -1,8 +1,10 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {select, Store} from '@ngrx/store';
-import {MatchWithPlayers} from '../store/matches/matches.reducer';
 import {ScoreConfirmationModalComponent} from '../score-confirmation-modal/score-confirmation-modal.component';
 import {SubscriptionHelper} from '../utils/subscription-helper';
+import {MatchEO, MatchWithPlayers} from '../entities/match';
+import {PlayerEO} from '../entities/playersl';
+import {combineLatest} from 'rxjs';
 
 @Component({
   selector: 'app-current-match',
@@ -26,8 +28,13 @@ export class CurrentMatchComponent extends SubscriptionHelper implements OnInit,
   }
 
   ngOnInit() {
-    this.addSubscription(this.store.pipe(select('matches'), select('currentMatch'))
-      .subscribe(match => this.currentMatch = match));
+    this.addSubscription(
+      combineLatest(
+        this.store.pipe(select('matches'), select('currentMatch')),
+        this.store.pipe(select('players'), select('list')))
+        .subscribe((arr: [MatchEO, PlayerEO[]]) =>
+          this.currentMatch = MatchWithPlayers.createMatchWithPlayer(arr[0], arr[1])
+        ));
   }
 
   ngOnDestroy(): void {
@@ -44,10 +51,10 @@ export class CurrentMatchComponent extends SubscriptionHelper implements OnInit,
   }
 
   public autoFill(): void {
-    if (this.blueScore === -1) {
+    if (this.blueScore === -1 && this.redScore !== 7) {
       this.blueScore = 7;
     }
-    if (this.redScore === -1) {
+    if (this.redScore === -1 && this.blueScore !== 7) {
       this.redScore = 7;
     }
   }

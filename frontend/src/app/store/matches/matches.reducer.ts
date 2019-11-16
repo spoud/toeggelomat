@@ -1,35 +1,25 @@
-import {PlayerEO} from '../../entities/playersl';
 import {MatchEO} from '../../entities/match';
 import {Action, createReducer, on} from '@ngrx/store';
-import {matchStarted} from './maches.actions';
-
-export class MatchWithPlayers {
-
-  constructor(public match: MatchEO) {
-  }
-
-  public playerRedDefense: PlayerEO;
-
-  public playerRedOffense: PlayerEO;
-
-  public playerBlueDefense: PlayerEO;
-
-  public playerBlueOffense: PlayerEO;
-
-}
+import {matchesReloaded, matchStarted} from './maches.actions';
 
 export class MatchesState {
-  public currentMatch: MatchWithPlayers;
+  public currentMatch: MatchEO;
+  public lastMatches: MatchEO[];
 }
 
 const initialState = new MatchesState();
 initialState.currentMatch = null;
+initialState.lastMatches = [];
 
 export function machesReducer(s: MatchesState | undefined, a: Action) {
   return createReducer(initialState,
     on(matchStarted, (state: MatchesState, {match}) => ({
       ...state,
       currentMatch: match
+    })),
+    on(matchesReloaded, (state: MatchesState, {matches}) => ({
+      ...state,
+      lastMatches: matches
     })),
   )(s, a);
 }

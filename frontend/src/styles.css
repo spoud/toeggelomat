@@ -4,9 +4,8 @@
 }
 
 body{
-  width: 900px;
-  margin: auto;
-  padding-top: 50px;
+  margin: auto 20px;
+  height: 1vw;
 }
 
 .red-team-color {

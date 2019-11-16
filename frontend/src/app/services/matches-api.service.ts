@@ -4,6 +4,7 @@ import {Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
 import {environment} from '../../environments/environment';
 import {MatchEO} from '../entities/match';
+import {PlayerEO} from '../entities/playersl';
 
 @Injectable()
 export class MatchesApiService {
@@ -42,6 +43,25 @@ export class MatchesApiService {
       })
       .pipe(
         map((res: HttpResponse<MatchEO>) => res.body)
+      );
+  }
+
+  public getLastMaches(): Observable<MatchEO[]> {
+    if (environment.mock) {
+      return of([]);
+    }
+
+    return this.http
+      .get<MatchEO[]>(`/api/v1/matches`, {
+        observe: 'response'
+      })
+      .pipe(
+        map((res: HttpResponse<MatchEO[]>) => res.body),
+        map(list => list.map((m: MatchEO) => {
+          m.matchTime = new Date(m.matchTime);
+          return m;
+        })),
+        map(list => list.sort((l, r) => r.matchTime.getTime() - l.matchTime.getTime()))
       );
   }
 

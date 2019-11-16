@@ -24,6 +24,8 @@ import {SpoudAvatarComponent} from './spoud-avatar/spoud-avatar.component';
 import {ScoreConfirmationModalComponent} from './score-confirmation-modal/score-confirmation-modal.component';
 import {localStorageSync} from 'ngrx-store-localstorage';
 import {EventApiService} from './services/event-api.service';
+import { LastMatchesComponent } from './scoreboard/last-matches/last-matches.component';
+import { PlayersScoreboardComponent } from './scoreboard/players-scoreboard/players-scoreboard.component';
 
 
 const reducers: ActionReducerMap<any> = {players: playersReducer, matches: machesReducer};
@@ -44,7 +46,9 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     CurrentMatchComponent,
     ScoreboardComponent,
     SpoudAvatarComponent,
-    ScoreConfirmationModalComponent
+    ScoreConfirmationModalComponent,
+    LastMatchesComponent,
+    PlayersScoreboardComponent
   ],
   imports: [
     BrowserModule,
