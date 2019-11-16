@@ -32,12 +32,16 @@ public class MatchService {
   @Inject
   private MatchRandomizeService matchRandomizeService;
 
+  @Inject
+  private MatchPointsService matchPointsService;
+
   public MatchEO randomizeMatch(List<UUID> playersUuid) {
     if (playersUuid.size() < 4) {
       throw new IllegalArgumentException("To few players");
     }
     MatchEO match = matchRandomizeService.randomizeNewMatch(2,
       new HashSet<>(playerRepository.findByUuids(playersUuid)));
+    match = matchPointsService.computePotentialPoints(match);
     eventService.newMatchEvent(match);
     return match;
   }
