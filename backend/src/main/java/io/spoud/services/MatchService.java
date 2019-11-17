@@ -51,6 +51,7 @@ public class MatchService {
     match = matchPointsService.computePointsAndUpdatePlayers(match);
     matchRepository.addMatch(match);
     resultProducer.add(match); // TODO compute object with complete player before and after
+    eventService.scoreChangedEvent();
     return match;
   }
 

@@ -31,6 +31,8 @@ public class EventService {
   public void newMatchEvent(MatchEO match) {
     try {
       matchSubscriber.onNext(match);
+    } catch (NullPointerException ex) {
+      LOG.warn("matchSubscriber is null again");
     } catch (Exception ex) {
       LOG.error("Cannot push match", ex);
     }
@@ -41,7 +43,13 @@ public class EventService {
   }
 
   public void scoreChangedEvent() {
-    scoreChangeSubscriber.onNext("newScore");
+    try {
+      scoreChangeSubscriber.onNext("newScore");
+    } catch (NullPointerException ex) {
+      LOG.warn("scoreChangeSubscriber is null again");
+    } catch (Exception ex) {
+      LOG.error("Cannot push score", ex);
+    }
   }
 
   public Publisher<String> scoreChangedStream() {

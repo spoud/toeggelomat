@@ -30,22 +30,23 @@ export class MatchesEffect {
         ))
     ));
 
-  initMatchStream$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(ROOT_EFFECTS_INIT),
-      mergeMap(param => {
-        return this.eventApiService.matchStream()
-          .pipe(
-            map(match => {
-              console.log('Start match from event', match);
-              this.router.navigate([`current-match`]);
-              return matchStarted({match});
-            }),
-            catchError(() => EMPTY)
-          );
-      })
-    )
-  );
+  // TODO put back when we have slack integration
+  // initMatchStream$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(ROOT_EFFECTS_INIT),
+  //     mergeMap(param => {
+  //       return this.eventApiService.matchStream()
+  //         .pipe(
+  //           map(match => {
+  //             console.log('Start match from event', match);
+  //             this.router.navigate([`current-match`]);
+  //             return matchStarted({match});
+  //           }),
+  //           catchError(() => EMPTY)
+  //         );
+  //     })
+  //   )
+  // );
 
   startMatch$ = createEffect(() => this.actions$.pipe(
     ofType(startMatch),
