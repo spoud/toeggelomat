@@ -29,6 +29,8 @@
       <br/>
       Offense<br/>
       {{currentMatch?.playerRedOffense.nickName}}
+      <br />
+      Points: {{currentMatch?.match.potentialRedPoints}}
     </div>
   </div>
   <img class="soccer-field" src="assets/soccer-table.png"/>
@@ -44,6 +46,8 @@
       <br/>
       Defense <br/>
       {{currentMatch?.playerBlueDefense.nickName}}
+      <br />
+      Points: {{currentMatch?.match.potentialBluePoints}}
     </div>
   </div>
 </div>
@@ -54,10 +58,6 @@
        (click)="blueScore=s; autoFill()"
        *ngFor="let s of blueScoreList"
        [class.selected]="s===blueScore">{{s}}</div>
-</div>
-
-<div class="potential-points">
-  Points: {{currentMatch?.match.points}}
 </div>
 
 <app-score-confirmation-modal #confirm></app-score-confirmation-modal>

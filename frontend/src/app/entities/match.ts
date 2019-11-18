@@ -20,6 +20,10 @@ export class MatchEO {
   public playerBlueDefenseUuid: string;
 
   public playerBlueOffenseUuid: string;
+
+  public potentialBluePoints: number;
+
+  public potentialRedPoints: number;
 }
 
 

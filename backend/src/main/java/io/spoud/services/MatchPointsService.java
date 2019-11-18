@@ -1,15 +1,18 @@
 package io.spoud.services;
 
+import java.util.Arrays;
+import java.util.List;
+
+import javax.inject.Inject;
+
+import org.springframework.stereotype.Service;
+
 import io.spoud.entities.MatchEO;
 import io.spoud.entities.PlayerEO;
 import io.spoud.repositories.PlayerRepository;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
-import javax.inject.Inject;
-import java.util.Arrays;
-import java.util.List;
 
 @Slf4j
 @Service
@@ -28,10 +31,18 @@ public class MatchPointsService {
       points *= 2;
     }
 
-    playersHelper.getWinnerDeffence().setDefensePoints(playersHelper.getWinnerDeffence().getDefensePoints() + points + ADDITIONAL_POINT_FOR_PLAYING);
-    playersHelper.getWinnerOffense().setOffensePoints(playersHelper.getWinnerOffense().getOffensePoints() + points + ADDITIONAL_POINT_FOR_PLAYING);
-    playersHelper.getLooserDeffence().setDefensePoints(playersHelper.getLooserDeffence().getDefensePoints() - points + ADDITIONAL_POINT_FOR_PLAYING);
-    playersHelper.getLooserOffense().setOffensePoints(playersHelper.getLooserOffense().getOffensePoints() - points + ADDITIONAL_POINT_FOR_PLAYING);
+    playersHelper.getWinnerDeffence()
+      .setDefensePoints(playersHelper.getWinnerDeffence().getDefensePoints() + points
+                        + ADDITIONAL_POINT_FOR_PLAYING);
+    playersHelper.getWinnerOffense()
+      .setOffensePoints(playersHelper.getWinnerOffense().getOffensePoints() + points
+                        + ADDITIONAL_POINT_FOR_PLAYING);
+    playersHelper.getLooserDeffence()
+      .setDefensePoints(playersHelper.getLooserDeffence().getDefensePoints() - points
+                        + ADDITIONAL_POINT_FOR_PLAYING);
+    playersHelper.getLooserOffense()
+      .setOffensePoints(playersHelper.getLooserOffense().getOffensePoints() - points
+                        + ADDITIONAL_POINT_FOR_PLAYING);
     playersHelper.getAll().forEach(p -> playerRepository.updatePointsOfPlayer(p));
 
     matchEO.setPoints(points);
@@ -40,8 +51,10 @@ public class MatchPointsService {
 
   public MatchEO computePotentialPoints(MatchEO matchEO) {
     PlayersHelper playersHelper = new PlayersHelper(playerRepository, matchEO);
-    int points = computePotentialPoints(playersHelper);
-    matchEO.setPoints(points);
+    playersHelper.setWonByBlue(true);
+    matchEO.setPotentialBluePoints(computePotentialPoints(playersHelper));
+    playersHelper.setWonByBlue(false);
+    matchEO.setPotentialRedPoints(computePotentialPoints(playersHelper));
     return matchEO;
   }
 
@@ -57,6 +70,47 @@ public class MatchPointsService {
     return point;
   }
 
+  static private final double LI_POINTS_SLOPE = 4;
+  static private final double LI_POINTS_OFFSET = -1.5;
+
+  static private final int BASE_POINTS = 40;
+
+  private int calcPoints(PlayersHelper playersHelper) {
+    System.out.println("START CALC");
+    double factor = 1.0;
+    factor *= zeroMultiplier(playersHelper.getMatch());
+    factor *= birthdayMultiplier(playersHelper.getWinnerOffense());
+    factor *= birthdayMultiplier(playersHelper.getWinnerDeffence());
+    factor *= birthdayMultiplier(playersHelper.getLooserOffense());
+    factor *= birthdayMultiplier(playersHelper.getLooserDeffence());
+    double winnerPoints =
+      playersHelper.getWinnerDeffence().getDefensePoints() + playersHelper.getWinnerOffense()
+        .getOffensePoints();
+    double looserPoints =
+      playersHelper.getLooserDeffence().getDefensePoints() + playersHelper.getLooserOffense()
+        .getOffensePoints();
+    double total = winnerPoints + looserPoints;
+    double slope = slope(looserPoints, total);
+    return (int) (slope * factor * BASE_POINTS);
+  }
+
+  private static double clamp(double d) {
+    return Math.max(Math.min(d, 1.0), 0);
+  }
+
+  public static double slope(double looserPoints, double totalPoints) {
+    return clamp(
+      LI_POINTS_OFFSET + LI_POINTS_SLOPE * (double) (looserPoints) / (double) (totalPoints));
+  }
+
+  private double birthdayMultiplier(PlayerEO player) {
+    return 1; // add birthdays
+  }
+
+  private double zeroMultiplier(MatchEO match) {
+    return match.getBlueScore() == 0 || match.getRedScore() == 0 ? 2 : 1;
+  }
+
   @Getter
   public class PlayersHelper {
     private final PlayerEO blueDeffense;
@@ -64,7 +118,9 @@ public class MatchPointsService {
     private final PlayerEO redDeffense;
     private final PlayerEO redOffense;
     private final MatchEO match;
-    private final boolean wonByBlue;
+
+    @Setter
+    private boolean wonByBlue;
 
     public PlayersHelper(PlayerRepository playerRepository, MatchEO match) {
       this.match = match;
@@ -95,5 +151,6 @@ public class MatchPointsService {
     public List<PlayerEO> getAll() {
       return Arrays.asList(blueDeffense, blueOffense, redDeffense, redOffense);
     }
+
   }
 }
