@@ -19,6 +19,7 @@
 <div class="match-container">
   <div class="red-players red-team-color">
     <div class="defense">
+      Points: {{currentMatch?.match.potentialRedPoints}}
       <!--      TODO UGLY !!!--><br/>
       <br/>
       Defense <br/>
@@ -29,13 +30,12 @@
       <br/>
       Offense<br/>
       {{currentMatch?.playerRedOffense.nickName}}
-      <br />
-      Points: {{currentMatch?.match.potentialRedPoints}}
     </div>
   </div>
   <img class="soccer-field" src="assets/soccer-table.png"/>
   <div class="blue-players blue-team-color">
     <div class="offense">
+      Points: {{currentMatch?.match.potentialBluePoints}}
       <br/>
       <br/>
       Offense<br/>
@@ -46,8 +46,6 @@
       <br/>
       Defense <br/>
       {{currentMatch?.playerBlueDefense.nickName}}
-      <br />
-      Points: {{currentMatch?.match.potentialBluePoints}}
     </div>
   </div>
 </div>

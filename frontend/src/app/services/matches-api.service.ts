@@ -4,7 +4,6 @@ import {Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
 import {environment} from '../../environments/environment';
 import {MatchEO} from '../entities/match';
-import {PlayerEO} from '../entities/playersl';
 
 @Injectable()
 export class MatchesApiService {
@@ -73,6 +72,8 @@ export class MatchesApiService {
         redScore: null,
         blueScore: null,
         points: null,
+        potentialRedPoints: 30,
+        potentialBluePoints: 10,
         playerRedDefenseUuid: '65691fb6-0056-4a78-b3ea-2aa58130ea98',
         playerRedOffenseUuid: 'cc07cf47-59db-4e3b-b430-a3deacc5e603',
         playerBlueDefenseUuid: '3b01e01f-56f4-48a8-aad1-b0db90444498',
