@@ -60,7 +60,6 @@ public class MatchPointsService {
   static private final int BASE_POINTS = 40;
 
   private int calcPoints(PlayersHelper playersHelper) {
-    System.out.println("START CALC");
     double factor = 1.0;
     factor *= zeroMultiplier(playersHelper.getMatch());
     factor *= birthdayMultiplier(playersHelper.getWinnerOffense());
@@ -92,7 +91,9 @@ public class MatchPointsService {
   }
 
   private double zeroMultiplier(MatchEO match) {
-    return match.getBlueScore() == 0 || match.getRedScore() == 0 ? 2 : 1;
+    return match.getBlueScore() != null && match.getRedScore() != null && (match.getBlueScore() == 0
+                                                                           || match.getRedScore()
+                                                                              == 0) ? 2 : 1;
   }
 
   @Getter
