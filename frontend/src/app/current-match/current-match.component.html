@@ -11,7 +11,7 @@
 <!--TODO make a component for this-->
 <div class="score-list">
   <div class="score-item red-team-backgroundcolor"
-       (click)="redScore=s"
+       (click)="redScore=s; autoFill()"
        *ngFor="let s of redScoreList"
        [class.selected]="s===redScore">{{s}}</div>
 </div>
@@ -19,6 +19,7 @@
 <div class="match-container">
   <div class="red-players red-team-color">
     <div class="defense">
+      Points: {{currentMatch?.match.potentialRedPoints}}
       <!--      TODO UGLY !!!--><br/>
       <br/>
       Defense <br/>
@@ -34,6 +35,7 @@
   <img class="soccer-field" src="assets/soccer-table.png"/>
   <div class="blue-players blue-team-color">
     <div class="offense">
+      Points: {{currentMatch?.match.potentialBluePoints}}
       <br/>
       <br/>
       Offense<br/>
@@ -51,7 +53,7 @@
 <!--TODO make a component for this-->
 <div class="score-list">
   <div class="score-item blue-team-backgroundcolor"
-       (click)="blueScore=s"
+       (click)="blueScore=s; autoFill()"
        *ngFor="let s of blueScoreList"
        [class.selected]="s===blueScore">{{s}}</div>
 </div>

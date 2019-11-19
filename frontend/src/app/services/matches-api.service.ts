@@ -21,7 +21,7 @@ export class MatchesApiService {
     }
 
     return this.http
-      .post<MatchEO>(`/api/v1/matches`, playerUuids, {
+      .post<MatchEO>(`/api/v1/matches/randomize`, playerUuids, {
         observe: 'response',
         headers: this.headers
       })
@@ -36,7 +36,7 @@ export class MatchesApiService {
     }
 
     return this.http
-      .post<MatchEO>(`/api/v1/matches/finish`, match, {
+      .post<MatchEO>(`/api/v1/matches/set-score`, match, {
         observe: 'response',
         headers: this.headers
       })
@@ -45,15 +45,35 @@ export class MatchesApiService {
       );
   }
 
+  public getLastMaches(): Observable<MatchEO[]> {
+    if (environment.mock) {
+      return of([]);
+    }
+
+    return this.http
+      .get<MatchEO[]>(`/api/v1/matches`, {
+        observe: 'response'
+      })
+      .pipe(
+        map((res: HttpResponse<MatchEO[]>) => res.body),
+        map(list => list.map((m: MatchEO) => {
+          m.matchTime = new Date(m.matchTime);
+          return m;
+        })),
+        map(list => list.sort((l, r) => r.matchTime.getTime() - l.matchTime.getTime()))
+      );
+  }
+
   private mockMatch(): Observable<MatchEO> {
     return of(
       {
         uuid: '65691fb6-0056-4a78-b3ea-2aa58130ea98',
-        resultTime: null,
-        createdTime: null,
+        matchTime: null,
         redScore: null,
         blueScore: null,
-        point: null,
+        points: null,
+        potentialRedPoints: 30,
+        potentialBluePoints: 10,
         playerRedDefenseUuid: '65691fb6-0056-4a78-b3ea-2aa58130ea98',
         playerRedOffenseUuid: 'cc07cf47-59db-4e3b-b430-a3deacc5e603',
         playerBlueDefenseUuid: '3b01e01f-56f4-48a8-aad1-b0db90444498',

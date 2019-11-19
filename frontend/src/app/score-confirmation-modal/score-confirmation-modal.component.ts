@@ -1,10 +1,10 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {MatchWithPlayers} from '../store/matches/matches.reducer';
 import {saveMatchScore} from '../store/matches/maches.actions';
 import {Store} from '@ngrx/store';
 import {interval, Subscription} from 'rxjs';
 import {take} from 'rxjs/operators';
+import {MatchWithPlayers} from '../entities/match';
 
 @Component({
   selector: 'app-score-confirmation-modal',
@@ -17,7 +17,6 @@ export class ScoreConfirmationModalComponent implements OnInit {
   private content: any;
 
   public redWon: boolean;
-  public winColorString: string;
   public match: MatchWithPlayers;
   public timeout: number;
   private intervalSubscription: Subscription;

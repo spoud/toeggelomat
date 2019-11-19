@@ -27,7 +27,8 @@ services:
     image: spoud/toeggelomat-backend
     build: 
       context: backend/
-      dockerfile: src/main/docker/Dockerfile.native
+      dockerfile: src/main/docker/Dockerfile.jvm
+      # dockerfile: src/main/docker/Dockerfile.native
     ports:
       - 8080
     labels:
