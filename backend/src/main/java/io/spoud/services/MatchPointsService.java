@@ -25,11 +25,7 @@ public class MatchPointsService {
 
   public MatchEO computePointsAndUpdatePlayers(MatchEO matchEO) {
     PlayersHelper playersHelper = new PlayersHelper(playerRepository, matchEO);
-    int points = computePotentialPoints(playersHelper);
-    if (matchEO.getRedScore() == 0 || matchEO.getBlueScore() == 0) {
-      // double the points if game is win/lost to zero
-      points *= 2;
-    }
+    int points = calcPoints(playersHelper);
 
     playersHelper.getWinnerDeffence()
       .setDefensePoints(playersHelper.getWinnerDeffence().getDefensePoints() + points
@@ -52,22 +48,10 @@ public class MatchPointsService {
   public MatchEO computePotentialPoints(MatchEO matchEO) {
     PlayersHelper playersHelper = new PlayersHelper(playerRepository, matchEO);
     playersHelper.setWonByBlue(true);
-    matchEO.setPotentialBluePoints(computePotentialPoints(playersHelper));
+    matchEO.setPotentialBluePoints(calcPoints(playersHelper));
     playersHelper.setWonByBlue(false);
-    matchEO.setPotentialRedPoints(computePotentialPoints(playersHelper));
+    matchEO.setPotentialRedPoints(calcPoints(playersHelper));
     return matchEO;
-  }
-
-  private int computePotentialPoints(PlayersHelper playersHelper) {
-    double winnerPoints =
-      playersHelper.getWinnerDeffence().getDefensePoints() + playersHelper.getWinnerOffense()
-        .getOffensePoints();
-    double looserPoints =
-      playersHelper.getLooserDeffence().getDefensePoints() + playersHelper.getLooserOffense()
-        .getOffensePoints();
-    double total = winnerPoints + looserPoints;
-    int point = (int) ((winnerPoints / total) * 40);
-    return point;
   }
 
   static private final double LI_POINTS_SLOPE = 4;
