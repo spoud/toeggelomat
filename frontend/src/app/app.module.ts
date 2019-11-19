@@ -24,13 +24,16 @@ import {SpoudAvatarComponent} from './spoud-avatar/spoud-avatar.component';
 import {ScoreConfirmationModalComponent} from './score-confirmation-modal/score-confirmation-modal.component';
 import {localStorageSync} from 'ngrx-store-localstorage';
 import {EventApiService} from './services/event-api.service';
-import { LastMatchesComponent } from './scoreboard/last-matches/last-matches.component';
-import { PlayersScoreboardComponent } from './scoreboard/players-scoreboard/players-scoreboard.component';
+import {LastMatchesComponent} from './scoreboard/last-matches/last-matches.component';
+import {PlayersScoreboardComponent} from './scoreboard/players-scoreboard/players-scoreboard.component';
 
 
 const reducers: ActionReducerMap<any> = {players: playersReducer, matches: machesReducer};
 
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
+  if (environment.production || true) {
+    return reducer;
+  }
   return localStorageSync({
     keys: ['players', 'matches'],
     rehydrate: true

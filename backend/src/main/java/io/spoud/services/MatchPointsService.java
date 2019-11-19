@@ -74,7 +74,7 @@ public class MatchPointsService {
         .getOffensePoints();
     double total = winnerPoints + looserPoints;
     double slope = slope(looserPoints, total);
-    return (int) (slope * factor * BASE_POINTS);
+    return (int)Math.round(slope * factor * BASE_POINTS);
   }
 
   private static double clamp(double d) {
