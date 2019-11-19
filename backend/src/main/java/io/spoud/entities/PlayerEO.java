@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+
+import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Data
@@ -33,5 +35,8 @@ public class PlayerEO {
 
     @Column(name = "offense_points", nullable = false)
     private Integer offensePoints;
+
+    @Column(name = "last_match_time", nullable = true)
+    private ZonedDateTime lastMatchTime;
 
 }

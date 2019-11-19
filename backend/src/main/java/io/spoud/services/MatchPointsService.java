@@ -39,7 +39,7 @@ public class MatchPointsService {
     playersHelper.getLooserOffense()
       .setOffensePoints(playersHelper.getLooserOffense().getOffensePoints() - points
                         + ADDITIONAL_POINT_FOR_PLAYING);
-    playersHelper.getAll().forEach(p -> playerRepository.updatePointsOfPlayer(p));
+    playersHelper.getAll().forEach(p -> playerRepository.updatePointsAndLastMatch(p));
 
     matchEO.setPoints(points);
     return matchEO;

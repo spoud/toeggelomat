@@ -1,10 +1,10 @@
-
 <table class="table table-striped">
   <thead>
   <tr>
     <th scope="col">#</th>
     <th scope="col">Nickname</th>
     <th scope="col">Points</th>
+    <th scope="col">Last match</th>
   </tr>
   </thead>
   <tbody>
@@ -14,7 +14,10 @@
       <app-spoud-avatar [email]="player.email"></app-spoud-avatar>
       {{player.nickName}}
     </td>
-    <td>{{player.offensePoints + player.defensePoints}}</td>
+    <td>{{player.offensePoints + player.defensePoints}}
+      <span class="point-details">(off: {{player.offensePoints}}, def: {{player.defensePoints}})</span>
+    </td>
+    <td>{{player.lastMatchTime | lastMatchTime}}</td>
   </tr>
   </tbody>
 </table>

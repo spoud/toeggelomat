@@ -4,4 +4,5 @@ export class PlayerEO {
   public email: string;
   public offensePoints: number;
   public defensePoints: number;
+  public lastMatchTime: Date;
 }

@@ -26,6 +26,7 @@ import {localStorageSync} from 'ngrx-store-localstorage';
 import {EventApiService} from './services/event-api.service';
 import {LastMatchesComponent} from './scoreboard/last-matches/last-matches.component';
 import {PlayersScoreboardComponent} from './scoreboard/players-scoreboard/players-scoreboard.component';
+import { LastMatchTimePipe } from './scoreboard/players-scoreboard/last-match-time.pipe';
 
 
 const reducers: ActionReducerMap<any> = {players: playersReducer, matches: machesReducer};
@@ -51,7 +52,8 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     SpoudAvatarComponent,
     ScoreConfirmationModalComponent,
     LastMatchesComponent,
-    PlayersScoreboardComponent
+    PlayersScoreboardComponent,
+    LastMatchTimePipe
   ],
   imports: [
     BrowserModule,
