@@ -26,7 +26,7 @@ public class PlayerRepository {
       .where(PLAYER.uuid.eq(player.getUuid()))
       .set(PLAYER.offensePoints, player.getOffensePoints())
       .set(PLAYER.defensePoints, player.getDefensePoints())
-      .set(PLAYER.lastMatchTime, ZonedDateTime.now())
+      .set(PLAYER.lastMatchTime, player.getLastMatchTime())
       .execute();
   }
 
