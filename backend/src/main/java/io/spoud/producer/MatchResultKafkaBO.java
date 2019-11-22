@@ -3,9 +3,6 @@ package io.spoud.producer;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
-import javax.persistence.Column;
-
-import io.spoud.entities.MatchEO;
 import io.spoud.entities.PlayerEO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

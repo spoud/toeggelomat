@@ -4,9 +4,8 @@ import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-
-import org.springframework.stereotype.Service;
 
 import io.spoud.entities.MatchEO;
 import io.spoud.entities.PlayerEO;
@@ -16,7 +15,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Service
+@ApplicationScoped
 public class MatchPointsService {
 
   public static final int ADDITIONAL_POINT_FOR_PLAYING = 1;

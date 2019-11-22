@@ -1,14 +1,15 @@
 package io.spoud.config;
 
 import java.security.SecureRandom;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
 import java.util.Random;
 
-@Configuration
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Produces;
+
+@ApplicationScoped
 public class RandomConfiguration {
-    @Bean
+
+    @Produces
     public Random random(){
         return new SecureRandom();
     }

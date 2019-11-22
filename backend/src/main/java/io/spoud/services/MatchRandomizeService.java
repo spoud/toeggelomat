@@ -8,18 +8,18 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.IntStream;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 import io.spoud.entities.MatchEO;
 import io.spoud.entities.PlayerEO;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Service
+@ApplicationScoped
 public class MatchRandomizeService {
 
-  @Autowired
+  @Inject
   private Random random;
 
   public MatchEO randomizeNewMatch(int retry, Set<PlayerEO> players) {

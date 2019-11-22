@@ -1,20 +1,19 @@
 package io.spoud.config;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
-@Configuration
+@ApplicationScoped
 public class DatabaseConfiguration {
 
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Bean
+    @Produces
     public JPAQueryFactory jpaQueryFactory() {
         return new JPAQueryFactory(entityManager);
     }

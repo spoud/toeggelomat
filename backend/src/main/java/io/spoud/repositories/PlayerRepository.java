@@ -1,24 +1,23 @@
 package io.spoud.repositories;
 
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import io.spoud.entities.PlayerEO;
 import io.spoud.entities.QPlayerEO;
 
-@Repository
+@ApplicationScoped
 public class PlayerRepository {
 
   public static final QPlayerEO PLAYER = QPlayerEO.playerEO;
 
-  @Autowired
+  @Inject
   private JPAQueryFactory jpaQueryFactory;
 
   public void updatePointsAndLastMatch(PlayerEO player) {
