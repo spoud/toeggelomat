@@ -3,15 +3,6 @@ package io.spoud.rest;
 import java.util.List;
 import java.util.UUID;
 
-import io.spoud.repositories.MatchRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import io.spoud.entities.MatchEO;
-import io.spoud.services.MatchService;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -19,6 +10,9 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+
+import io.spoud.entities.MatchEO;
+import io.spoud.services.MatchService;
 
 @ApplicationScoped
 @Path("/api/v1/matches")

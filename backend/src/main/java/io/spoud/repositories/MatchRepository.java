@@ -3,10 +3,8 @@ package io.spoud.repositories;
 import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.persistence.EntityManager;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -18,10 +16,10 @@ public class MatchRepository {
 
   public static final QMatchEO MATCH = QMatchEO.matchEO;
 
-  @Autowired
+  @Inject
   private JPAQueryFactory jpaQueryFactory;
 
-  @Autowired
+  @Inject
   private EntityManager em;
 
   public List<MatchEO> getLastMatches(int nb) {

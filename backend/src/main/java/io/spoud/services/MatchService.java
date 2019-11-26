@@ -1,17 +1,19 @@
 package io.spoud.services;
 
-import io.spoud.entities.MatchEO;
-import io.spoud.producer.ResultProducer;
-import io.spoud.repositories.MatchRepository;
-import io.spoud.repositories.PlayerRepository;
-
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.transaction.Transactional;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.transaction.Transactional;
+
+import io.spoud.entities.MatchEO;
+import io.spoud.producer.MatchResultKafkaBO;
+import io.spoud.producer.ResultProducer;
+import io.spoud.repositories.MatchRepository;
+import io.spoud.repositories.PlayerRepository;
 
 @ApplicationScoped
 @Transactional
@@ -47,10 +49,34 @@ public class MatchService {
   }
 
   public MatchEO saveMatchResults(MatchEO match) {
+    MatchPointsService.PlayersHelper playerBefore =
+      new MatchPointsService.PlayersHelper(playerRepository, match);
+
+    MatchResultKafkaBO.MatchResultKafkaBOBuilder matchResultKafkaBOBuilder =
+      MatchResultKafkaBO.builder()
+        .blueDeffenseBefore(playerBefore.getBlueDeffense().clone())
+        .blueOffenseBefore(playerBefore.getBlueOffense().clone())
+        .redDeffenseBefore(playerBefore.getRedDeffense().clone())
+        .redOffenseBefore(playerBefore.getRedOffense().clone());
+
     match.setMatchTime(ZonedDateTime.now());
     match = matchPointsService.computePointsAndUpdatePlayers(match);
     matchRepository.addMatch(match);
-    resultProducer.add(match); // TODO compute object with complete player before and after
+
+
+    MatchPointsService.PlayersHelper playerAfter =
+      new MatchPointsService.PlayersHelper(playerRepository, match);
+    matchResultKafkaBOBuilder.matchUuid(match.getUuid())
+      .redScore(match.getRedScore())
+      .blueScore(match.getBlueScore())
+      .points(match.getPoints())
+      .matchTime(match.getMatchTime())
+      .blueDeffenseAfter(playerAfter.getBlueDeffense())
+      .blueOffenseAfter(playerAfter.getBlueOffense())
+      .redDeffenseAfter(playerAfter.getRedDeffense())
+      .redOffenseAfter(playerAfter.getRedOffense());
+
+    resultProducer.add(matchResultKafkaBOBuilder.build());
     eventService.scoreChangedEvent();
     return match;
   }

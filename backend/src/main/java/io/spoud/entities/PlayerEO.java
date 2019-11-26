@@ -1,15 +1,20 @@
 package io.spoud.entities;
 
+import java.time.ZonedDateTime;
+import java.util.UUID;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.*;
-
-import java.time.ZonedDateTime;
-import java.util.UUID;
 
 @Data
 @Builder
@@ -17,26 +22,36 @@ import java.util.UUID;
 @AllArgsConstructor
 @Entity
 @Table(name = "t_player")
-public class PlayerEO {
-    @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    @Column(name = "player_uuid", unique = true)
-    private UUID uuid;
+public class PlayerEO implements Cloneable {
+  @Id
+  @GeneratedValue(generator = "uuid")
+  @GenericGenerator(name = "uuid", strategy = "uuid2")
+  @Column(name = "player_uuid", unique = true)
+  private UUID uuid;
 
-    @Column(name = "nick_name", length = 100, nullable = false)
-    private String nickName;
+  @Column(name = "nick_name", length = 100, nullable = false)
+  private String nickName;
 
-    @Column(name = "email", length = 100, nullable = false)
-    private String email;
+  @Column(name = "email", length = 100, nullable = false)
+  private String email;
 
-    @Column(name = "defense_points", nullable = false)
-    private Integer defensePoints;
+  @Column(name = "defense_points", nullable = false)
+  private Integer defensePoints;
 
-    @Column(name = "offense_points", nullable = false)
-    private Integer offensePoints;
+  @Column(name = "offense_points", nullable = false)
+  private Integer offensePoints;
 
-    @Column(name = "last_match_time", nullable = true)
-    private ZonedDateTime lastMatchTime;
+  @Column(name = "last_match_time", nullable = true)
+  private ZonedDateTime lastMatchTime;
 
+  public PlayerEO clone() {
+    return PlayerEO.builder()
+      .uuid(uuid)
+      .nickName(nickName)
+      .email(email)
+      .defensePoints(defensePoints)
+      .offensePoints(offensePoints)
+      .lastMatchTime(lastMatchTime)
+      .build();
+  }
 }

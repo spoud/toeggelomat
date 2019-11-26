@@ -1,11 +1,11 @@
 package io.spoud.services;
 
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-
-import org.springframework.stereotype.Service;
 
 import io.spoud.entities.MatchEO;
 import io.spoud.entities.PlayerEO;
@@ -15,7 +15,7 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Service
+@ApplicationScoped
 public class MatchPointsService {
 
   public static final int ADDITIONAL_POINT_FOR_PLAYING = 1;
@@ -39,7 +39,12 @@ public class MatchPointsService {
     playersHelper.getLooserOffense()
       .setOffensePoints(playersHelper.getLooserOffense().getOffensePoints() - points
                         + ADDITIONAL_POINT_FOR_PLAYING);
-    playersHelper.getAll().forEach(p -> playerRepository.updatePointsAndLastMatch(p));
+
+    ZonedDateTime now = ZonedDateTime.now();
+    playersHelper.getAll().forEach(p -> {
+      p.setLastMatchTime(now);
+      playerRepository.updatePointsAndLastMatch(p);
+    });
 
     matchEO.setPoints(points);
     return matchEO;
@@ -74,7 +79,7 @@ public class MatchPointsService {
         .getOffensePoints();
     double total = winnerPoints + looserPoints;
     double slope = slope(looserPoints, total);
-    return (int)Math.round(slope * factor * BASE_POINTS);
+    return (int) Math.round(slope * factor * BASE_POINTS);
   }
 
   private static double clamp(double d) {
@@ -97,7 +102,7 @@ public class MatchPointsService {
   }
 
   @Getter
-  public class PlayersHelper {
+  public static class PlayersHelper {
     private final PlayerEO blueDeffense;
     private final PlayerEO blueOffense;
     private final PlayerEO redDeffense;
