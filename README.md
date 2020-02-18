@@ -1,13 +1,9 @@
-# Toeggelimat
+# Toeggelomat
 
 ## Purpose
 
-The toeggelimat has been created to improve breaks and increase the fun of playing foosball / töggele / kicker. It stores some players and can automatically match them together based on a selection. The matches are randomized and the winners will recieve points.
+The Toeggelomat has been created to improve breaks and increase the fun of playing foosball / töggele / kicker. It stores some players and can automatically match them together based on a selection. The matches are randomized and the winners will recieve points.
 
-## Backend
+## Screenshot
 
-[Backend](backend/README.md)
-
-## Frontend
-
-[Frontend](frontend/README.md)
+![alt text](https://spoud.io/wp-content/uploads/2020/02/toeggelomat.png "Screenshot of the Toeggelomat")
