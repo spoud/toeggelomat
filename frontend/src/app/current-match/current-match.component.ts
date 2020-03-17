@@ -20,7 +20,7 @@ export class CurrentMatchComponent extends SubscriptionHelper implements OnInit,
   public blueScore = -1;
   public redScore = -1;
 
-  @ViewChild('confirm', {static: false})
+  @ViewChild('confirm')
   private confirmDialog: ScoreConfirmationModalComponent;
 
   constructor(private store: Store<{ count: number }>) {

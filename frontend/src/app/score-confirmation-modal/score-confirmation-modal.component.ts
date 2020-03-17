@@ -13,7 +13,7 @@ import {MatchWithPlayers} from '../entities/match';
 })
 export class ScoreConfirmationModalComponent implements OnInit {
 
-  @ViewChild('content', {static: false})
+  @ViewChild('content')
   private content: any;
 
   public redWon: boolean;
