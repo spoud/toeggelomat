@@ -2,6 +2,8 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {SubscriptionHelper} from '../../utils/subscription-helper';
 import {PlayerEO} from '../../entities/playersl';
 import {select, Store} from '@ngrx/store';
+import {selectPlayersList} from '../../store/players/players.selectors';
+import {GlobalStore} from '../../store/global';
 
 @Component({
   selector: 'app-players-scoreboard',
@@ -12,7 +14,7 @@ export class PlayersScoreboardComponent extends SubscriptionHelper implements On
 
   public players: PlayerEO[];
 
-  constructor(private store: Store<{ count: number }>) {
+  constructor(private store: Store<GlobalStore>) {
     super();
   }
 

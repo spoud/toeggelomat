@@ -4,6 +4,8 @@ import {PlayerEO} from '../../entities/playersl';
 import {select, Store} from '@ngrx/store';
 import {MatchEO, MatchWithPlayers} from '../../entities/match';
 import {combineLatest} from 'rxjs';
+import {selectLastMatches, selectPlayersList} from '../../store/players/players.selectors';
+import {GlobalStore} from '../../store/global';
 
 export class MatchWithWinnerLooser extends MatchWithPlayers {
 
@@ -50,15 +52,16 @@ export class LastMatchesComponent extends SubscriptionHelper implements OnInit, 
 
   public matches: MatchWithWinnerLooser[];
 
-  constructor(private store: Store<{ count: number }>) {
+  constructor(private store: Store<GlobalStore>) {
     super();
   }
 
   ngOnInit() {
     this.addSubscription(
-      combineLatest(
+      combineLatest([
         this.store.pipe(select('matches'), select('lastMatches')),
-        this.store.pipe(select('players'), select('list')))
+        this.store.pipe(select('players'), select('list'))
+      ])
         .subscribe((arr: [MatchEO[], PlayerEO[]]) => {
           this.matches = arr[0].map(m => new MatchWithWinnerLooser(MatchWithPlayers.createMatchWithPlayer(m, arr[1])));
         }));
