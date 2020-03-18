@@ -3,6 +3,8 @@ import {select, Store} from '@ngrx/store';
 import {PlayerEO} from '../entities/playersl';
 import {startMatch} from '../store/matches/maches.actions';
 import {SubscriptionHelper} from '../utils/subscription-helper';
+import {selectPlayersList} from '../store/players/players.selectors';
+import {GlobalStore} from '../store/global';
 
 export class SelectablePlayer {
   constructor(public player: PlayerEO, public selected: boolean = false) {
@@ -20,7 +22,7 @@ export class PlayersSelectionComponent extends SubscriptionHelper implements OnI
   public enoughToStart = false;
   public playerCount = 0;
 
-  constructor(private store: Store<{ count: number }>) {
+  constructor(private store: Store<GlobalStore>) {
     super();
   }
 

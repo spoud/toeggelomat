@@ -5,6 +5,8 @@ import {SubscriptionHelper} from '../utils/subscription-helper';
 import {MatchEO, MatchWithPlayers} from '../entities/match';
 import {PlayerEO} from '../entities/playersl';
 import {combineLatest} from 'rxjs';
+import {selectCurrentMatch, selectPlayersList} from '../store/players/players.selectors';
+import {GlobalStore} from '../store/global';
 
 @Component({
   selector: 'app-current-match',
@@ -20,18 +22,19 @@ export class CurrentMatchComponent extends SubscriptionHelper implements OnInit,
   public blueScore = -1;
   public redScore = -1;
 
-  @ViewChild('confirm', {static: false})
+  @ViewChild('confirm')
   private confirmDialog: ScoreConfirmationModalComponent;
 
-  constructor(private store: Store<{ count: number }>) {
+  constructor(private store: Store<GlobalStore>) {
     super();
   }
 
   ngOnInit() {
     this.addSubscription(
-      combineLatest(
+      combineLatest([
         this.store.pipe(select('matches'), select('currentMatch')),
-        this.store.pipe(select('players'), select('list')))
+        this.store.pipe(select('players'), select('list'))
+      ])
         .subscribe((arr: [MatchEO, PlayerEO[]]) =>
           this.currentMatch = MatchWithPlayers.createMatchWithPlayer(arr[0], arr[1])
         ));
