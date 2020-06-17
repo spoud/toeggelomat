@@ -8,12 +8,12 @@
   <div class="modal-body">
     <form>
       <div *ngIf="redWon" class="form-group red-team-color">
-        {{match.playerRedDefense.nickName}} and {{match.playerRedOffense.nickName}} won this round {{match.matchWithPlayers.redScore}} -
-        {{match.matchWithPlayers.blueScore}}
+        {{match.playerRedDefense.nickName}} and {{match.playerRedOffense.nickName}} won this round {{match.match.redScore}} -
+        {{match.match.blueScore}}
       </div>
       <div *ngIf="!redWon" class="form-group blue-team-color">
-        {{match.playerBlueDefense.nickName}} and {{match.playerBlueOffense.nickName}} won this round {{match.matchWithPlayers.redScore}} -
-        {{match.matchWithPlayers.blueScore}}
+        {{match.playerBlueDefense.nickName}} and {{match.playerBlueOffense.nickName}} won this round {{match.match.redScore}} -
+        {{match.match.blueScore}}
       </div>
     </form>
   </div>

@@ -40,7 +40,6 @@ export class MatchWithPlayers {
 
   public playerBlueOffense: PlayerEO;
 
-
   static createMatchWithPlayer(match: MatchEO, players: PlayerEO[]): MatchWithPlayers {
     const matchWithPlayer: MatchWithPlayers = new MatchWithPlayers(match);
     matchWithPlayer.playerBlueDefense = players.find(p => p.uuid === match.playerBlueDefenseUuid);

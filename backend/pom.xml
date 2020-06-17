@@ -92,10 +92,12 @@
     </dependency>
 
     <dependency>
+      <!-- Needed for native-->
       <groupId>jakarta.security.jacc</groupId>
       <artifactId>jakarta.security.jacc-api</artifactId>
     </dependency>
     <dependency>
+      <!-- Needed for native-->
       <groupId>net.java.dev.jna</groupId>
       <artifactId>jna</artifactId>
     </dependency>
