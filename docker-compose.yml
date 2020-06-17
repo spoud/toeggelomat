@@ -24,11 +24,11 @@ services:
 
   backend:
     container_name: toeggelomat_backend
-    image: spoud/toeggelomat-backend
+    image: spoud/toeggelomat-backend:native
     build: 
       context: backend/
-      dockerfile: src/main/docker/Dockerfile.jvm
-      # dockerfile: src/main/docker/Dockerfile.native
+      # dockerfile: src/main/docker/Dockerfile.jvm
+      dockerfile: src/main/docker/Dockerfile.native
     ports:
       - 8080
     labels:

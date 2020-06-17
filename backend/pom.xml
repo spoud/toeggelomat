@@ -12,14 +12,17 @@
     <quarkus.platform.version>1.5.0.Final</quarkus.platform.version>
     <quarkus.platform.artifact-id>quarkus-universe-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
-    <surefire-plugin.version>2.22.0</surefire-plugin.version>
-    <maven.compiler.target>1.8</maven.compiler.target>
-    <maven.compiler.source>1.8</maven.compiler.source>
+    <surefire-plugin.version>2.22.1</surefire-plugin.version>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
     <querydsl.version>4.2.1</querydsl.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <maven.compiler.parameters>true</maven.compiler.parameters>
     <compiler-plugin.version>3.8.1</compiler-plugin.version>
+    <quarkus.native.additional-build-args>--report-unsupported-elements-at-runtime
+    </quarkus.native.additional-build-args>
+    <!--    <quarkus.native.additional-build-args>-H:+ReportUnsupportedElementsAtRuntime</quarkus.native.additional-build-args>-->
   </properties>
   <dependencyManagement>
     <dependencies>
@@ -37,10 +40,6 @@
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-resteasy</artifactId>
     </dependency>
-    <!--    <dependency>-->
-    <!--      <groupId>io.quarkus</groupId>-->
-    <!--      <artifactId>quarkus-resteasy-jsonb</artifactId>-->
-    <!--    </dependency>-->
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-resteasy-jackson</artifactId>
@@ -50,11 +49,6 @@
       <artifactId>quarkus-junit5</artifactId>
       <scope>test</scope>
     </dependency>
-    <!--    <dependency>-->
-    <!--      <groupId>io.rest-assured</groupId>-->
-    <!--      <artifactId>rest-assured</artifactId>-->
-    <!--      <scope>test</scope>-->
-    <!--    </dependency>-->
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-hibernate-orm</artifactId>
@@ -63,10 +57,6 @@
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-kafka-client</artifactId>
     </dependency>
-    <!--    <dependency>-->
-    <!--      <groupId>io.quarkus</groupId>-->
-    <!--      <artifactId>quarkus-undertow-websockets</artifactId>-->
-    <!--    </dependency>-->
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-jdbc-postgresql</artifactId>
@@ -79,19 +69,6 @@
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-smallrye-reactive-messaging-kafka</artifactId>
     </dependency>
-    <!--    <dependency>-->
-    <!--      <groupId>com.fasterxml.jackson.datatype</groupId>-->
-    <!--      <artifactId>jackson-datatype-jdk8</artifactId>-->
-    <!--    </dependency>-->
-    <!--    <dependency>-->
-    <!--      <groupId>com.fasterxml.jackson.datatype</groupId>-->
-    <!--      <artifactId>jackson-datatype-jsr310</artifactId>-->
-    <!--    </dependency>-->
-    <!--    <dependency>-->
-    <!--      <groupId>org.apache.kafka</groupId>-->
-    <!--      <artifactId>connect-json</artifactId>-->
-    <!--      <version>2.3.1</version>-->
-    <!--    </dependency>-->
     <dependency>
       <groupId>com.querydsl</groupId>
       <artifactId>querydsl-apt</artifactId>
@@ -104,11 +81,6 @@
       <version>${querydsl.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.querydsl</groupId>
-      <artifactId>querydsl-sql-spring</artifactId>
-      <version>${querydsl.version}</version>
-    </dependency>
-    <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <version>1.18.10</version>
@@ -118,10 +90,15 @@
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-smallrye-health</artifactId>
     </dependency>
-    <!--    <dependency>-->
-    <!--      <groupId>io.quarkus</groupId>-->
-    <!--      <artifactId>quarkus-smallrye-metrics</artifactId>-->
-    <!--    </dependency>-->
+
+    <dependency>
+      <groupId>jakarta.security.jacc</groupId>
+      <artifactId>jakarta.security.jacc-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>net.java.dev.jna</groupId>
+      <artifactId>jna</artifactId>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
@@ -138,20 +115,16 @@
         </executions>
       </plugin>
       <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${compiler-plugin.version}</version>
+      </plugin>
+      <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${surefire-plugin.version}</version>
         <configuration>
-          <systemProperties>
+          <systemPropertyVariables>
             <java.util.logging.manager>org.jboss.logmanager.LogManager</java.util.logging.manager>
-          </systemProperties>
-        </configuration>
-      </plugin>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>${compiler-plugin.version}</version>
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
+          </systemPropertyVariables>
         </configuration>
       </plugin>
       <plugin>
@@ -193,7 +166,6 @@
                 </goals>
                 <configuration>
                   <systemPropertyVariables>
-                    <reportErrorsAtRuntime>true</reportErrorsAtRuntime>
                     <native.image.path>
                       ${project.build.directory}/${project.build.finalName}-runner
                     </native.image.path>

@@ -1,22 +1,11 @@
-####
-# This Dockerfile is used in order to build a container that runs the Quarkus application in native (no JVM) mode
-#
-# Before building the docker image run:
-#
-# mvn package -Pnative -Dnative-image.docker-build=true
-#
-# Then, build the image with:
-#
-# docker build -f src/main/docker/Dockerfile.native -t quarkus/toeggelomat .
-#
-# Then run the container using:
-#
-# docker run -i --rm -p 8080:8080 quarkus/toeggelomat
-#
-###
+FROM quay.io/quarkus/ubi-quarkus-native-image:19.3.1-java11 as nativebuilder
+RUN mkdir -p /tmp/ssl \
+  && cp /opt/graalvm/lib/security/cacerts /tmp/ssl/
+
 FROM registry.access.redhat.com/ubi8/ubi-minimal
 WORKDIR /work/
 COPY target/*-runner /work/application
+COPY --from=nativebuilder /tmp/ssl/ /work/
 RUN chmod 775 /work
 EXPOSE 8080
-CMD ["./application", "-Dquarkus.http.host=0.0.0.0"]
+CMD ["./application", "-Dquarkus.http.host=0.0.0.0", "-Djavax.net.ssl.trustStore=/work/cacerts"]
