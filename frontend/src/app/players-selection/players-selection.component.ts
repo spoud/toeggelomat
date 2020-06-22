@@ -30,6 +30,7 @@ export class PlayersSelectionComponent extends SubscriptionHelper implements OnI
     this.addSubscription(this.store.pipe(select('players'), select('list'))
       .subscribe((list: PlayerEO[]) => {
         this.players = list
+          .slice()
           .sort((l, r) => l.nickName.localeCompare(r.nickName))
           .map(p => new SelectablePlayer(p));
         this.updateConditions();

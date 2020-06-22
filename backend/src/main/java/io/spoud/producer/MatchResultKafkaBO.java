@@ -3,6 +3,7 @@ package io.spoud.producer;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import io.spoud.entities.PlayerEO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@RegisterForReflection
 public class MatchResultKafkaBO {
 
   private UUID matchUuid;

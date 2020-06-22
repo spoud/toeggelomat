@@ -4,8 +4,8 @@ services:
     container_name: toeggelomat_traefik
     image: traefik:v2.0
     ports:
-      - 80:80
-      - 8080:8080
+      - 81:80
+      - 8181:8080
     volumes:
       - ./traefik/traefik.yml:/etc/traefik/traefik.yml
       - /var/run/docker.sock:/var/run/docker.sock
@@ -16,7 +16,7 @@ services:
     image: spoud/toeggelomat-frontend
     build: frontend/
     ports:
-      - 81:80
+      - 82:80
     labels:
       - traefik.http.routers.toeggelomat_frontend.rule=PathPrefix(`/`)
       - traefik.http.services.toeggelomat_frontend-service.loadbalancer.server.port=80
@@ -24,11 +24,11 @@ services:
 
   backend:
     container_name: toeggelomat_backend
-    image: spoud/toeggelomat-backend
+    image: spoud/toeggelomat-backend:native
     build: 
       context: backend/
-      dockerfile: src/main/docker/Dockerfile.jvm
-      # dockerfile: src/main/docker/Dockerfile.native
+      # dockerfile: src/main/docker/Dockerfile.jvm
+      dockerfile: src/main/docker/Dockerfile.native
     ports:
       - 8080
     labels:
@@ -43,7 +43,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     ports:
-      - 5432:5432
+      - 5432
 
   kafka:
     container_name: toeggelomat_kafka

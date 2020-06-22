@@ -46,9 +46,10 @@ export class CurrentMatchComponent extends SubscriptionHelper implements OnInit,
 
   public saveScore(): void {
     if (this.currentMatch) {
-      const match = this.currentMatch.match;
+      const match = Object.assign({}, this.currentMatch.match);
       match.blueScore = this.blueScore;
       match.redScore = this.redScore;
+      this.currentMatch.match = match;
       this.confirmDialog.confirmMatchResult(this.currentMatch);
     }
   }

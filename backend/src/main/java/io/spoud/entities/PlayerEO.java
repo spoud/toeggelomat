@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import org.hibernate.annotations.GenericGenerator;
 
 import lombok.AllArgsConstructor;
@@ -22,6 +23,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "t_player")
+@RegisterForReflection
 public class PlayerEO implements Cloneable {
   @Id
   @GeneratedValue(generator = "uuid")
