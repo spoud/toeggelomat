@@ -59,6 +59,12 @@ public class MatchService {
             .blueScore(match.getBlueScore())
             .points(match.getPoints())
             .matchTime(match.getMatchTime())
+            .blueDefense(
+                playerRepository.findByUuid(match.getPlayerBlueDefenseUuid()).orElseThrow())
+            .blueOffense(
+                playerRepository.findByUuid(match.getPlayerBlueOffenseUuid()).orElseThrow())
+            .redDefense(playerRepository.findByUuid(match.getPlayerRedDefenseUuid()).orElseThrow())
+            .redOffense(playerRepository.findByUuid(match.getPlayerRedOffenseUuid()).orElseThrow())
             .build());
     eventService.scoreChangedEvent();
     return match;

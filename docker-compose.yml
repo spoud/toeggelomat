@@ -54,6 +54,29 @@ services:
     environment:
       ADVERTISED_HOST: kafka
 
+  ksqldb-server:
+    image: confluentinc/ksqldb-server:0.10.0
+    hostname: ksqldb-server
+    container_name: ksqldb-server
+    depends_on: 
+      - kafka
+    ports:
+      - "8088:8088"
+    environment:
+      KSQL_LISTENERS: http://0.0.0.0:8088
+      KSQL_BOOTSTRAP_SERVERS: kafka:9092
+      KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: "true"
+      KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: "true"
+
+  ksqldb-cli:
+    image: confluentinc/ksqldb-cli:0.10.0
+    container_name: ksqldb-cli
+    depends_on:
+      - ksqldb-server
+    entrypoint: /bin/sh
+    tty: true
+      
+
 #  kafka_exporter:
 #    image: braedon/prometheus-kafka-consumer-group-exporter:0.5.2
 #    command: -b kafka

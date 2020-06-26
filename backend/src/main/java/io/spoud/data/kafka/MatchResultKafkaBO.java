@@ -1,6 +1,7 @@
 package io.spoud.data.kafka;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
+import io.spoud.data.entities.PlayerEO;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -21,8 +22,8 @@ public class MatchResultKafkaBO {
   private Integer blueScore;
   private Integer points;
 
-  private UUID blueDefense;
-  private UUID blueOffense;
-  private UUID redDefense;
-  private UUID redOffense;
+  private PlayerEO blueDefense;
+  private PlayerEO blueOffense;
+  private PlayerEO redDefense;
+  private PlayerEO redOffense;
 }
