@@ -1,6 +1,7 @@
 package io.spoud.services;
 
 import io.spoud.data.entities.MatchEO;
+import io.spoud.data.entities.PlayerEO;
 import io.spoud.data.kafka.MatchResultKafkaBO;
 import io.spoud.producer.ResultProducer;
 import io.spoud.repositories.MatchRepository;
@@ -9,12 +10,15 @@ import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 
 @ApplicationScoped
 @Transactional
+@Slf4j
 public class MatchService {
 
   @Inject private PlayerRepository playerRepository;
@@ -42,15 +46,10 @@ public class MatchService {
   }
 
   public MatchEO saveMatchResults(MatchEO match) {
-    MatchPointsService.PlayersHelper playerBefore =
-        new MatchPointsService.PlayersHelper(playerRepository, match);
 
     match.setMatchTime(ZonedDateTime.now());
     match = matchPointsService.computePointsAndUpdatePlayers(match);
     matchRepository.addMatch(match);
-
-    MatchPointsService.PlayersHelper playerAfter =
-        new MatchPointsService.PlayersHelper(playerRepository, match);
 
     resultProducer.add(
         MatchResultKafkaBO.builder()
@@ -59,8 +58,26 @@ public class MatchService {
             .blueScore(match.getBlueScore())
             .points(match.getPoints())
             .matchTime(match.getMatchTime())
+            .blueDefense(match.getPlayerBlueDefenseUuid())
+            .blueOffense(match.getPlayerBlueOffenseUuid())
+            .redDefense(match.getPlayerRedDefenseUuid())
+            .redOffense(match.getPlayerRedOffenseUuid())
             .build());
     eventService.scoreChangedEvent();
+    return match;
+  }
+
+  public MatchEO addSome() {
+    var players =
+        playerRepository.getAllPlayers().stream()
+            .map(PlayerEO::getUuid)
+            .collect(Collectors.toList());
+
+    var match = this.randomizeMatch(players);
+    match.setBlueScore(7);
+    match.setRedScore(2);
+    saveMatchResults(match);
+
     return match;
   }
 
