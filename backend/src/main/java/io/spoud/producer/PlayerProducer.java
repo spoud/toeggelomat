@@ -21,7 +21,7 @@ public class PlayerProducer {
   private final BlockingQueue<PlayerBO> playerQueue = new LinkedBlockingQueue<>();
 
   public void add(PlayerBO player) {
-    log.info("Put match on the producer queue {}", player);
+    log.info("Put player on the producer queue {}", player);
     playerQueue.add(player);
   }
 
