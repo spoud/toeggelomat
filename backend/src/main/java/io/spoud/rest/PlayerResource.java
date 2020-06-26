@@ -1,6 +1,6 @@
 package io.spoud.rest;
 
-import io.spoud.entities.PlayerEO;
+import io.spoud.data.entities.PlayerEO;
 import io.spoud.repositories.PlayerRepository;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;

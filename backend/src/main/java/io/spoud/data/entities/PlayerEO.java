@@ -1,4 +1,4 @@
-package io.spoud.entities;
+package io.spoud.data.entities;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import java.time.ZonedDateTime;

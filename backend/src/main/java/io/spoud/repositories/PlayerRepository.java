@@ -1,8 +1,8 @@
 package io.spoud.repositories;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import io.spoud.entities.PlayerEO;
-import io.spoud.entities.QPlayerEO;
+import io.spoud.data.entities.PlayerEO;
+import io.spoud.data.entities.QPlayerEO;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

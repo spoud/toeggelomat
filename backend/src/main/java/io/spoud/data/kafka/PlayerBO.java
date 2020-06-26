@@ -1,4 +1,4 @@
-package io.spoud.producer;
+package io.spoud.data.kafka;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import java.util.UUID;

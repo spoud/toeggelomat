@@ -1,6 +1,6 @@
 package io.spoud.services;
 
-import io.spoud.entities.MatchEO;
+import io.spoud.data.entities.MatchEO;
 import javax.enterprise.context.ApplicationScoped;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
