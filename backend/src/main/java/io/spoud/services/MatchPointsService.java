@@ -1,7 +1,7 @@
 package io.spoud.services;
 
-import io.spoud.entities.MatchEO;
-import io.spoud.entities.PlayerEO;
+import io.spoud.data.entities.MatchEO;
+import io.spoud.data.entities.PlayerEO;
 import io.spoud.repositories.PlayerRepository;
 import java.time.ZonedDateTime;
 import java.util.Arrays;

@@ -1,6 +1,6 @@
 package io.spoud.rest;
 
-import io.spoud.entities.MatchEO;
+import io.spoud.data.entities.MatchEO;
 import io.spoud.services.MatchService;
 import java.util.List;
 import java.util.UUID;

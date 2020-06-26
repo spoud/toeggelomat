@@ -1,8 +1,8 @@
 package io.spoud.repositories;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import io.spoud.entities.MatchEO;
-import io.spoud.entities.QMatchEO;
+import io.spoud.data.entities.MatchEO;
+import io.spoud.data.entities.QMatchEO;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

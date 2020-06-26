@@ -1,7 +1,6 @@
-package io.spoud.producer;
+package io.spoud.data.kafka;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
-import io.spoud.entities.PlayerEO;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 import lombok.AllArgsConstructor;

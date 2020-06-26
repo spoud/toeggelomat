@@ -1,7 +1,7 @@
 package io.spoud.services;
 
-import io.spoud.entities.MatchEO;
-import io.spoud.producer.MatchResultKafkaBO;
+import io.spoud.data.entities.MatchEO;
+import io.spoud.data.kafka.MatchResultKafkaBO;
 import io.spoud.producer.ResultProducer;
 import io.spoud.repositories.MatchRepository;
 import io.spoud.repositories.PlayerRepository;
