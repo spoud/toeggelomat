@@ -22,13 +22,8 @@ public class MatchResultKafkaBO {
   private Integer blueScore;
   private Integer points;
 
-  private PlayerEO blueDeffenseBefore;
-  private PlayerEO blueOffenseBefore;
-  private PlayerEO redDeffenseBefore;
-  private PlayerEO redOffenseBefore;
-
-  private PlayerEO blueDeffenseAfter;
-  private PlayerEO blueOffenseAfter;
-  private PlayerEO redDeffenseAfter;
-  private PlayerEO redOffenseAfter;
+  private UUID blueDefense;
+  private UUID blueOffense;
+  private UUID redDefense;
+  private UUID redOffense;
 }

@@ -45,31 +45,21 @@ public class MatchService {
     MatchPointsService.PlayersHelper playerBefore =
         new MatchPointsService.PlayersHelper(playerRepository, match);
 
-    MatchResultKafkaBO.MatchResultKafkaBOBuilder matchResultKafkaBOBuilder =
-        MatchResultKafkaBO.builder()
-            .blueDeffenseBefore(playerBefore.getBlueDeffense().clone())
-            .blueOffenseBefore(playerBefore.getBlueOffense().clone())
-            .redDeffenseBefore(playerBefore.getRedDeffense().clone())
-            .redOffenseBefore(playerBefore.getRedOffense().clone());
-
     match.setMatchTime(ZonedDateTime.now());
     match = matchPointsService.computePointsAndUpdatePlayers(match);
     matchRepository.addMatch(match);
 
     MatchPointsService.PlayersHelper playerAfter =
         new MatchPointsService.PlayersHelper(playerRepository, match);
-    matchResultKafkaBOBuilder
-        .matchUuid(match.getUuid())
-        .redScore(match.getRedScore())
-        .blueScore(match.getBlueScore())
-        .points(match.getPoints())
-        .matchTime(match.getMatchTime())
-        .blueDeffenseAfter(playerAfter.getBlueDeffense())
-        .blueOffenseAfter(playerAfter.getBlueOffense())
-        .redDeffenseAfter(playerAfter.getRedDeffense())
-        .redOffenseAfter(playerAfter.getRedOffense());
 
-    resultProducer.add(matchResultKafkaBOBuilder.build());
+    resultProducer.add(
+        MatchResultKafkaBO.builder()
+            .matchUuid(match.getUuid())
+            .redScore(match.getRedScore())
+            .blueScore(match.getBlueScore())
+            .points(match.getPoints())
+            .matchTime(match.getMatchTime())
+            .build());
     eventService.scoreChangedEvent();
     return match;
   }
