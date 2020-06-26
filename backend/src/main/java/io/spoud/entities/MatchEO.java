@@ -1,22 +1,19 @@
 package io.spoud.entities;
 
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import java.time.ZonedDateTime;
 import java.util.UUID;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import io.quarkus.runtime.annotations.RegisterForReflection;
-import org.hibernate.annotations.GenericGenerator;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 @Data
 @Builder
@@ -57,11 +54,7 @@ public class MatchEO {
   @Column(name = "player_blue_offense_uuid", nullable = false)
   private UUID playerBlueOffenseUuid;
 
-  @Transient
-  private Integer potentialBluePoints;
+  @Transient private Integer potentialBluePoints;
 
-  @Transient
-  private Integer potentialRedPoints;
-
-
+  @Transient private Integer potentialRedPoints;
 }
