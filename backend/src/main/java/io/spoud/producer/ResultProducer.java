@@ -17,7 +17,7 @@ public class ResultProducer {
 
   @Inject private ObjectMapper mapper;
 
-  private BlockingQueue<MatchResultKafkaBO> matchesQueue = new LinkedBlockingQueue<>();
+  private final BlockingQueue<MatchResultKafkaBO> matchesQueue = new LinkedBlockingQueue<>();
 
   public void add(MatchResultKafkaBO match) {
     log.info("Put match on the producer queue {}", match);
