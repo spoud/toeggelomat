@@ -1,10 +1,9 @@
 package io.spoud.producer;
 
-import java.time.ZonedDateTime;
-import java.util.UUID;
-
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import io.spoud.entities.PlayerEO;
+import java.time.ZonedDateTime;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

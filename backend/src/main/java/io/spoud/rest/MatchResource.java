@@ -1,8 +1,9 @@
 package io.spoud.rest;
 
+import io.spoud.entities.MatchEO;
+import io.spoud.services.MatchService;
 import java.util.List;
 import java.util.UUID;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -11,14 +12,10 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import io.spoud.entities.MatchEO;
-import io.spoud.services.MatchService;
-
 @ApplicationScoped
 @Path("/api/v1/matches")
 public class MatchResource {
-  @Inject
-  private MatchService matchService;
+  @Inject private MatchService matchService;
 
   @POST
   @Path("set-score")

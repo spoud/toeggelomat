@@ -1,17 +1,15 @@
 package io.spoud.services;
 
 import io.spoud.entities.MatchEO;
+import javax.enterprise.context.ApplicationScoped;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.enterprise.context.ApplicationScoped;
-
 @ApplicationScoped
 public class EventService {
   private static final Logger LOG = LoggerFactory.getLogger(EventService.class);
-
 
   private Publisher<MatchEO> matchPublisher;
   private Subscriber<? super MatchEO> matchSubscriber;
@@ -20,12 +18,14 @@ public class EventService {
   private Subscriber<? super String> scoreChangeSubscriber;
 
   public EventService() {
-    this.matchPublisher = subscriber -> {
-      this.matchSubscriber = subscriber;
-    };
-    this.scoreChangePublisher = subscriber -> {
-      this.scoreChangeSubscriber = subscriber;
-    };
+    this.matchPublisher =
+        subscriber -> {
+          this.matchSubscriber = subscriber;
+        };
+    this.scoreChangePublisher =
+        subscriber -> {
+          this.scoreChangeSubscriber = subscriber;
+        };
   }
 
   public void newMatchEvent(MatchEO match) {

@@ -1,21 +1,18 @@
 package io.spoud.entities;
 
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import java.time.ZonedDateTime;
 import java.util.UUID;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
-import io.quarkus.runtime.annotations.RegisterForReflection;
-import org.hibernate.annotations.GenericGenerator;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.GenericGenerator;
 
 @Data
 @Builder
@@ -48,12 +45,12 @@ public class PlayerEO implements Cloneable {
 
   public PlayerEO clone() {
     return PlayerEO.builder()
-      .uuid(uuid)
-      .nickName(nickName)
-      .email(email)
-      .defensePoints(defensePoints)
-      .offensePoints(offensePoints)
-      .lastMatchTime(lastMatchTime)
-      .build();
+        .uuid(uuid)
+        .nickName(nickName)
+        .email(email)
+        .defensePoints(defensePoints)
+        .offensePoints(offensePoints)
+        .lastMatchTime(lastMatchTime)
+        .build();
   }
 }
