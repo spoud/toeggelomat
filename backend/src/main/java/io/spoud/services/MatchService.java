@@ -2,7 +2,7 @@ package io.spoud.services;
 
 import io.spoud.data.entities.MatchEO;
 import io.spoud.data.entities.PlayerEO;
-import io.spoud.data.kafka.MatchResultKafkaBO;
+import io.spoud.data.kafka.MatchResultBO;
 import io.spoud.producer.ResultProducer;
 import io.spoud.repositories.MatchRepository;
 import io.spoud.repositories.PlayerRepository;
@@ -48,22 +48,18 @@ public class MatchService {
   public MatchEO saveMatchResults(MatchEO match) {
 
     match.setMatchTime(ZonedDateTime.now());
-    match = matchPointsService.computePointsAndUpdatePlayers(match);
-    matchRepository.addMatch(match);
+    //matchRepository.addMatch(match);
 
     resultProducer.add(
-        MatchResultKafkaBO.builder()
+        MatchResultBO.builder()
             .matchUuid(match.getUuid())
             .redScore(match.getRedScore())
             .blueScore(match.getBlueScore())
-            .points(match.getPoints())
             .matchTime(match.getMatchTime())
-            .blueDefense(
-                playerRepository.findByUuid(match.getPlayerBlueDefenseUuid()).orElseThrow())
-            .blueOffense(
-                playerRepository.findByUuid(match.getPlayerBlueOffenseUuid()).orElseThrow())
-            .redDefense(playerRepository.findByUuid(match.getPlayerRedDefenseUuid()).orElseThrow())
-            .redOffense(playerRepository.findByUuid(match.getPlayerRedOffenseUuid()).orElseThrow())
+            .blueDefense(match.getPlayerBlueDefenseUuid())
+            .blueOffense(match.getPlayerBlueOffenseUuid())
+            .redDefense(match.getPlayerRedDefenseUuid())
+            .redOffense(match.getPlayerRedOffenseUuid())
             .build());
     eventService.scoreChangedEvent();
     return match;

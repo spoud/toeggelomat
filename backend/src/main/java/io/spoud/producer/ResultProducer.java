@@ -2,7 +2,7 @@ package io.spoud.producer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.spoud.data.kafka.MatchResultKafkaBO;
+import io.spoud.data.kafka.MatchResultBO;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
@@ -18,9 +18,9 @@ public class ResultProducer {
 
   @Inject private ObjectMapper mapper;
 
-  private final BlockingQueue<MatchResultKafkaBO> matchesQueue = new LinkedBlockingQueue<>();
+  private final BlockingQueue<MatchResultBO> matchesQueue = new LinkedBlockingQueue<>();
 
-  public void add(MatchResultKafkaBO match) {
+  public void add(MatchResultBO match) {
     log.info("Put match on the producer queue {}", match);
     matchesQueue.add(match);
   }
@@ -31,7 +31,7 @@ public class ResultProducer {
     return CompletableFuture.supplyAsync(
         () -> {
           try {
-            MatchResultKafkaBO match = matchesQueue.take();
+            MatchResultBO match = matchesQueue.take();
             log.info("Sending message to kafka with the message: {} ", match);
             return mapper.writeValueAsString(match);
           } catch (InterruptedException | JsonProcessingException e) {

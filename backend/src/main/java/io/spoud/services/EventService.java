@@ -19,13 +19,9 @@ public class EventService {
 
   public EventService() {
     this.matchPublisher =
-        subscriber -> {
-          this.matchSubscriber = subscriber;
-        };
+        subscriber -> this.matchSubscriber = subscriber;
     this.scoreChangePublisher =
-        subscriber -> {
-          this.scoreChangeSubscriber = subscriber;
-        };
+        subscriber -> this.scoreChangeSubscriber = subscriber;
   }
 
   public void newMatchEvent(MatchEO match) {
