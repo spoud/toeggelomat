@@ -10,7 +10,6 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.common.InvalidRecordException;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.eclipse.microprofile.reactive.messaging.Outgoing;
 
@@ -31,7 +30,8 @@ public class PointsProcessor {
       return mapper.writeValueAsString(
           matchPointsService.computePoints(mapper.readValue(result, MatchResultBO.class)));
     } catch (JsonProcessingException e) {
-      throw new InvalidRecordException(result, e);
+      log.warn("Invalid input: `{}`. resulted in exception: `{}`", result, e);
+      return "";
     }
   }
 }

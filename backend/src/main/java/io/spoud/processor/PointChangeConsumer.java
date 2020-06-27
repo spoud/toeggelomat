@@ -10,11 +10,12 @@ import java.util.UUID;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
-import org.apache.kafka.common.InvalidRecordException;
+import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.eclipse.microprofile.reactive.messaging.Outgoing;
 
 @ApplicationScoped
+@Slf4j
 public class PointChangeConsumer {
   @Inject private ObjectMapper mapper;
 
@@ -37,7 +38,8 @@ public class PointChangeConsumer {
       player.setLastMatchTime(ZonedDateTime.parse(pointChange.get("MATCHTIME").asText()));
       return mapper.writeValueAsString(playerRepository.save(player));
     } catch (JsonProcessingException e) {
-      throw new InvalidRecordException(input, e);
+      log.warn("Invalid input: `{}`. resulted in exception: `{}`", input, e);
+      return "";
     }
   }
 }

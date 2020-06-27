@@ -8,10 +8,11 @@ import io.spoud.repositories.PlayerRepository;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
-import org.apache.kafka.common.InvalidRecordException;
+import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 
 @ApplicationScoped
+@Slf4j
 public class PlayerConsumer {
   @Inject private ObjectMapper mapper;
 
@@ -24,9 +25,9 @@ public class PlayerConsumer {
     try {
       return mapper.writeValueAsString(
           playerRepository.save(mapper.readValue(input, Player.class)));
-
     } catch (JsonProcessingException e) {
-      throw new InvalidRecordException(input, e);
+      log.warn("Invalid input: `{}`. resulted in exception: `{}`", input, e);
+      return "";
     }
   }
 }

@@ -1,19 +1,19 @@
-DROP STREAM IF EXISTS toeggelomat_player;
 DROP STREAM IF EXISTS toeggelomat_scores;
 DROP STREAM IF EXISTS toeggelomat_match_result;
 DROP STREAM IF EXISTS toeggelomat_point_change;
+DROP STREAM IF EXISTS toeggelomat_player;
 DROP STREAM IF EXISTS spoud_employee;
 
 
 CREATE STREAM spoud_employee (
-      uuid VARCHAR KEY,
+      uuid VARCHAR,
       nickName VARCHAR,
       email VARCHAR, 
       slackId VARCHAR)
-WITH (kafka_topic='spoud-employee', value_format='JSON');
+WITH (kafka_topic='spoud-employee', PARTITIONS=1, REPLICAS=1, value_format='JSON');
 
 CREATE STREAM toeggelomat_player (
-      uuid VARCHAR KEY,
+      uuid VARCHAR,
       nickName VARCHAR,
       email VARCHAR, 
       slackId VARCHAR,
@@ -33,7 +33,7 @@ INSERT INTO toeggelomat_player
 
 
 CREATE STREAM toeggelomat_match_result (
-      matchUuid VARCHAR KEY, 
+      matchUuid VARCHAR, 
       matchTime VARCHAR, 
       redScore int, 
       blueScore int, 
@@ -44,7 +44,7 @@ CREATE STREAM toeggelomat_match_result (
 WITH (kafka_topic='toeggelomat-match-result', value_format='JSON');
 
 CREATE STREAM toeggelomat_scores (
-      matchUuid VARCHAR KEY,
+      matchUuid VARCHAR,
       matchTime VARCHAR,
       redScore int, 
       blueScore int, 
