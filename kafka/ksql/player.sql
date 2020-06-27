@@ -68,7 +68,7 @@ CREATE STREAM toeggelomat_point_change
       WITH (KAFKA_TOPIC='toeggelomat-point-change', VALUE_FORMAT='JSON') 
       AS SELECT 
             matchUuid, 
-            points as points_defense, 
+            points + 1 as points_defense,
             0 as points_offense,
             matchTime, 
             winnerDefense->uuid as playerUuid
@@ -79,7 +79,7 @@ INSERT INTO toeggelomat_point_change
       SELECT 
             matchUuid, 
             0 as points_defense, 
-            points as points_offense,
+            points + 1 as points_offense,
             matchTime, 
             winnerOffense->uuid as playerUuid
        FROM toeggelomat_scores;
@@ -88,7 +88,7 @@ INSERT INTO toeggelomat_point_change
 INSERT INTO toeggelomat_point_change
       SELECT 
             matchUuid, 
-            points * -1 as points_defense, 
+            points * -1 + 1 as points_defense,
             0 as points_offense,
             matchTime, 
             loserDefense->uuid as playerUuid
@@ -99,7 +99,7 @@ INSERT INTO toeggelomat_point_change
       SELECT 
             matchUuid, 
             0 as points_defense, 
-            points * -1 as points_offense,
+            points * -1 + 1 as points_offense,
             matchTime, 
             loserOffense->uuid as playerUuid
        FROM toeggelomat_scores;
