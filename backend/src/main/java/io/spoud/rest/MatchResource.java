@@ -34,4 +34,12 @@ public class MatchResource {
   public List<MatchEO> findAll() {
     return matchService.getLastMatchOfTheSeason();
   }
+
+  @GET
+  @Path("add")
+  @Produces(MediaType.APPLICATION_JSON)
+  public MatchEO addRandom() {
+    return matchService.addSome();
+  }
+
 }
