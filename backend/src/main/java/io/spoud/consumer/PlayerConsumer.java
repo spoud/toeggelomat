@@ -1,36 +1,32 @@
-package io.spoud.processor;
+package io.spoud.consumer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.smallrye.reactive.messaging.annotations.Blocking;
-import io.smallrye.reactive.messaging.annotations.Broadcast;
-import io.spoud.data.kafka.MatchResultBO;
-import io.spoud.services.MatchPointsService;
+import io.spoud.data.kafka.Player;
+import io.spoud.repositories.PlayerRepository;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
-import org.eclipse.microprofile.reactive.messaging.Outgoing;
 
 @ApplicationScoped
 @Slf4j
-public class PointsProcessor {
+public class PlayerConsumer {
   @Inject private ObjectMapper mapper;
 
-  @Inject MatchPointsService matchPointsService;
+  @Inject private PlayerRepository playerRepository;
 
-  @Incoming("match-result-in")
-  @Outgoing("scores-out")
+  @Incoming("player-in")
   @Blocking
   @Transactional
-  @Broadcast
-  public String process(String result) {
+  public String store(String input) {
     try {
       return mapper.writeValueAsString(
-          matchPointsService.computePoints(mapper.readValue(result, MatchResultBO.class)));
+          playerRepository.save(mapper.readValue(input, Player.class)));
     } catch (JsonProcessingException e) {
-      log.warn("Invalid input: `{}`. resulted in exception: `{}`", result, e);
+      log.warn("Invalid input: `{}`. resulted in exception: `{}`", input, e);
       return "";
     }
   }

@@ -1,11 +1,39 @@
-DROP TABLE IF EXISTS toeggelomat_player;
 DROP STREAM IF EXISTS toeggelomat_scores;
 DROP STREAM IF EXISTS toeggelomat_match_result;
 DROP STREAM IF EXISTS toeggelomat_point_change;
+DROP STREAM IF EXISTS toeggelomat_player;
+DROP STREAM IF EXISTS spoud_employee;
+
+
+CREATE STREAM spoud_employee (
+      uuid VARCHAR,
+      nickName VARCHAR,
+      email VARCHAR, 
+      slackId VARCHAR)
+WITH (kafka_topic='spoud-employee', PARTITIONS=1, REPLICAS=1, value_format='JSON');
+
+CREATE STREAM toeggelomat_player (
+      uuid VARCHAR,
+      nickName VARCHAR,
+      email VARCHAR, 
+      slackId VARCHAR,
+      defensePoints INT,
+      offensePoints INT)
+WITH (kafka_topic='toeggelomat-player', value_format='JSON');
+
+INSERT INTO toeggelomat_player
+      SELECT 
+            uuid,
+            nickName, 
+            email,
+            slackId, 
+            500 as defensePoints,
+            500 as offensePoints
+       FROM spoud_employee;
 
 
 CREATE STREAM toeggelomat_match_result (
-      matchUuid VARCHAR KEY, 
+      matchUuid VARCHAR, 
       matchTime VARCHAR, 
       redScore int, 
       blueScore int, 
@@ -15,17 +43,8 @@ CREATE STREAM toeggelomat_match_result (
       redOffense VARCHAR)
 WITH (kafka_topic='toeggelomat-match-result', value_format='JSON');
 
-CREATE TABLE toeggelomat_player (
-      uuid VARCHAR PRIMARY KEY,
-      nickName VARCHAR,
-      email VARCHAR, 
-      slackId VARCHAR,
-      defensePoints INT,
-      offensePoints INT)
-WITH (kafka_topic='toeggelomat-player', value_format='JSON');
-
 CREATE STREAM toeggelomat_scores (
-      matchUuid VARCHAR KEY,
+      matchUuid VARCHAR,
       matchTime VARCHAR,
       redScore int, 
       blueScore int, 

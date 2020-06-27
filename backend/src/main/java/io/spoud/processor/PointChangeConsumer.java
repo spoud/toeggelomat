@@ -10,11 +10,12 @@ import java.util.UUID;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
-import org.apache.kafka.common.InvalidRecordException;
+import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.eclipse.microprofile.reactive.messaging.Outgoing;
 
 @ApplicationScoped
+@Slf4j
 public class PointChangeConsumer {
   @Inject private ObjectMapper mapper;
 
@@ -29,18 +30,16 @@ public class PointChangeConsumer {
     try {
       var pointChange = mapper.readTree(input);
       var player =
-          playerRepository
-              .findByUuid(UUID.fromString(pointChange.get("PLAYERUUID").asText()))
-              .orElseThrow();
+          playerRepository.findByUuid(UUID.fromString(pointChange.get("PLAYERUUID").asText()));
       player.setDefensePoints(
           player.getDefensePoints() + pointChange.get("POINTS_DEFENSE").asInt());
       player.setOffensePoints(
           player.getOffensePoints() + pointChange.get("POINTS_OFFENSE").asInt());
       player.setLastMatchTime(ZonedDateTime.parse(pointChange.get("MATCHTIME").asText()));
-      playerRepository.updatePointsAndLastMatch(player);
-      return mapper.writeValueAsString(player);
+      return mapper.writeValueAsString(playerRepository.save(player));
     } catch (JsonProcessingException e) {
-      throw new InvalidRecordException(input, e);
+      log.warn("Invalid input: `{}`. resulted in exception: `{}`", input, e);
+      return "";
     }
   }
 }

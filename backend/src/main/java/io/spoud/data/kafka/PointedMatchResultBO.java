@@ -1,7 +1,6 @@
 package io.spoud.data.kafka;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
-import io.spoud.data.definition.Match;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -21,10 +20,10 @@ public class PointedMatchResultBO {
   private Integer blueScore;
   private Integer points;
 
-  private PlayerBO winnerDefense;
-  private PlayerBO winnerOffense;
-  private PlayerBO loserDefense;
-  private PlayerBO loserOffense;
+  private Player winnerDefense;
+  private Player winnerOffense;
+  private Player loserDefense;
+  private Player loserOffense;
 
   public static PointedMatchResultBO from(MatchResultBO other) {
     return PointedMatchResultBO.builder()
