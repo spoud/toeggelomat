@@ -2,7 +2,7 @@ package io.spoud.producer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.spoud.data.kafka.PlayerBO;
+import io.spoud.data.kafka.Player;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
@@ -18,9 +18,9 @@ public class PlayerProducer {
 
   @Inject private ObjectMapper mapper;
 
-  private final BlockingQueue<PlayerBO> playerQueue = new LinkedBlockingQueue<>();
+  private final BlockingQueue<Player> playerQueue = new LinkedBlockingQueue<>();
 
-  public void add(PlayerBO player) {
+  public void add(Player player) {
     log.info("Put player on the producer queue {}", player);
     playerQueue.add(player);
   }
@@ -31,7 +31,7 @@ public class PlayerProducer {
     return CompletableFuture.supplyAsync(
         () -> {
           try {
-            PlayerBO player = playerQueue.take();
+            Player player = playerQueue.take();
             log.info("Sending message to kafka with the message: {} ", player);
             return mapper.writeValueAsString(player);
           } catch (InterruptedException | JsonProcessingException e) {

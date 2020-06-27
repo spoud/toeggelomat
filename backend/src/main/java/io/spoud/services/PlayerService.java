@@ -1,7 +1,6 @@
 package io.spoud.services;
 
-import io.spoud.data.entities.PlayerEO;
-import io.spoud.data.kafka.PlayerBO;
+import io.spoud.data.kafka.Player;
 import io.spoud.producer.PlayerProducer;
 import io.spoud.repositories.PlayerRepository;
 import java.util.List;
@@ -19,12 +18,11 @@ public class PlayerService {
 
   @Inject private PlayerProducer playerProducer;
 
-  public void pushPlayer(PlayerEO player) {
-    playerProducer.add(
-        PlayerBO.from(player));
+  public void pushPlayer(Player player) {
+    playerProducer.add(player);
   }
 
-  public List<PlayerEO> getAll(){
+  public List<Player> getAll() {
     return playerRepository.getAllPlayers();
   }
 

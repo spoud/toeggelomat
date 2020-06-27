@@ -27,7 +27,6 @@ public class PointsProcessor {
   @Transactional
   @Broadcast
   public String process(String result) {
-    log.info(result);
     try {
       return mapper.writeValueAsString(
           matchPointsService.computePoints(mapper.readValue(result, MatchResultBO.class)));

@@ -3,7 +3,7 @@ package io.spoud.services;
 import io.spoud.data.definition.Match;
 import io.spoud.data.entities.MatchEO;
 import io.spoud.data.kafka.MatchResultBO;
-import io.spoud.data.kafka.PlayerBO;
+import io.spoud.data.kafka.Player;
 import io.spoud.data.kafka.PointedMatchResultBO;
 import io.spoud.repositories.PlayerRepository;
 import java.util.Arrays;
@@ -77,7 +77,7 @@ public class MatchPointsService {
         LI_POINTS_OFFSET + LI_POINTS_SLOPE * (double) (looserPoints) / (double) (totalPoints));
   }
 
-  private double birthdayMultiplier(PlayerBO player) {
+  private double birthdayMultiplier(Player player) {
     return 1; // add birthdays
   }
 
@@ -92,44 +92,42 @@ public class MatchPointsService {
   @Getter
   public static class PlayersHelper {
     private final Match match;
-    private final PlayerBO blueOffense;
-    private final PlayerBO blueDefense;
-    private final PlayerBO redOffense;
-    private final PlayerBO redDefense;
+    private final Player blueOffense;
+    private final Player blueDefense;
+    private final Player redOffense;
+    private final Player redDefense;
 
     @Setter private boolean wonByBlue;
 
     public PlayersHelper(PlayerRepository playerRepository, Match match) {
       this.match = match;
-      blueDefense =
-          PlayerBO.from(playerRepository.findByUuid(match.getBlueDefense()).orElseThrow());
-      blueOffense =
-          PlayerBO.from(playerRepository.findByUuid(match.getBlueOffense()).orElseThrow());
-      redDefense = PlayerBO.from(playerRepository.findByUuid(match.getRedDefense()).orElseThrow());
-      redOffense = PlayerBO.from(playerRepository.findByUuid(match.getRedOffense()).orElseThrow());
+      blueDefense = playerRepository.findByUuid(match.getBlueDefense());
+      blueOffense = playerRepository.findByUuid(match.getBlueOffense());
+      redDefense = playerRepository.findByUuid(match.getRedDefense());
+      redOffense = playerRepository.findByUuid(match.getRedOffense());
       this.wonByBlue =
           match.getRedScore() == null
               || match.getBlueScore() == null
               || match.getBlueScore() > match.getRedScore();
     }
 
-    public PlayerBO getWinnerDefense() {
+    public Player getWinnerDefense() {
       return wonByBlue ? blueDefense : redOffense;
     }
 
-    public PlayerBO getWinnerOffense() {
+    public Player getWinnerOffense() {
       return wonByBlue ? blueOffense : redOffense;
     }
 
-    public PlayerBO getLooserDefense() {
+    public Player getLooserDefense() {
       return !wonByBlue ? blueDefense : redDefense;
     }
 
-    public PlayerBO getLooserOffense() {
+    public Player getLooserOffense() {
       return !wonByBlue ? blueOffense : redOffense;
     }
 
-    public List<PlayerBO> getAll() {
+    public List<Player> getAll() {
       return Arrays.asList(blueDefense, blueOffense, redDefense, redOffense);
     }
   }

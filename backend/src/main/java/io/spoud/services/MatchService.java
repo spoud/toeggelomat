@@ -1,8 +1,8 @@
 package io.spoud.services;
 
 import io.spoud.data.entities.MatchEO;
-import io.spoud.data.entities.PlayerEO;
 import io.spoud.data.kafka.MatchResultBO;
+import io.spoud.data.kafka.Player;
 import io.spoud.producer.ResultProducer;
 import io.spoud.repositories.MatchRepository;
 import io.spoud.repositories.PlayerRepository;
@@ -56,10 +56,10 @@ public class MatchService {
             .redScore(match.getRedScore())
             .blueScore(match.getBlueScore())
             .matchTime(match.getMatchTime())
-            .blueDefense(match.getPlayerBlueDefenseUuid())
-            .blueOffense(match.getPlayerBlueOffenseUuid())
-            .redDefense(match.getPlayerRedDefenseUuid())
-            .redOffense(match.getPlayerRedOffenseUuid())
+            .blueDefense(match.getBlueDefense())
+            .blueOffense(match.getBlueOffense())
+            .redDefense(match.getRedDefense())
+            .redOffense(match.getRedOffense())
             .build());
     eventService.scoreChangedEvent();
     return match;
@@ -68,7 +68,7 @@ public class MatchService {
   public MatchEO addSome() {
     var players =
         playerRepository.getAllPlayers().stream()
-            .map(PlayerEO::getUuid)
+            .map(Player::getUuid)
             .collect(Collectors.toList());
 
     var match = this.randomizeMatch(players);

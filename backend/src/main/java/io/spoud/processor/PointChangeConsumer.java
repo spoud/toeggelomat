@@ -29,16 +29,13 @@ public class PointChangeConsumer {
     try {
       var pointChange = mapper.readTree(input);
       var player =
-          playerRepository
-              .findByUuid(UUID.fromString(pointChange.get("PLAYERUUID").asText()))
-              .orElseThrow();
+          playerRepository.findByUuid(UUID.fromString(pointChange.get("PLAYERUUID").asText()));
       player.setDefensePoints(
           player.getDefensePoints() + pointChange.get("POINTS_DEFENSE").asInt());
       player.setOffensePoints(
           player.getOffensePoints() + pointChange.get("POINTS_OFFENSE").asInt());
       player.setLastMatchTime(ZonedDateTime.parse(pointChange.get("MATCHTIME").asText()));
-      playerRepository.updatePointsAndLastMatch(player);
-      return mapper.writeValueAsString(player);
+      return mapper.writeValueAsString(playerRepository.save(player));
     } catch (JsonProcessingException e) {
       throw new InvalidRecordException(input, e);
     }
