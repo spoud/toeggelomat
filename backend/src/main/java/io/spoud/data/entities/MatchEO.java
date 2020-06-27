@@ -1,6 +1,7 @@
 package io.spoud.data.entities;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
+import io.spoud.data.definition.Match;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 import javax.persistence.Column;
@@ -22,7 +23,7 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name = "t_match")
 @RegisterForReflection
-public class MatchEO {
+public class MatchEO implements Match {
 
   @Id
   @GeneratedValue(generator = "uuid")
@@ -57,4 +58,29 @@ public class MatchEO {
   @Transient private Integer potentialBluePoints;
 
   @Transient private Integer potentialRedPoints;
+
+  @Override
+  public UUID getMatchUuid() {
+    return uuid;
+  }
+
+  @Override
+  public UUID getBlueDefense() {
+    return getPlayerBlueDefenseUuid();
+  }
+
+  @Override
+  public UUID getBlueOffense() {
+    return getPlayerBlueOffenseUuid();
+  }
+
+  @Override
+  public UUID getRedDefense() {
+    return getPlayerRedDefenseUuid();
+  }
+
+  @Override
+  public UUID getRedOffense() {
+    return getPlayerRedOffenseUuid();
+  }
 }

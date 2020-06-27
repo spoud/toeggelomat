@@ -21,12 +21,7 @@ public class PlayerService {
 
   public void pushPlayer(PlayerEO player) {
     playerProducer.add(
-        PlayerBO.builder()
-            .uuid(player.getUuid())
-            .email(player.getEmail())
-            .nickName(player.getNickName())
-            .slackId(player.getNickName())
-            .build());
+        PlayerBO.from(player));
   }
 
   public List<PlayerEO> getAll(){
