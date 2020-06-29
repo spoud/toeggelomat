@@ -58,6 +58,8 @@ services:
     image: confluentinc/ksqldb-server:0.10.0
     hostname: ksqldb-server
     container_name: ksqldb-server
+    volumes:
+      - ./kafka/ksql:/var/lib/kafka
     depends_on: 
       - kafka
     ports:
@@ -67,6 +69,7 @@ services:
       KSQL_BOOTSTRAP_SERVERS: kafka:9092
       KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: "true"
       KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: "true"
+      KSQL_KSQL_QUERIES_FILE: /var/lib/kafka/player.sql
 
   ksqldb-cli:
     image: confluentinc/ksqldb-cli:0.10.0
