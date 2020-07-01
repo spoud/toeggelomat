@@ -36,15 +36,6 @@ services:
       - traefik.http.services.toeggelomat_backend-service.loadbalancer.server.port=8080
       - traefik.enable=true
 
-  postgres:
-    container_name: toeggelomat_postgres
-    image: postgres
-    environment: 
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-    ports:
-      - 5432:5432
-
   kafka:
     container_name: toeggelomat_kafka
     image: johnnypark/kafka-zookeeper

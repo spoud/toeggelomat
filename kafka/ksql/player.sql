@@ -1,15 +1,13 @@
-CREATE STREAM spoud_employee (
+CREATE STREAM employee (
       uuid VARCHAR,
       nickName VARCHAR,
-      email VARCHAR, 
-      slackId VARCHAR)
-WITH (kafka_topic='spoud-employee', PARTITIONS=1, REPLICAS=1, value_format='JSON');
+      email VARCHAR)
+WITH (kafka_topic='employee', PARTITIONS=1, REPLICAS=1, value_format='JSON');
 
 CREATE STREAM toeggelomat_player (
       uuid VARCHAR,
       nickName VARCHAR,
       email VARCHAR, 
-      slackId VARCHAR,
       defensePoints INT,
       offensePoints INT)
 WITH (kafka_topic='toeggelomat-player', PARTITIONS=1,REPLICAS=1, value_format='JSON');
@@ -19,10 +17,9 @@ INSERT INTO toeggelomat_player
             uuid,
             nickName, 
             email,
-            slackId, 
             500 as defensePoints,
             500 as offensePoints
-       FROM spoud_employee;
+       FROM employee;
 
 
 CREATE STREAM toeggelomat_match_result (
@@ -46,7 +43,6 @@ CREATE STREAM toeggelomat_scores (
         uuid VARCHAR, 
         nickName VARCHAR, 
         email VARCHAR, 
-        slackId VARCHAR,
         defensePoints INT,
         offensePoints INT>,
         
@@ -54,7 +50,6 @@ CREATE STREAM toeggelomat_scores (
         uuid VARCHAR, 
         nickName VARCHAR, 
         email VARCHAR, 
-        slackId VARCHAR,
         defensePoints INT,
         offensePoints INT>,
         
@@ -62,7 +57,6 @@ CREATE STREAM toeggelomat_scores (
         uuid VARCHAR, 
         nickName VARCHAR, 
         email VARCHAR, 
-        slackId VARCHAR,
         defensePoints INT,
         offensePoints INT>,
         
@@ -70,7 +64,6 @@ CREATE STREAM toeggelomat_scores (
         uuid VARCHAR, 
         nickName VARCHAR, 
         email VARCHAR, 
-        slackId VARCHAR,
         defensePoints INT,
         offensePoints INT>)
 WITH (kafka_topic='toeggelomat-scores', value_format='JSON',PARTITIONS=1,REPLICAS=1);
