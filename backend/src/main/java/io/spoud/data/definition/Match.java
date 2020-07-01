@@ -4,7 +4,7 @@ import java.time.ZonedDateTime;
 import java.util.UUID;
 
 public interface Match {
-  UUID getMatchUuid();
+  UUID getUuid();
 
   ZonedDateTime getMatchTime();
 

@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @RegisterForReflection
 public class Player {
+
   private UUID uuid;
   private String nickName;
   private String email;

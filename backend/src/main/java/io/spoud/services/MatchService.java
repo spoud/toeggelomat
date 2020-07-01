@@ -52,7 +52,7 @@ public class MatchService {
 
     resultProducer.add(
         MatchResultBO.builder()
-            .matchUuid(match.getUuid())
+            .uuid(match.getUuid())
             .redScore(match.getRedScore())
             .blueScore(match.getBlueScore())
             .matchTime(match.getMatchTime())

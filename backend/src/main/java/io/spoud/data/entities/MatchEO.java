@@ -38,8 +38,4 @@ public class MatchEO implements Match {
 
   private Integer potentialRedPoints;
 
-  @Override
-  public UUID getMatchUuid() {
-    return uuid;
-  }
 }

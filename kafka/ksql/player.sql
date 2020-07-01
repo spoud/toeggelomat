@@ -1,11 +1,11 @@
 CREATE STREAM employee (
-      uuid VARCHAR,
+      uuid VARCHAR KEY,
       nickName VARCHAR,
       email VARCHAR)
 WITH (kafka_topic='employee', PARTITIONS=1, REPLICAS=1, value_format='JSON');
 
 CREATE STREAM toeggelomat_player (
-      uuid VARCHAR,
+      uuid VARCHAR KEY,
       nickName VARCHAR,
       email VARCHAR, 
       defensePoints INT,
@@ -23,7 +23,7 @@ INSERT INTO toeggelomat_player
 
 
 CREATE STREAM toeggelomat_match_result (
-      matchUuid VARCHAR, 
+      uuid VARCHAR KEY, 
       matchTime VARCHAR, 
       redScore int, 
       blueScore int, 
@@ -34,7 +34,7 @@ CREATE STREAM toeggelomat_match_result (
 WITH (kafka_topic='toeggelomat-match-result', value_format='JSON',PARTITIONS=1,REPLICAS=1);
 
 CREATE STREAM toeggelomat_scores (
-      matchUuid VARCHAR,
+      uuid VARCHAR KEY,
       matchTime VARCHAR,
       redScore int, 
       blueScore int, 
@@ -72,7 +72,7 @@ WITH (kafka_topic='toeggelomat-scores', value_format='JSON',PARTITIONS=1,REPLICA
 CREATE STREAM toeggelomat_point_change 
       WITH (KAFKA_TOPIC='toeggelomat-point-change', VALUE_FORMAT='JSON',PARTITIONS=1,REPLICAS=1)
       AS SELECT 
-            matchUuid, 
+            uuid, 
             points + 1 as points_defense,
             0 as points_offense,
             matchTime, 
@@ -82,7 +82,7 @@ CREATE STREAM toeggelomat_point_change
 
 INSERT INTO toeggelomat_point_change
       SELECT 
-            matchUuid, 
+            uuid, 
             0 as points_defense, 
             points + 1 as points_offense,
             matchTime, 
@@ -92,7 +92,7 @@ INSERT INTO toeggelomat_point_change
 
 INSERT INTO toeggelomat_point_change
       SELECT 
-            matchUuid, 
+            uuid, 
             points * -1 + 1 as points_defense,
             0 as points_offense,
             matchTime, 
@@ -102,7 +102,7 @@ INSERT INTO toeggelomat_point_change
 
 INSERT INTO toeggelomat_point_change
       SELECT 
-            matchUuid, 
+            uuid, 
             0 as points_defense, 
             points * -1 + 1 as points_offense,
             matchTime, 

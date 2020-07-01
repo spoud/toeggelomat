@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @RegisterForReflection
 public class MatchResultBO implements Match {
 
-  private UUID matchUuid;
+  private UUID uuid;
   private ZonedDateTime matchTime;
   private Integer redScore;
   private Integer blueScore;

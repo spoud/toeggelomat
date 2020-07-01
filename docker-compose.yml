@@ -10,7 +10,6 @@ services:
       - ./traefik/traefik.yml:/etc/traefik/traefik.yml
       - /var/run/docker.sock:/var/run/docker.sock
 
-
   frontend:
     container_name: toeggelomat_frontend
     image: spoud/toeggelomat-frontend
@@ -70,9 +69,3 @@ services:
     entrypoint: /bin/sh
     tty: true
       
-
-#  kafka_exporter:
-#    image: braedon/prometheus-kafka-consumer-group-exporter:0.5.2
-#    command: -b kafka
-#    ports:
-#      - 9208:9208

@@ -27,7 +27,7 @@ public class PointedMatchResultBO {
 
   public static PointedMatchResultBO from(MatchResultBO other) {
     return PointedMatchResultBO.builder()
-        .matchUuid(other.getMatchUuid())
+        .matchUuid(other.getUuid())
         .matchTime(other.getMatchTime())
         .redScore(other.getRedScore())
         .blueScore(other.getBlueScore())

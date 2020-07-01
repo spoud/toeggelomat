@@ -25,6 +25,6 @@ public class MatchRepository {
     if (match.getUuid() == null) {
       match.setUuid(UUID.randomUUID());
     }
-    return repo.put(match.getMatchUuid(), match);
+    return repo.put(match.getUuid(), match);
   }
 }
