@@ -1,17 +1,18 @@
 package io.spoud.processor;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.smallrye.reactive.messaging.annotations.Blocking;
 import io.smallrye.reactive.messaging.annotations.Broadcast;
 import io.spoud.data.kafka.MatchResultBO;
+import io.spoud.data.kafka.PointedMatchResultBO;
 import io.spoud.services.MatchPointsService;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 import org.eclipse.microprofile.reactive.messaging.Outgoing;
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+import javax.transaction.Transactional;
 
 @ApplicationScoped
 @Slf4j
@@ -22,16 +23,8 @@ public class PointsProcessor {
 
   @Incoming("match-result-in")
   @Outgoing("scores-out")
-  @Blocking
-  @Transactional
   @Broadcast
-  public String process(String result) {
-    try {
-      return mapper.writeValueAsString(
-          matchPointsService.computePoints(mapper.readValue(result, MatchResultBO.class)));
-    } catch (JsonProcessingException e) {
-      log.warn("Invalid input: `{}`. resulted in exception: `{}`", result, e);
-      return "";
-    }
+  public PointedMatchResultBO process(MatchResultBO result) {
+    return matchPointsService.computePoints(result);
   }
 }

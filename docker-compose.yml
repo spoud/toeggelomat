@@ -47,9 +47,9 @@ services:
   ksqldb-server:
     image: confluentinc/ksqldb-server:0.10.0
     hostname: ksqldb-server
-    container_name: ksqldb-server
+    container_name: toeggelomat_ksqldb-server
     volumes:
-      - ./kafka/ksql:/var/lib/kafka
+      - ./kafka/ksql:/etc/ksql/queries/
     depends_on: 
       - kafka
     ports:
@@ -59,11 +59,11 @@ services:
       KSQL_BOOTSTRAP_SERVERS: kafka:9092
       KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: "true"
       KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: "true"
-      KSQL_KSQL_QUERIES_FILE: /var/lib/kafka/player.sql
+      # KSQL_KSQL_QUERIES_FILE: /etc/ksql/queries/player.sql
 
   ksqldb-cli:
     image: confluentinc/ksqldb-cli:0.10.0
-    container_name: ksqldb-cli
+    container_name: toeggelomat_ksqldb-cli
     depends_on:
       - ksqldb-server
     entrypoint: /bin/sh

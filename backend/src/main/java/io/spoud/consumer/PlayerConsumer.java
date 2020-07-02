@@ -1,33 +1,29 @@
 package io.spoud.consumer;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.smallrye.reactive.messaging.annotations.Blocking;
-import io.spoud.data.kafka.Player;
+import io.smallrye.reactive.messaging.kafka.KafkaRecord;
+import io.spoud.data.kafka.PlayerBO;
 import io.spoud.repositories.PlayerRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.common.protocol.Message;
+import org.eclipse.microprofile.reactive.messaging.Incoming;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.transaction.Transactional;
-import lombok.extern.slf4j.Slf4j;
-import org.eclipse.microprofile.reactive.messaging.Incoming;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 
 @ApplicationScoped
 @Slf4j
 public class PlayerConsumer {
-  @Inject private ObjectMapper mapper;
-
   @Inject private PlayerRepository playerRepository;
 
   @Incoming("player-in")
-  @Blocking
-  @Transactional
-  public String store(String input) {
-    try {
-      return mapper.writeValueAsString(
-          playerRepository.save(mapper.readValue(input, Player.class)));
-    } catch (JsonProcessingException e) {
-      log.warn("Invalid input: `{}`. resulted in exception: `{}`", input, e);
-      return "";
-    }
+  public CompletionStage<KafkaRecord> store(KafkaRecord<String, PlayerBO> record) {
+    record.getPayload().setUuid(UUID.fromString(record.getKey()));
+    log.info("Player update received {}:{}", record.getKey(), record.getPayload());
+    playerRepository.save(record.getPayload());
+    return CompletableFuture.completedFuture(record);
   }
 }

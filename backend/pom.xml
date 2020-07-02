@@ -39,6 +39,7 @@
       <artifactId>quarkus-resteasy</artifactId>
     </dependency>
     <dependency>
+      <!--      Used for rest-->
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-resteasy-jackson</artifactId>
     </dependency>

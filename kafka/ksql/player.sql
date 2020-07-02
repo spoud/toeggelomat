@@ -70,11 +70,13 @@ WITH (kafka_topic='toeggelomat-scores', value_format='JSON',PARTITIONS=1,REPLICA
 
 
 CREATE STREAM toeggelomat_point_change 
-      WITH (KAFKA_TOPIC='toeggelomat-point-change', VALUE_FORMAT='JSON',PARTITIONS=1,REPLICAS=1)
-      AS SELECT 
+      WITH (KAFKA_TOPIC='toeggelomat-point-change', VALUE_FORMAT='JSON',PARTITIONS=1,REPLICAS=1);
+
+INSERT INTO toeggelomat_point_change
+      SELECT 
             uuid, 
-            points + 1 as points_defense,
-            0 as points_offense,
+            points + 1 as pointsDefense,
+            0 as pointsOffense,
             matchTime, 
             winnerDefense->uuid as playerUuid
        FROM toeggelomat_scores;
@@ -83,8 +85,8 @@ CREATE STREAM toeggelomat_point_change
 INSERT INTO toeggelomat_point_change
       SELECT 
             uuid, 
-            0 as points_defense, 
-            points + 1 as points_offense,
+            0 as pointsDefense, 
+            points + 1 as pointsOffense,
             matchTime, 
             winnerOffense->uuid as playerUuid
        FROM toeggelomat_scores;
@@ -93,8 +95,8 @@ INSERT INTO toeggelomat_point_change
 INSERT INTO toeggelomat_point_change
       SELECT 
             uuid, 
-            points * -1 + 1 as points_defense,
-            0 as points_offense,
+            points * -1 + 1 as pointsDefense,
+            0 as pointsOffense,
             matchTime, 
             loserDefense->uuid as playerUuid
        FROM toeggelomat_scores;
@@ -103,8 +105,8 @@ INSERT INTO toeggelomat_point_change
 INSERT INTO toeggelomat_point_change
       SELECT 
             uuid, 
-            0 as points_defense, 
-            points * -1 + 1 as points_offense,
+            0 as pointsDefense, 
+            points * -1 + 1 as pointsOffense,
             matchTime, 
             loserOffense->uuid as playerUuid
        FROM toeggelomat_scores;

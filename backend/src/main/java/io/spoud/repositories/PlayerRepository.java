@@ -1,6 +1,6 @@
 package io.spoud.repositories;
 
-import io.spoud.data.kafka.Player;
+import io.spoud.data.kafka.PlayerBO;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -12,24 +12,24 @@ import javax.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class PlayerRepository {
 
-  public static Map<UUID, Player> repo = new ConcurrentHashMap<>();
+  public static Map<UUID, PlayerBO> repo = new ConcurrentHashMap<>();
 
-  public Player save(Player player) {
+  public PlayerBO save(PlayerBO player) {
     if (player.getUuid() == null) {
       player.setUuid(UUID.randomUUID());
     }
     return repo.put(player.getUuid(), player);
   }
 
-  public List<Player> getAllPlayers() {
+  public List<PlayerBO> getAllPlayers() {
     return new ArrayList<>(repo.values());
   }
 
-  public Player findByUuid(UUID uuid) {
+  public PlayerBO findByUuid(UUID uuid) {
     return repo.get(uuid);
   }
 
-  public List<Player> findByUuids(List<UUID> uuid) {
+  public List<PlayerBO> findByUuids(List<UUID> uuid) {
     return uuid.stream().map(repo::get).collect(Collectors.toList());
   }
 }

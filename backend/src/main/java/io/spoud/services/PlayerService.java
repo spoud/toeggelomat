@@ -1,6 +1,6 @@
 package io.spoud.services;
 
-import io.spoud.data.kafka.Player;
+import io.spoud.data.kafka.PlayerBO;
 import io.spoud.repositories.PlayerRepository;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 public class PlayerService {
   @Inject private PlayerRepository playerRepository;
 
-  public List<Player> getAll() {
+  public List<PlayerBO> getAll() {
     return playerRepository.getAllPlayers();
   }
 }

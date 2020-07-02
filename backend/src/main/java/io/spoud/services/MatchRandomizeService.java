@@ -1,7 +1,7 @@
 package io.spoud.services;
 
 import io.spoud.data.entities.MatchEO;
-import io.spoud.data.kafka.Player;
+import io.spoud.data.kafka.PlayerBO;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -19,14 +19,14 @@ public class MatchRandomizeService {
 
   @Inject private Random random;
 
-  public MatchEO randomizeNewMatch(int retry, Set<Player> players) {
-    ArrayList<Player> listCopy = new ArrayList<>(players);
-    List<Player> activePlayers = new ArrayList<Player>();
+  public MatchEO randomizeNewMatch(int retry, Set<PlayerBO> players) {
+    ArrayList<PlayerBO> listCopy = new ArrayList<>(players);
+    List<PlayerBO> activePlayers = new ArrayList<PlayerBO>();
     IntStream.range(0, 4)
         .forEach(i -> activePlayers.add(listCopy.remove(random.nextInt(listCopy.size()))));
 
     if (retry > 0) {
-      ArrayList<Player> activeSorted = new ArrayList<>(activePlayers);
+      ArrayList<PlayerBO> activeSorted = new ArrayList<>(activePlayers);
       activeSorted.sort(
           Comparator.comparing(player -> player.getOffensePoints() + player.getDefensePoints()));
       UUID lowest = activeSorted.get(0).getUuid();

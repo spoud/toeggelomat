@@ -2,7 +2,7 @@ package io.spoud.services;
 
 import io.spoud.data.entities.MatchEO;
 import io.spoud.data.kafka.MatchResultBO;
-import io.spoud.data.kafka.Player;
+import io.spoud.data.kafka.PlayerBO;
 import io.spoud.producer.ResultProducer;
 import io.spoud.repositories.MatchRepository;
 import io.spoud.repositories.PlayerRepository;
@@ -68,7 +68,7 @@ public class MatchService {
   public MatchEO addSome() {
     var players =
         playerRepository.getAllPlayers().stream()
-            .map(Player::getUuid)
+            .map(PlayerBO::getUuid)
             .collect(Collectors.toList());
 
     var match = this.randomizeMatch(players);

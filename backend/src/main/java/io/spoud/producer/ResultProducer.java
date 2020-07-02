@@ -26,15 +26,15 @@ public class ResultProducer {
   }
 
   @Outgoing("match-result")
-  public CompletionStage<String> send() {
+  public CompletionStage<MatchResultBO> send() {
     log.info("Initializing kafka producer");
     return CompletableFuture.supplyAsync(
         () -> {
           try {
             MatchResultBO match = matchesQueue.take();
             log.info("Sending message to kafka with the message: {} ", match);
-            return mapper.writeValueAsString(match);
-          } catch (InterruptedException | JsonProcessingException e) {
+            return match;
+          } catch (InterruptedException e) {
             log.error("Unable to publish to kafka", e);
             return null;
           }

@@ -1,12 +1,14 @@
 package io.spoud.data.kafka;
 
+import io.quarkus.kafka.client.serialization.ObjectMapperDeserializer;
 import io.quarkus.runtime.annotations.RegisterForReflection;
-import java.time.ZonedDateTime;
-import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.ZonedDateTime;
+import java.util.UUID;
 
 @Data
 @Builder
@@ -20,10 +22,10 @@ public class PointedMatchResultBO {
   private Integer blueScore;
   private Integer points;
 
-  private Player winnerDefense;
-  private Player winnerOffense;
-  private Player loserDefense;
-  private Player loserOffense;
+  private PlayerBO winnerDefense;
+  private PlayerBO winnerOffense;
+  private PlayerBO loserDefense;
+  private PlayerBO loserOffense;
 
   public static PointedMatchResultBO from(MatchResultBO other) {
     return PointedMatchResultBO.builder()
@@ -32,5 +34,11 @@ public class PointedMatchResultBO {
         .redScore(other.getRedScore())
         .blueScore(other.getBlueScore())
         .build();
+  }
+
+  public static class Deserializer extends ObjectMapperDeserializer<PointedMatchResultBO> {
+    public Deserializer(){
+      super(PointedMatchResultBO.class);
+    }
   }
 }

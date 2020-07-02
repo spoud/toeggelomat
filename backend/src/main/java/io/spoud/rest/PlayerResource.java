@@ -1,6 +1,6 @@
 package io.spoud.rest;
 
-import io.spoud.data.kafka.Player;
+import io.spoud.data.kafka.PlayerBO;
 import io.spoud.services.PlayerService;
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
@@ -18,7 +18,7 @@ public class PlayerResource {
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public List<Player> findAll() {
+  public List<PlayerBO> findAll() {
     return playerService.getAll();
   }
 }

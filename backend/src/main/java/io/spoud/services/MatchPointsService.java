@@ -3,7 +3,7 @@ package io.spoud.services;
 import io.spoud.data.definition.Match;
 import io.spoud.data.entities.MatchEO;
 import io.spoud.data.kafka.MatchResultBO;
-import io.spoud.data.kafka.Player;
+import io.spoud.data.kafka.PlayerBO;
 import io.spoud.data.kafka.PointedMatchResultBO;
 import io.spoud.repositories.PlayerRepository;
 import java.util.Arrays;
@@ -77,7 +77,7 @@ public class MatchPointsService {
         LI_POINTS_OFFSET + LI_POINTS_SLOPE * (double) (looserPoints) / (double) (totalPoints));
   }
 
-  private double birthdayMultiplier(Player player) {
+  private double birthdayMultiplier(PlayerBO player) {
     return 1; // add birthdays
   }
 
@@ -92,10 +92,10 @@ public class MatchPointsService {
   @Getter
   public static class PlayersHelper {
     private final Match match;
-    private final Player blueOffense;
-    private final Player blueDefense;
-    private final Player redOffense;
-    private final Player redDefense;
+    private final PlayerBO blueOffense;
+    private final PlayerBO blueDefense;
+    private final PlayerBO redOffense;
+    private final PlayerBO redDefense;
 
     @Setter private boolean wonByBlue;
 
@@ -111,23 +111,23 @@ public class MatchPointsService {
               || match.getBlueScore() > match.getRedScore();
     }
 
-    public Player getWinnerDefense() {
+    public PlayerBO getWinnerDefense() {
       return wonByBlue ? blueDefense : redOffense;
     }
 
-    public Player getWinnerOffense() {
+    public PlayerBO getWinnerOffense() {
       return wonByBlue ? blueOffense : redOffense;
     }
 
-    public Player getLooserDefense() {
+    public PlayerBO getLooserDefense() {
       return !wonByBlue ? blueDefense : redDefense;
     }
 
-    public Player getLooserOffense() {
+    public PlayerBO getLooserOffense() {
       return !wonByBlue ? blueOffense : redOffense;
     }
 
-    public List<Player> getAll() {
+    public List<PlayerBO> getAll() {
       return Arrays.asList(blueDefense, blueOffense, redDefense, redOffense);
     }
   }
