@@ -1,6 +1,6 @@
 package io.spoud.services;
 
-import io.spoud.data.entities.MatchEO;
+import io.spoud.data.entities.MatchProposition;
 import javax.enterprise.context.ApplicationScoped;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
@@ -11,8 +11,8 @@ import org.slf4j.LoggerFactory;
 public class EventService {
   private static final Logger LOG = LoggerFactory.getLogger(EventService.class);
 
-  private Publisher<MatchEO> matchPublisher;
-  private Subscriber<? super MatchEO> matchSubscriber;
+  private Publisher<MatchProposition> matchPublisher;
+  private Subscriber<? super MatchProposition> matchSubscriber;
 
   private Publisher<String> scoreChangePublisher;
   private Subscriber<? super String> scoreChangeSubscriber;
@@ -24,7 +24,7 @@ public class EventService {
         subscriber -> this.scoreChangeSubscriber = subscriber;
   }
 
-  public void newMatchEvent(MatchEO match) {
+  public void newMatchEvent(MatchProposition match) {
     try {
       matchSubscriber.onNext(match);
     } catch (NullPointerException ex) {
@@ -34,7 +34,7 @@ public class EventService {
     }
   }
 
-  public Publisher<MatchEO> newMatchStream() {
+  public Publisher<MatchProposition> newMatchStream() {
     return matchPublisher;
   }
 

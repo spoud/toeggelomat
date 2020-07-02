@@ -1,6 +1,5 @@
-package io.spoud.processor;
+package io.spoud.streams.processor;
 
-import io.smallrye.reactive.messaging.annotations.Blocking;
 import io.smallrye.reactive.messaging.annotations.Broadcast;
 import io.spoud.data.kafka.PlayerBO;
 import io.spoud.data.kafka.PointChangesBO;

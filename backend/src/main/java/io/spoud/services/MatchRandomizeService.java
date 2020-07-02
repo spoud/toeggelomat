@@ -1,6 +1,6 @@
 package io.spoud.services;
 
-import io.spoud.data.entities.MatchEO;
+import io.spoud.data.entities.MatchProposition;
 import io.spoud.data.kafka.PlayerBO;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -19,7 +19,7 @@ public class MatchRandomizeService {
 
   @Inject private Random random;
 
-  public MatchEO randomizeNewMatch(int retry, Set<PlayerBO> players) {
+  public MatchProposition randomizeNewMatch(int retry, Set<PlayerBO> players) {
     ArrayList<PlayerBO> listCopy = new ArrayList<>(players);
     List<PlayerBO> activePlayers = new ArrayList<PlayerBO>();
     IntStream.range(0, 4)
@@ -41,7 +41,7 @@ public class MatchRandomizeService {
         return randomizeNewMatch(retry - 1, players);
       }
     }
-    return MatchEO.builder()
+    return MatchProposition.builder()
         .uuid(UUID.randomUUID())
         .blueDefense(activePlayers.get(0).getUuid())
         .blueOffense(activePlayers.get(1).getUuid())

@@ -1,11 +1,9 @@
-package io.spoud.consumer;
+package io.spoud.streams.consumer;
 
-import io.smallrye.reactive.messaging.annotations.Blocking;
 import io.smallrye.reactive.messaging.kafka.KafkaRecord;
 import io.spoud.data.kafka.PlayerBO;
 import io.spoud.repositories.PlayerRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.kafka.common.protocol.Message;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 
 import javax.enterprise.context.ApplicationScoped;

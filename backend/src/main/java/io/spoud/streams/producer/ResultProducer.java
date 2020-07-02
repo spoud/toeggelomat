@@ -1,6 +1,5 @@
-package io.spoud.producer;
+package io.spoud.streams.producer;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.spoud.data.kafka.MatchResultBO;
 import java.util.concurrent.BlockingQueue;

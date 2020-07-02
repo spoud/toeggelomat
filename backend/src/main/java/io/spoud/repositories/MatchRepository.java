@@ -1,27 +1,28 @@
 package io.spoud.repositories;
 
-import io.spoud.data.entities.MatchEO;
+import io.spoud.data.kafka.MatchResultBO;
+
+import javax.enterprise.context.ApplicationScoped;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
-import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class MatchRepository {
 
-  public static Map<UUID, MatchEO> repo = new ConcurrentHashMap<>();
+  public static Map<UUID, MatchResultBO> repo = new ConcurrentHashMap<>();
 
-  public List<MatchEO> getLastMatches(int nb) {
+  public List<MatchResultBO> getLastMatches(int nb) {
     return repo.values().stream()
-        .sorted(Comparator.comparing(MatchEO::getMatchTime))
+        .sorted(Comparator.comparing(MatchResultBO::getMatchTime))
         .limit(nb)
         .collect(Collectors.toList());
   }
 
-  public MatchEO addMatch(MatchEO match) {
+  public MatchResultBO addMatch(MatchResultBO match) {
     if (match.getUuid() == null) {
       match.setUuid(UUID.randomUUID());
     }

@@ -1,9 +1,9 @@
 package io.spoud.services;
 
-import io.spoud.data.entities.MatchEO;
+import io.spoud.data.entities.MatchProposition;
 import io.spoud.data.kafka.MatchResultBO;
 import io.spoud.data.kafka.PlayerBO;
-import io.spoud.producer.ResultProducer;
+import io.spoud.streams.producer.ResultProducer;
 import io.spoud.repositories.MatchRepository;
 import io.spoud.repositories.PlayerRepository;
 import java.time.ZonedDateTime;
@@ -33,11 +33,11 @@ public class MatchService {
 
   @Inject private MatchPointsService matchPointsService;
 
-  public MatchEO randomizeMatch(List<UUID> playersUuid) {
+  public MatchProposition randomizeMatch(List<UUID> playersUuid) {
     if (playersUuid.size() < 4) {
       throw new IllegalArgumentException("To few players");
     }
-    MatchEO match =
+    MatchProposition match =
         matchRandomizeService.randomizeNewMatch(
             2, new HashSet<>(playerRepository.findByUuids(playersUuid)));
     match = matchPointsService.computePotentialPoints(match);
@@ -45,7 +45,7 @@ public class MatchService {
     return match;
   }
 
-  public MatchEO saveMatchResults(MatchEO match) {
+  public MatchProposition saveMatchResults(MatchProposition match) {
 
     match.setMatchTime(ZonedDateTime.now());
     //matchRepository.addMatch(match);
@@ -65,7 +65,7 @@ public class MatchService {
     return match;
   }
 
-  public MatchEO addSome() {
+  public MatchProposition addSome() {
     var players =
         playerRepository.getAllPlayers().stream()
             .map(PlayerBO::getUuid)
@@ -79,7 +79,7 @@ public class MatchService {
     return match;
   }
 
-  public List<MatchEO> getLastMatchOfTheSeason() {
+  public List<MatchResultBO> getLastMatchOfTheSeason() {
     return matchRepository.getLastMatches(20);
   }
 }

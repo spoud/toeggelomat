@@ -1,7 +1,7 @@
 package io.spoud.services;
 
 import io.spoud.data.definition.Match;
-import io.spoud.data.entities.MatchEO;
+import io.spoud.data.entities.MatchProposition;
 import io.spoud.data.kafka.MatchResultBO;
 import io.spoud.data.kafka.PlayerBO;
 import io.spoud.data.kafka.PointedMatchResultBO;
@@ -36,13 +36,13 @@ public class MatchPointsService {
     return resultBO;
   }
 
-  public MatchEO computePotentialPoints(MatchEO matchEO) {
-    PlayersHelper playersHelper = new PlayersHelper(playerRepository, matchEO);
+  public MatchProposition computePotentialPoints(MatchProposition matchProposition) {
+    PlayersHelper playersHelper = new PlayersHelper(playerRepository, matchProposition);
     playersHelper.setWonByBlue(true);
-    matchEO.setPotentialBluePoints(calcPoints(playersHelper));
+    matchProposition.setPotentialBluePoints(calcPoints(playersHelper));
     playersHelper.setWonByBlue(false);
-    matchEO.setPotentialRedPoints(calcPoints(playersHelper));
-    return matchEO;
+    matchProposition.setPotentialRedPoints(calcPoints(playersHelper));
+    return matchProposition;
   }
 
   private static final double LI_POINTS_SLOPE = 4;

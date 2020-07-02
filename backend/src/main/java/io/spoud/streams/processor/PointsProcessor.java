@@ -1,7 +1,6 @@
-package io.spoud.processor;
+package io.spoud.streams.processor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.smallrye.reactive.messaging.annotations.Blocking;
 import io.smallrye.reactive.messaging.annotations.Broadcast;
 import io.spoud.data.kafka.MatchResultBO;
 import io.spoud.data.kafka.PointedMatchResultBO;
@@ -12,7 +11,6 @@ import org.eclipse.microprofile.reactive.messaging.Outgoing;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.transaction.Transactional;
 
 @ApplicationScoped
 @Slf4j

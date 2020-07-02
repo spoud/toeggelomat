@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @RegisterForReflection
-public class MatchEO implements Match {
+public class MatchProposition implements Match {
 
   private UUID uuid;
 
