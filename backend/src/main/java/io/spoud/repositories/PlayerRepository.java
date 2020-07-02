@@ -1,6 +1,6 @@
 package io.spoud.repositories;
 
-import io.spoud.data.kafka.PlayerBO;
+import io.spoud.data.PlayerBO;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -15,9 +15,6 @@ public class PlayerRepository {
   public static Map<UUID, PlayerBO> repo = new ConcurrentHashMap<>();
 
   public PlayerBO save(PlayerBO player) {
-    if (player.getUuid() == null) {
-      player.setUuid(UUID.randomUUID());
-    }
     return repo.put(player.getUuid(), player);
   }
 

@@ -1,7 +1,7 @@
 package io.spoud.rest;
 
-import io.spoud.data.entities.MatchProposition;
-import io.spoud.data.kafka.MatchResultBO;
+import io.spoud.data.MatchPropositionBO;
+import io.spoud.data.MatchResultWithPointsBO;
 import io.spoud.services.MatchService;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -21,27 +21,26 @@ public class MatchResource {
 
   @POST
   @Path("set-score")
-  public MatchProposition finishMatch(MatchProposition match) {
+  public MatchPropositionBO finishMatch(MatchPropositionBO match) {
     return matchService.saveMatchResults(match);
   }
 
   @POST
   @Path("randomize")
-  public MatchProposition startMatchWithPlayers(List<UUID> players) {
+  public MatchPropositionBO startMatchWithPlayers(List<UUID> players) {
     return matchService.randomizeMatch(players);
   }
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
-  public List<MatchResultBO> findAll() {
+  public List<MatchResultWithPointsBO> findAll() {
     return matchService.getLastMatchOfTheSeason();
   }
 
   @GET
   @Path("add")
   @Produces(MediaType.APPLICATION_JSON)
-  public MatchProposition addRandom() {
+  public MatchPropositionBO addRandom() {
     return matchService.addSome();
   }
-
 }

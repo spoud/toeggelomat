@@ -1,7 +1,7 @@
 package io.spoud.services;
 
-import io.spoud.data.entities.MatchProposition;
-import io.spoud.data.kafka.PlayerBO;
+import io.spoud.data.MatchPropositionBO;
+import io.spoud.data.PlayerBO;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -19,7 +19,7 @@ public class MatchRandomizeService {
 
   @Inject private Random random;
 
-  public MatchProposition randomizeNewMatch(int retry, Set<PlayerBO> players) {
+  public MatchPropositionBO randomizeNewMatch(int retry, Set<PlayerBO> players) {
     ArrayList<PlayerBO> listCopy = new ArrayList<>(players);
     List<PlayerBO> activePlayers = new ArrayList<PlayerBO>();
     IntStream.range(0, 4)
@@ -41,12 +41,12 @@ public class MatchRandomizeService {
         return randomizeNewMatch(retry - 1, players);
       }
     }
-    return MatchProposition.builder()
+    return MatchPropositionBO.builder()
         .uuid(UUID.randomUUID())
-        .blueDefense(activePlayers.get(0).getUuid())
-        .blueOffense(activePlayers.get(1).getUuid())
-        .redDefense(activePlayers.get(2).getUuid())
-        .redOffense(activePlayers.get(3).getUuid())
+        .playerBlueDefenseUuid(activePlayers.get(0).getUuid())
+        .playerBlueOffenseUuid(activePlayers.get(1).getUuid())
+        .playerRedDefenseUuid(activePlayers.get(2).getUuid())
+        .playerRedOffenseUuid(activePlayers.get(3).getUuid())
         .build();
   }
 }

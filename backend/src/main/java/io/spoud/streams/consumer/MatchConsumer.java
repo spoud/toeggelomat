@@ -1,10 +1,8 @@
 package io.spoud.streams.consumer;
 
 import io.smallrye.reactive.messaging.kafka.KafkaRecord;
-import io.spoud.data.kafka.MatchResultBO;
-import io.spoud.data.kafka.PlayerBO;
+import io.spoud.data.MatchResultWithPointsBO;
 import io.spoud.repositories.MatchRepository;
-import io.spoud.repositories.PlayerRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 
@@ -21,8 +19,8 @@ public class MatchConsumer {
   @Inject MatchRepository matchRepository;
 
   @Incoming("match-in")
-  public CompletionStage<KafkaRecord> store(KafkaRecord<String, MatchResultBO> record) {
-    MatchResultBO matchResult = record.getPayload();
+  public CompletionStage<KafkaRecord> store(KafkaRecord<String, MatchResultWithPointsBO> record) {
+    MatchResultWithPointsBO matchResult = record.getPayload();
     matchResult.setUuid(
         Optional.ofNullable(record.getKey()).map(UUID::fromString).orElseGet(UUID::randomUUID));
     log.info("Match result received {}:{}", matchResult);

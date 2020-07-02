@@ -1,4 +1,4 @@
-package io.spoud.data.definition;
+package io.spoud.data;
 
 import java.time.ZonedDateTime;
 import java.util.UUID;
@@ -12,11 +12,11 @@ public interface Match {
 
   Integer getBlueScore();
 
-  UUID getBlueDefense();
+  UUID getPlayerBlueDefenseUuid();
 
-  UUID getBlueOffense();
+  UUID getPlayerBlueOffenseUuid();
 
-  UUID getRedDefense();
+  UUID getPlayerRedDefenseUuid();
 
-  UUID getRedOffense();
+  UUID getPlayerRedOffenseUuid();
 }

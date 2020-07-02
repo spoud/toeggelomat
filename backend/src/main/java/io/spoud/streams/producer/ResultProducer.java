@@ -1,7 +1,7 @@
 package io.spoud.streams.producer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.spoud.data.kafka.MatchResultBO;
+import io.spoud.data.MatchResultBO;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;

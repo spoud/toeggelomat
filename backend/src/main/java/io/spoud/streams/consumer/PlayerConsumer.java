@@ -1,7 +1,7 @@
 package io.spoud.streams.consumer;
 
 import io.smallrye.reactive.messaging.kafka.KafkaRecord;
-import io.spoud.data.kafka.PlayerBO;
+import io.spoud.data.PlayerBO;
 import io.spoud.repositories.PlayerRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.reactive.messaging.Incoming;

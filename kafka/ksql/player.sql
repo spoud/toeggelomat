@@ -27,10 +27,10 @@ CREATE STREAM toeggelomat_match_result (
       matchTime VARCHAR, 
       redScore int, 
       blueScore int, 
-      blueDefense VARCHAR, 
-      blueOffense VARCHAR, 
-      redDefense VARCHAR, 
-      redOffense VARCHAR)
+      playerBlueDefenseUuid VARCHAR, 
+      playerBlueOffenseUuid VARCHAR, 
+      playerRedDefenseUuid VARCHAR, 
+      playerRedOffenseUuid VARCHAR)
 WITH (kafka_topic='toeggelomat-match-result', value_format='JSON',PARTITIONS=1,REPLICAS=1);
 
 CREATE STREAM toeggelomat_scores (
@@ -39,37 +39,22 @@ CREATE STREAM toeggelomat_scores (
       redScore int, 
       blueScore int, 
       points int, 
-      winnerDefense STRUCT<
-        uuid VARCHAR, 
-        nickName VARCHAR, 
-        email VARCHAR, 
-        defensePoints INT,
-        offensePoints INT>,
-        
-      winnerOffense STRUCT<
-        uuid VARCHAR, 
-        nickName VARCHAR, 
-        email VARCHAR, 
-        defensePoints INT,
-        offensePoints INT>,
-        
-      loserDefense STRUCT<
-        uuid VARCHAR, 
-        nickName VARCHAR, 
-        email VARCHAR, 
-        defensePoints INT,
-        offensePoints INT>,
-        
-      loserOffense STRUCT<
-        uuid VARCHAR, 
-        nickName VARCHAR, 
-        email VARCHAR, 
-        defensePoints INT,
-        offensePoints INT>)
+      playerBlueDefenseUuid VARCHAR, 
+      playerBlueOffenseUuid VARCHAR, 
+      playerRedDefenseUuid VARCHAR, 
+      playerRedOffenseUuid VARCHAR, 
+      playerWinnerDefenseUuid VARCHAR,
+      playerWinnerOffenseUuid VARCHAR,
+      playerLoserDefenseUuid VARCHAR,
+      playerLoserOffenseUuid VARCHAR)
 WITH (kafka_topic='toeggelomat-scores', value_format='JSON',PARTITIONS=1,REPLICAS=1);
 
-
-CREATE STREAM toeggelomat_point_change 
+CREATE STREAM toeggelomat_point_change (
+      uuid VARCHAR KEY,
+      pointsDefense int, 
+      pointsOffense int, 
+      matchTime VARCHAR,
+      playerUuid VARCHAR)
       WITH (KAFKA_TOPIC='toeggelomat-point-change', VALUE_FORMAT='JSON',PARTITIONS=1,REPLICAS=1);
 
 INSERT INTO toeggelomat_point_change
@@ -78,7 +63,7 @@ INSERT INTO toeggelomat_point_change
             points + 1 as pointsDefense,
             0 as pointsOffense,
             matchTime, 
-            winnerDefense->uuid as playerUuid
+            playerWinnerDefenseUuid as playerUuid
        FROM toeggelomat_scores;
 
 
@@ -88,7 +73,7 @@ INSERT INTO toeggelomat_point_change
             0 as pointsDefense, 
             points + 1 as pointsOffense,
             matchTime, 
-            winnerOffense->uuid as playerUuid
+            playerWinnerOffenseUuid as playerUuid
        FROM toeggelomat_scores;
 
 
@@ -98,7 +83,7 @@ INSERT INTO toeggelomat_point_change
             points * -1 + 1 as pointsDefense,
             0 as pointsOffense,
             matchTime, 
-            loserDefense->uuid as playerUuid
+            playerLoserDefenseUuid as playerUuid
        FROM toeggelomat_scores;
 
 
@@ -108,5 +93,5 @@ INSERT INTO toeggelomat_point_change
             0 as pointsDefense, 
             points * -1 + 1 as pointsOffense,
             matchTime, 
-            loserOffense->uuid as playerUuid
+            playerLoserOffenseUuid as playerUuid
        FROM toeggelomat_scores;

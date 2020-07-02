@@ -1,7 +1,7 @@
 import {PlayerEO} from './playersl';
 import {GlobalStore} from '../store/global';
 
-export class MatchEO {
+export class MatchPropositionBO {
 
   public uuid: string;
 
@@ -29,7 +29,7 @@ export class MatchEO {
 
 export class MatchWithPlayers {
 
-  constructor(public match: MatchEO) {
+  constructor(public match: MatchPropositionBO) {
   }
 
   public playerRedDefense: PlayerEO;
@@ -40,7 +40,7 @@ export class MatchWithPlayers {
 
   public playerBlueOffense: PlayerEO;
 
-  static createMatchWithPlayer(match: MatchEO, players: PlayerEO[]): MatchWithPlayers {
+  static createMatchWithPlayer(match: MatchPropositionBO, players: PlayerEO[]): MatchWithPlayers {
     const matchWithPlayer: MatchWithPlayers = new MatchWithPlayers(match);
     matchWithPlayer.playerBlueDefense = players.find(p => p.uuid === match.playerBlueDefenseUuid);
     matchWithPlayer.playerBlueOffense = players.find(p => p.uuid === match.playerBlueOffenseUuid);

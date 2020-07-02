@@ -1,7 +1,8 @@
 package io.spoud.rest;
 
-import io.spoud.data.kafka.PlayerBO;
-import io.spoud.services.PlayerService;
+import io.spoud.data.PlayerBO;
+import io.spoud.repositories.PlayerRepository;
+
 import java.util.List;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -14,11 +15,11 @@ import javax.ws.rs.core.MediaType;
 @Path("/api/v1/players")
 public class PlayerResource {
 
-  @Inject private PlayerService playerService;
+  @Inject private PlayerRepository playerService;
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)
   public List<PlayerBO> findAll() {
-    return playerService.getAll();
+    return playerService.getAllPlayers();
   }
 }

@@ -2,8 +2,8 @@ package io.spoud.streams.processor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.smallrye.reactive.messaging.annotations.Broadcast;
-import io.spoud.data.kafka.MatchResultBO;
-import io.spoud.data.kafka.PointedMatchResultBO;
+import io.spoud.data.MatchResultBO;
+import io.spoud.data.MatchResultWithPointsBO;
 import io.spoud.services.MatchPointsService;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
@@ -22,7 +22,7 @@ public class PointsProcessor {
   @Incoming("match-result-in")
   @Outgoing("scores-out")
   @Broadcast
-  public PointedMatchResultBO process(MatchResultBO result) {
+  public MatchResultWithPointsBO process(MatchResultBO result) {
     return matchPointsService.computePoints(result);
   }
 }

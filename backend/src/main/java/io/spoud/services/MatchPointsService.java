@@ -1,10 +1,10 @@
 package io.spoud.services;
 
-import io.spoud.data.definition.Match;
-import io.spoud.data.entities.MatchProposition;
-import io.spoud.data.kafka.MatchResultBO;
-import io.spoud.data.kafka.PlayerBO;
-import io.spoud.data.kafka.PointedMatchResultBO;
+import io.spoud.data.Match;
+import io.spoud.data.MatchPropositionBO;
+import io.spoud.data.MatchResultBO;
+import io.spoud.data.PlayerBO;
+import io.spoud.data.MatchResultWithPointsBO;
 import io.spoud.repositories.PlayerRepository;
 import java.util.Arrays;
 import java.util.List;
@@ -20,29 +20,29 @@ public class MatchPointsService {
 
   public static final int ADDITIONAL_POINT_FOR_PLAYING = 1;
 
-  @Inject private PlayerRepository playerRepository;
+  @Inject PlayerRepository playerRepository;
 
-  public PointedMatchResultBO computePoints(MatchResultBO matchEO) {
-    PointedMatchResultBO resultBO = PointedMatchResultBO.from(matchEO);
+  public MatchResultWithPointsBO computePoints(MatchResultBO matchEO) {
+    MatchResultWithPointsBO resultBO = MatchResultWithPointsBO.from(matchEO);
     PlayersHelper playersHelper = new PlayersHelper(playerRepository, matchEO);
 
-    resultBO.setWinnerDefense(playersHelper.getWinnerDefense());
-    resultBO.setWinnerOffense(playersHelper.getWinnerOffense());
-    resultBO.setLoserDefense(playersHelper.getLooserDefense());
-    resultBO.setLoserOffense(playersHelper.getLooserOffense());
+    resultBO.setPlayerWinnerDefenseUuid(playersHelper.getWinnerDefense().getUuid());
+    resultBO.setPlayerWinnerOffenseUuid(playersHelper.getWinnerOffense().getUuid());
+    resultBO.setPlayerLoserDefenseUuid(playersHelper.getLooserDefense().getUuid());
+    resultBO.setPlayerLoserOffenseUuid(playersHelper.getLooserOffense().getUuid());
 
     int points = calcPoints(playersHelper);
     resultBO.setPoints(points);
     return resultBO;
   }
 
-  public MatchProposition computePotentialPoints(MatchProposition matchProposition) {
-    PlayersHelper playersHelper = new PlayersHelper(playerRepository, matchProposition);
+  public MatchPropositionBO computePotentialPoints(MatchPropositionBO matchPropositionBO) {
+    PlayersHelper playersHelper = new PlayersHelper(playerRepository, matchPropositionBO);
     playersHelper.setWonByBlue(true);
-    matchProposition.setPotentialBluePoints(calcPoints(playersHelper));
+    matchPropositionBO.setPotentialBluePoints(calcPoints(playersHelper));
     playersHelper.setWonByBlue(false);
-    matchProposition.setPotentialRedPoints(calcPoints(playersHelper));
-    return matchProposition;
+    matchPropositionBO.setPotentialRedPoints(calcPoints(playersHelper));
+    return matchPropositionBO;
   }
 
   private static final double LI_POINTS_SLOPE = 4;
@@ -101,10 +101,10 @@ public class MatchPointsService {
 
     public PlayersHelper(PlayerRepository playerRepository, Match match) {
       this.match = match;
-      blueDefense = playerRepository.findByUuid(match.getBlueDefense());
-      blueOffense = playerRepository.findByUuid(match.getBlueOffense());
-      redDefense = playerRepository.findByUuid(match.getRedDefense());
-      redOffense = playerRepository.findByUuid(match.getRedOffense());
+      blueDefense = playerRepository.findByUuid(match.getPlayerBlueDefenseUuid());
+      blueOffense = playerRepository.findByUuid(match.getPlayerBlueOffenseUuid());
+      redDefense = playerRepository.findByUuid(match.getPlayerRedDefenseUuid());
+      redOffense = playerRepository.findByUuid(match.getPlayerRedOffenseUuid());
       this.wonByBlue =
           match.getRedScore() == null
               || match.getBlueScore() == null

@@ -1,8 +1,9 @@
 package io.spoud.streams.processor;
 
 import io.smallrye.reactive.messaging.annotations.Broadcast;
-import io.spoud.data.kafka.PlayerBO;
-import io.spoud.data.kafka.PointChangesBO;
+import io.smallrye.reactive.messaging.kafka.KafkaRecord;
+import io.spoud.data.PlayerBO;
+import io.spoud.data.PointChangesBO;
 import io.spoud.repositories.PlayerRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.reactive.messaging.Incoming;
@@ -19,11 +20,12 @@ public class PointChangeProcessor {
   @Incoming("point-change")
   @Outgoing("player")
   @Broadcast
-  public PlayerBO store(PointChangesBO pointChange) {
+  public KafkaRecord<String, PlayerBO> process(PointChangesBO pointChange) {
     PlayerBO player = playerRepository.findByUuid(pointChange.getPlayerUuid());
     player.setDefensePoints(player.getDefensePoints() + pointChange.getPointsDefense());
     player.setOffensePoints(player.getOffensePoints() + pointChange.getPointsOffense());
     player.setLastMatchTime(pointChange.getMatchTime());
-    return playerRepository.save(player);
+    PlayerBO saved = playerRepository.save(player);
+    return KafkaRecord.of(saved.getUuid().toString(), saved);
   }
 }

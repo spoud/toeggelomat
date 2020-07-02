@@ -1,6 +1,5 @@
-package io.spoud.data.kafka;
+package io.spoud.data;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.quarkus.kafka.client.serialization.ObjectMapperDeserializer;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 import lombok.AllArgsConstructor;
@@ -16,19 +15,22 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @RegisterForReflection
-public class PointChangesBO {
-  @JsonProperty("POINTSDEFENSE")
-  private int pointsDefense;
-  @JsonProperty("POINTSOFFENSE")
-  private int pointsOffense;
-  @JsonProperty("MATCHTIME")
-  private ZonedDateTime matchTime;
-  @JsonProperty("PLAYERUUID")
-  private UUID playerUuid;
+public class MatchResultBO implements Match {
 
-  public static class Deserializer extends ObjectMapperDeserializer<PointChangesBO> {
+  private UUID uuid;
+  private ZonedDateTime matchTime;
+  private Integer redScore;
+  private Integer blueScore;
+  private Integer points;
+
+  private UUID playerBlueDefenseUuid;
+  private UUID playerBlueOffenseUuid;
+  private UUID playerRedDefenseUuid;
+  private UUID playerRedOffenseUuid;
+
+  public static class Deserializer extends ObjectMapperDeserializer<MatchResultBO> {
     public Deserializer(){
-      super(PointChangesBO.class);
+      super(MatchResultBO.class);
     }
   }
 }

@@ -1,6 +1,6 @@
 package io.spoud.repositories;
 
-import io.spoud.data.kafka.MatchResultBO;
+import io.spoud.data.MatchResultWithPointsBO;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.util.Comparator;
@@ -13,16 +13,16 @@ import java.util.stream.Collectors;
 @ApplicationScoped
 public class MatchRepository {
 
-  public static Map<UUID, MatchResultBO> repo = new ConcurrentHashMap<>();
+  public static Map<UUID, MatchResultWithPointsBO> repo = new ConcurrentHashMap<>();
 
-  public List<MatchResultBO> getLastMatches(int nb) {
+  public List<MatchResultWithPointsBO> getLastMatches(int nb) {
     return repo.values().stream()
-        .sorted(Comparator.comparing(MatchResultBO::getMatchTime))
+        .sorted(Comparator.comparing(MatchResultWithPointsBO::getMatchTime))
         .limit(nb)
         .collect(Collectors.toList());
   }
 
-  public MatchResultBO addMatch(MatchResultBO match) {
+  public MatchResultWithPointsBO addMatch(MatchResultWithPointsBO match) {
     if (match.getUuid() == null) {
       match.setUuid(UUID.randomUUID());
     }

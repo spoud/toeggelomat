@@ -1,7 +1,7 @@
-package io.spoud.data.entities;
+package io.spoud.data;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
-import io.spoud.data.definition.Match;
+
 import java.time.ZonedDateTime;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @RegisterForReflection
-public class MatchProposition implements Match {
+public class MatchPropositionBO implements Match {
 
   private UUID uuid;
 
@@ -26,13 +26,13 @@ public class MatchProposition implements Match {
 
   private Integer points;
 
-  private UUID blueDefense;
+  private UUID playerBlueDefenseUuid;
 
-  private UUID blueOffense;
+  private UUID playerBlueOffenseUuid;
 
-  private UUID redDefense;
+  private UUID playerRedDefenseUuid;
 
-  private UUID redOffense;
+  private UUID playerRedOffenseUuid;
 
   private Integer potentialBluePoints;
 

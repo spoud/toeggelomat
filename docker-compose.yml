@@ -59,7 +59,7 @@ services:
       KSQL_BOOTSTRAP_SERVERS: kafka:9092
       KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: "true"
       KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: "true"
-      # KSQL_KSQL_QUERIES_FILE: /etc/ksql/queries/player.sql
+      KSQL_KSQL_QUERIES_FILE: /etc/ksql/queries/player.sql
 
   ksqldb-cli:
     image: confluentinc/ksqldb-cli:0.10.0

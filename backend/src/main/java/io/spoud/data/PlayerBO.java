@@ -1,4 +1,4 @@
-package io.spoud.data.kafka;
+package io.spoud.data;
 
 import io.quarkus.kafka.client.serialization.ObjectMapperDeserializer;
 import io.quarkus.runtime.annotations.RegisterForReflection;
