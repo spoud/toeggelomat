@@ -1,54 +1,37 @@
 package io.spoud.services;
 
+import io.smallrye.mutiny.Multi;
+import io.smallrye.mutiny.operators.multi.processors.BroadcastProcessor;
 import io.spoud.data.MatchPropositionBO;
-import javax.enterprise.context.ApplicationScoped;
-import org.reactivestreams.Publisher;
-import org.reactivestreams.Subscriber;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+import javax.enterprise.context.ApplicationScoped;
+
+@Slf4j
 @ApplicationScoped
 public class EventService {
-  private static final Logger LOG = LoggerFactory.getLogger(EventService.class);
 
-  private Publisher<MatchPropositionBO> matchPublisher;
-  private Subscriber<? super MatchPropositionBO> matchSubscriber;
-
-  private Publisher<String> scoreChangePublisher;
-  private Subscriber<? super String> scoreChangeSubscriber;
+  private BroadcastProcessor<String> scoreChangedProcessor;
+  private BroadcastProcessor<MatchPropositionBO> matchProcessor;
 
   public EventService() {
-    this.matchPublisher =
-        subscriber -> this.matchSubscriber = subscriber;
-    this.scoreChangePublisher =
-        subscriber -> this.scoreChangeSubscriber = subscriber;
+    scoreChangedProcessor = BroadcastProcessor.create();
+    matchProcessor = BroadcastProcessor.create();
   }
 
-  public void newMatchEvent(MatchPropositionBO match) {
-    try {
-      matchSubscriber.onNext(match);
-    } catch (NullPointerException ex) {
-      LOG.warn("matchSubscriber is null again");
-    } catch (Exception ex) {
-      LOG.error("Cannot push match", ex);
-    }
+  public synchronized void newMatchEvent(MatchPropositionBO match) {
+    matchProcessor.onNext(match);
   }
 
-  public Publisher<MatchPropositionBO> newMatchStream() {
-    return matchPublisher;
+  public Multi<MatchPropositionBO> newMatchStream() {
+    return matchProcessor;
   }
 
-  public void scoreChangedEvent() {
-    try {
-      scoreChangeSubscriber.onNext("newScore");
-    } catch (NullPointerException ex) {
-      LOG.warn("scoreChangeSubscriber is null again");
-    } catch (Exception ex) {
-      LOG.error("Cannot push score", ex);
-    }
+  public synchronized void scoreChangedEvent() {
+    scoreChangedProcessor.onNext("newScore");
   }
 
-  public Publisher<String> scoreChangedStream() {
-    return scoreChangePublisher;
+  public Multi<String> scoreChangedStream() {
+    return scoreChangedProcessor;
   }
 }

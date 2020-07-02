@@ -3,24 +3,25 @@ package io.spoud.rest;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.spoud.services.EventService;
+import lombok.extern.slf4j.Slf4j;
+import org.eclipse.microprofile.reactive.streams.operators.ReactiveStreams;
+import org.reactivestreams.Publisher;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import lombok.extern.slf4j.Slf4j;
-import org.eclipse.microprofile.reactive.streams.operators.ReactiveStreams;
-import org.reactivestreams.Publisher;
 
 @Slf4j
 @Path("/api/v1/sse")
 @ApplicationScoped
 public class ServerSentEventResource {
 
-  @Inject private EventService eventService;
+  @Inject EventService eventService;
 
-  @Inject private ObjectMapper objectMapper;
+  @Inject ObjectMapper objectMapper;
 
   @GET
   @Path("matches")

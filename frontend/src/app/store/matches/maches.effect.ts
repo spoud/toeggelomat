@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Actions, createEffect, ofType, ROOT_EFFECTS_INIT} from '@ngrx/effects';
 import {EMPTY} from 'rxjs';
-import {catchError, map, mergeMap} from 'rxjs/operators';
+import {catchError, debounceTime, map, mergeMap} from 'rxjs/operators';
 import {matchesReload, matchesReloaded, matchStarted, saveMatchScore, startMatch} from './maches.actions';
 import {MatchesApiService} from '../../services/matches-api.service';
 import {Store} from '@ngrx/store';
@@ -29,6 +29,16 @@ export class MatchesEffect {
           catchError(() => EMPTY)
         ))
     ));
+
+  scoreStreams = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ROOT_EFFECTS_INIT),
+      debounceTime(500),
+      mergeMap(() => this.eventApiService.scoreChangeStream().pipe(
+        map(() => matchesReload())
+      ))
+    )
+  );
 
   // TODO put back when we have slack integration
   // initMatchStream$ = createEffect(() =>

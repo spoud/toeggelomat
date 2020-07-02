@@ -12,7 +12,7 @@ services:
 
   frontend:
     container_name: toeggelomat_frontend
-    image: spoud/toeggelomat-frontend
+    image: spoud/toeggelomat-frontend:kafka
     build: frontend/
     ports:
       - 82:80
@@ -23,7 +23,7 @@ services:
 
   backend:
     container_name: toeggelomat_backend
-    image: spoud/toeggelomat-backend:native
+    image: spoud/toeggelomat-backend:kafka
     build: 
       context: backend/
       # dockerfile: src/main/docker/Dockerfile.jvm

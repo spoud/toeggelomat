@@ -1,7 +1,6 @@
 package io.spoud.streams.processor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.smallrye.reactive.messaging.annotations.Broadcast;
 import io.spoud.data.MatchResultBO;
 import io.spoud.data.MatchResultWithPointsBO;
 import io.spoud.services.MatchPointsService;
@@ -21,8 +20,10 @@ public class PointsProcessor {
 
   @Incoming("match-result-in")
   @Outgoing("scores-out")
-  @Broadcast
+  //  @Broadcast
   public MatchResultWithPointsBO process(MatchResultBO result) {
-    return matchPointsService.computePoints(result);
+    MatchResultWithPointsBO withPoints = matchPointsService.computePoints(result);
+    log.info("Compute points for match {}", withPoints);
+    return withPoints;
   }
 }

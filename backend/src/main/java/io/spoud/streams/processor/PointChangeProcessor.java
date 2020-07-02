@@ -19,13 +19,14 @@ public class PointChangeProcessor {
 
   @Incoming("point-change")
   @Outgoing("player")
-  @Broadcast
+//  @Broadcast
   public KafkaRecord<String, PlayerBO> process(PointChangesBO pointChange) {
     PlayerBO player = playerRepository.findByUuid(pointChange.getPlayerUuid());
     player.setDefensePoints(player.getDefensePoints() + pointChange.getPointsDefense());
     player.setOffensePoints(player.getOffensePoints() + pointChange.getPointsOffense());
     player.setLastMatchTime(pointChange.getMatchTime());
     PlayerBO saved = playerRepository.save(player);
+//    log.info("Compute points for match {}", m);
     return KafkaRecord.of(saved.getUuid().toString(), saved);
   }
 }

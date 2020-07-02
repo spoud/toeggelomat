@@ -17,7 +17,7 @@ public class MatchRepository {
 
   public List<MatchResultWithPointsBO> getLastMatches(int nb) {
     return repo.values().stream()
-        .sorted(Comparator.comparing(MatchResultWithPointsBO::getMatchTime))
+        .sorted(Comparator.comparing(MatchResultWithPointsBO::getMatchTime).reversed())
         .limit(nb)
         .collect(Collectors.toList());
   }

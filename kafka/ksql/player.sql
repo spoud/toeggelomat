@@ -23,7 +23,7 @@ INSERT INTO toeggelomat_player
 
 
 CREATE STREAM toeggelomat_match_result (
-      uuid VARCHAR KEY, 
+      uuid VARCHAR, 
       matchTime VARCHAR, 
       redScore int, 
       blueScore int, 
@@ -34,7 +34,7 @@ CREATE STREAM toeggelomat_match_result (
 WITH (kafka_topic='toeggelomat-match-result', value_format='JSON',PARTITIONS=1,REPLICAS=1);
 
 CREATE STREAM toeggelomat_scores (
-      uuid VARCHAR KEY,
+      uuid VARCHAR,
       matchTime VARCHAR,
       redScore int, 
       blueScore int, 
@@ -50,7 +50,7 @@ CREATE STREAM toeggelomat_scores (
 WITH (kafka_topic='toeggelomat-scores', value_format='JSON',PARTITIONS=1,REPLICAS=1);
 
 CREATE STREAM toeggelomat_point_change (
-      uuid VARCHAR KEY,
+      uuid VARCHAR,
       pointsDefense int, 
       pointsOffense int, 
       matchTime VARCHAR,

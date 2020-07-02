@@ -2,8 +2,8 @@ package io.spoud.services;
 
 import io.spoud.data.MatchPropositionBO;
 import io.spoud.data.MatchResultBO;
-import io.spoud.data.PlayerBO;
 import io.spoud.data.MatchResultWithPointsBO;
+import io.spoud.data.PlayerBO;
 import io.spoud.repositories.MatchRepository;
 import io.spoud.repositories.PlayerRepository;
 import io.spoud.streams.producer.ResultProducer;
@@ -15,6 +15,7 @@ import javax.transaction.Transactional;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -22,6 +23,8 @@ import java.util.stream.Collectors;
 @Transactional
 @Slf4j
 public class MatchService {
+
+  @Inject Random random;
 
   @Inject PlayerRepository playerRepository;
 
@@ -71,7 +74,7 @@ public class MatchService {
 
     var match = this.randomizeMatch(players);
     match.setBlueScore(7);
-    match.setRedScore(2);
+    match.setRedScore(random.nextInt(7));
     saveMatchResults(match);
 
     return match;

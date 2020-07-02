@@ -17,17 +17,23 @@ import java.util.UUID;
 @AllArgsConstructor
 @RegisterForReflection
 public class PointChangesBO {
+  @JsonProperty("UUID")
+  private UUID matchUuid;
+
   @JsonProperty("POINTSDEFENSE")
   private int pointsDefense;
+
   @JsonProperty("POINTSOFFENSE")
   private int pointsOffense;
+
   @JsonProperty("MATCHTIME")
   private ZonedDateTime matchTime;
+
   @JsonProperty("PLAYERUUID")
   private UUID playerUuid;
 
   public static class Deserializer extends ObjectMapperDeserializer<PointChangesBO> {
-    public Deserializer(){
+    public Deserializer() {
       super(PointChangesBO.class);
     }
   }
