@@ -10,10 +10,9 @@ services:
       - ./traefik/traefik.yml:/etc/traefik/traefik.yml
       - /var/run/docker.sock:/var/run/docker.sock
 
-
   frontend:
     container_name: toeggelomat_frontend
-    image: spoud/toeggelomat-frontend
+    image: spoud/toeggelomat-frontend:kafka
     build: frontend/
     ports:
       - 82:80
@@ -24,7 +23,7 @@ services:
 
   backend:
     container_name: toeggelomat_backend
-    image: spoud/toeggelomat-backend:native
+    image: spoud/toeggelomat-backend:kafka
     build: 
       context: backend/
       # dockerfile: src/main/docker/Dockerfile.jvm
@@ -36,15 +35,6 @@ services:
       - traefik.http.services.toeggelomat_backend-service.loadbalancer.server.port=8080
       - traefik.enable=true
 
-  postgres:
-    container_name: toeggelomat_postgres
-    image: postgres
-    environment: 
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-    ports:
-      - 5432
-
   kafka:
     container_name: toeggelomat_kafka
     image: johnnypark/kafka-zookeeper
@@ -54,8 +44,28 @@ services:
     environment:
       ADVERTISED_HOST: kafka
 
-#  kafka_exporter:
-#    image: braedon/prometheus-kafka-consumer-group-exporter:0.5.2
-#    command: -b kafka
-#    ports:
-#      - 9208:9208
+  ksqldb-server:
+    image: confluentinc/ksqldb-server:0.10.0
+    hostname: ksqldb-server
+    container_name: toeggelomat_ksqldb-server
+    volumes:
+      - ./kafka/ksql:/etc/ksql/queries/
+    depends_on: 
+      - kafka
+    ports:
+      - "8088:8088"
+    environment:
+      KSQL_LISTENERS: http://0.0.0.0:8088
+      KSQL_BOOTSTRAP_SERVERS: kafka:9092
+      KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: "true"
+      KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: "true"
+      KSQL_KSQL_QUERIES_FILE: /etc/ksql/queries/player.sql
+
+  ksqldb-cli:
+    image: confluentinc/ksqldb-cli:0.10.0
+    container_name: toeggelomat_ksqldb-cli
+    depends_on:
+      - ksqldb-server
+    entrypoint: /bin/sh
+    tty: true
+      

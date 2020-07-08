@@ -1,29 +1,31 @@
 package io.spoud.repositories;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import io.spoud.entities.MatchEO;
-import io.spoud.entities.QMatchEO;
-import java.util.List;
+import io.spoud.data.MatchResultWithPointsBO;
+
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.persistence.EntityManager;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class MatchRepository {
 
-  public static final QMatchEO MATCH = QMatchEO.matchEO;
+  public static Map<UUID, MatchResultWithPointsBO> repo = new ConcurrentHashMap<>();
 
-  @Inject private JPAQueryFactory jpaQueryFactory;
-
-  @Inject private EntityManager em;
-
-  public List<MatchEO> getLastMatches(int nb) {
-    return jpaQueryFactory.selectFrom(MATCH).orderBy(MATCH.matchTime.desc()).limit(nb).fetch();
+  public List<MatchResultWithPointsBO> getLastMatches(int nb) {
+    return repo.values().stream()
+        .sorted(Comparator.comparing(MatchResultWithPointsBO::getMatchTime).reversed())
+        .limit(nb)
+        .collect(Collectors.toList());
   }
 
-  public MatchEO addMatch(MatchEO match) {
-    match.setUuid(null);
-    em.persist(match);
-    return match;
+  public MatchResultWithPointsBO addMatch(MatchResultWithPointsBO match) {
+    if (match.getUuid() == null) {
+      match.setUuid(UUID.randomUUID());
+    }
+    return repo.put(match.getUuid(), match);
   }
 }

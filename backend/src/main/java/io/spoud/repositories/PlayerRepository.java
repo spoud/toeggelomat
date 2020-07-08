@@ -1,44 +1,32 @@
 package io.spoud.repositories;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
-import io.spoud.entities.PlayerEO;
-import io.spoud.entities.QPlayerEO;
+import io.spoud.data.PlayerBO;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 
 @ApplicationScoped
 public class PlayerRepository {
 
-  public static final QPlayerEO PLAYER = QPlayerEO.playerEO;
+  public static Map<UUID, PlayerBO> repo = new ConcurrentHashMap<>();
 
-  @Inject private JPAQueryFactory jpaQueryFactory;
-
-  public void updatePointsAndLastMatch(PlayerEO player) {
-    jpaQueryFactory
-        .update(PLAYER)
-        .where(PLAYER.uuid.eq(player.getUuid()))
-        .set(PLAYER.offensePoints, player.getOffensePoints())
-        .set(PLAYER.defensePoints, player.getDefensePoints())
-        .set(PLAYER.lastMatchTime, player.getLastMatchTime())
-        .execute();
+  public PlayerBO save(PlayerBO player) {
+    return repo.put(player.getUuid(), player);
   }
 
-  public List<PlayerEO> getAllPlayers() {
-    return jpaQueryFactory.selectFrom(PLAYER).fetch();
+  public List<PlayerBO> getAllPlayers() {
+    return new ArrayList<>(repo.values());
   }
 
-  public Optional<PlayerEO> findByUuid(UUID uuid) {
-    return Optional.ofNullable(
-        jpaQueryFactory.selectFrom(PLAYER).where(PLAYER.uuid.eq(uuid)).fetchOne());
+  public PlayerBO findByUuid(UUID uuid) {
+    return repo.get(uuid);
   }
 
-  public List<PlayerEO> findByUuids(List<UUID> uuid) {
-    return jpaQueryFactory
-        .selectFrom(PLAYER)
-        .where(PLAYER.uuid.in(uuid.toArray(new UUID[0])))
-        .fetch();
+  public List<PlayerBO> findByUuids(List<UUID> uuid) {
+    return uuid.stream().map(repo::get).collect(Collectors.toList());
   }
 }

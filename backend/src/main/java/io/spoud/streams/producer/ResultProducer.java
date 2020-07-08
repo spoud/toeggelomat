@@ -1,7 +1,7 @@
-package io.spoud.producer;
+package io.spoud.streams.producer;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.spoud.data.MatchResultBO;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
@@ -17,23 +17,23 @@ public class ResultProducer {
 
   @Inject private ObjectMapper mapper;
 
-  private BlockingQueue<MatchResultKafkaBO> matchesQueue = new LinkedBlockingQueue<>();
+  private final BlockingQueue<MatchResultBO> matchesQueue = new LinkedBlockingQueue<>();
 
-  public void add(MatchResultKafkaBO match) {
+  public void add(MatchResultBO match) {
     log.info("Put match on the producer queue {}", match);
     matchesQueue.add(match);
   }
 
   @Outgoing("match-result")
-  public CompletionStage<String> send() {
+  public CompletionStage<MatchResultBO> send() {
     log.info("Initializing kafka producer");
     return CompletableFuture.supplyAsync(
         () -> {
           try {
-            MatchResultKafkaBO match = matchesQueue.take();
+            MatchResultBO match = matchesQueue.take();
             log.info("Sending message to kafka with the message: {} ", match);
-            return mapper.writeValueAsString(match);
-          } catch (InterruptedException | JsonProcessingException e) {
+            return match;
+          } catch (InterruptedException e) {
             log.error("Unable to publish to kafka", e);
             return null;
           }

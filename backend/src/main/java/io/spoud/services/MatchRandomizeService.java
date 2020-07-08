@@ -1,7 +1,7 @@
 package io.spoud.services;
 
-import io.spoud.entities.MatchEO;
-import io.spoud.entities.PlayerEO;
+import io.spoud.data.MatchPropositionBO;
+import io.spoud.data.PlayerBO;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -19,14 +19,14 @@ public class MatchRandomizeService {
 
   @Inject private Random random;
 
-  public MatchEO randomizeNewMatch(int retry, Set<PlayerEO> players) {
-    ArrayList<PlayerEO> listCopy = new ArrayList<>(players);
-    List<PlayerEO> activePlayers = new ArrayList<PlayerEO>();
+  public MatchPropositionBO randomizeNewMatch(int retry, Set<PlayerBO> players) {
+    ArrayList<PlayerBO> listCopy = new ArrayList<>(players);
+    List<PlayerBO> activePlayers = new ArrayList<PlayerBO>();
     IntStream.range(0, 4)
         .forEach(i -> activePlayers.add(listCopy.remove(random.nextInt(listCopy.size()))));
 
     if (retry > 0) {
-      ArrayList<PlayerEO> activeSorted = new ArrayList<>(activePlayers);
+      ArrayList<PlayerBO> activeSorted = new ArrayList<>(activePlayers);
       activeSorted.sort(
           Comparator.comparing(player -> player.getOffensePoints() + player.getDefensePoints()));
       UUID lowest = activeSorted.get(0).getUuid();
@@ -41,7 +41,7 @@ public class MatchRandomizeService {
         return randomizeNewMatch(retry - 1, players);
       }
     }
-    return MatchEO.builder()
+    return MatchPropositionBO.builder()
         .uuid(UUID.randomUUID())
         .playerBlueDefenseUuid(activePlayers.get(0).getUuid())
         .playerBlueOffenseUuid(activePlayers.get(1).getUuid())

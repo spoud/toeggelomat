@@ -1,39 +1,48 @@
 package io.spoud.services;
 
-import io.spoud.entities.MatchEO;
-import io.spoud.producer.MatchResultKafkaBO;
-import io.spoud.producer.ResultProducer;
+import io.spoud.data.MatchPropositionBO;
+import io.spoud.data.MatchResultBO;
+import io.spoud.data.MatchResultWithPointsBO;
+import io.spoud.data.PlayerBO;
 import io.spoud.repositories.MatchRepository;
 import io.spoud.repositories.PlayerRepository;
-import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
+import io.spoud.streams.producer.ResultProducer;
+import lombok.extern.slf4j.Slf4j;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import java.time.ZonedDateTime;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 @Transactional
+@Slf4j
 public class MatchService {
 
-  @Inject private PlayerRepository playerRepository;
+  @Inject Random random;
 
-  @Inject private ResultProducer resultProducer;
+  @Inject PlayerRepository playerRepository;
 
-  @Inject private EventService eventService;
+  @Inject ResultProducer resultProducer;
 
-  @Inject private MatchRepository matchRepository;
+  @Inject EventService eventService;
 
-  @Inject private MatchRandomizeService matchRandomizeService;
+  @Inject MatchRepository matchRepository;
 
-  @Inject private MatchPointsService matchPointsService;
+  @Inject MatchRandomizeService matchRandomizeService;
 
-  public MatchEO randomizeMatch(List<UUID> playersUuid) {
+  @Inject MatchPointsService matchPointsService;
+
+  public MatchPropositionBO randomizeMatch(List<UUID> playersUuid) {
     if (playersUuid.size() < 4) {
       throw new IllegalArgumentException("To few players");
     }
-    MatchEO match =
+    MatchPropositionBO match =
         matchRandomizeService.randomizeNewMatch(
             2, new HashSet<>(playerRepository.findByUuids(playersUuid)));
     match = matchPointsService.computePotentialPoints(match);
@@ -41,40 +50,37 @@ public class MatchService {
     return match;
   }
 
-  public MatchEO saveMatchResults(MatchEO match) {
-    MatchPointsService.PlayersHelper playerBefore =
-        new MatchPointsService.PlayersHelper(playerRepository, match);
-
-    MatchResultKafkaBO.MatchResultKafkaBOBuilder matchResultKafkaBOBuilder =
-        MatchResultKafkaBO.builder()
-            .blueDeffenseBefore(playerBefore.getBlueDeffense().clone())
-            .blueOffenseBefore(playerBefore.getBlueOffense().clone())
-            .redDeffenseBefore(playerBefore.getRedDeffense().clone())
-            .redOffenseBefore(playerBefore.getRedOffense().clone());
-
+  public MatchPropositionBO saveMatchResults(MatchPropositionBO match) {
     match.setMatchTime(ZonedDateTime.now());
-    match = matchPointsService.computePointsAndUpdatePlayers(match);
-    matchRepository.addMatch(match);
-
-    MatchPointsService.PlayersHelper playerAfter =
-        new MatchPointsService.PlayersHelper(playerRepository, match);
-    matchResultKafkaBOBuilder
-        .matchUuid(match.getUuid())
-        .redScore(match.getRedScore())
-        .blueScore(match.getBlueScore())
-        .points(match.getPoints())
-        .matchTime(match.getMatchTime())
-        .blueDeffenseAfter(playerAfter.getBlueDeffense())
-        .blueOffenseAfter(playerAfter.getBlueOffense())
-        .redDeffenseAfter(playerAfter.getRedDeffense())
-        .redOffenseAfter(playerAfter.getRedOffense());
-
-    resultProducer.add(matchResultKafkaBOBuilder.build());
-    eventService.scoreChangedEvent();
+    resultProducer.add(
+        MatchResultBO.builder()
+            .uuid(match.getUuid())
+            .redScore(match.getRedScore())
+            .blueScore(match.getBlueScore())
+            .matchTime(match.getMatchTime())
+            .playerBlueDefenseUuid(match.getPlayerBlueDefenseUuid())
+            .playerBlueOffenseUuid(match.getPlayerBlueOffenseUuid())
+            .playerRedDefenseUuid(match.getPlayerRedDefenseUuid())
+            .playerRedOffenseUuid(match.getPlayerRedOffenseUuid())
+            .build());
     return match;
   }
 
-  public List<MatchEO> getLastMatchOfTheSeason() {
+  public MatchPropositionBO addSome() {
+    var players =
+        playerRepository.getAllPlayers().stream()
+            .map(PlayerBO::getUuid)
+            .collect(Collectors.toList());
+
+    var match = this.randomizeMatch(players);
+    match.setBlueScore(7);
+    match.setRedScore(random.nextInt(7));
+    saveMatchResults(match);
+
+    return match;
+  }
+
+  public List<MatchResultWithPointsBO> getLastMatchOfTheSeason() {
     return matchRepository.getLastMatches(20);
   }
 }

@@ -1,7 +1,7 @@
-package io.spoud.producer;
+package io.spoud.data;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
-import io.spoud.entities.PlayerEO;
+
 import java.time.ZonedDateTime;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
@@ -14,21 +14,28 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @RegisterForReflection
-public class MatchResultKafkaBO {
+public class MatchPropositionBO implements Match {
 
-  private UUID matchUuid;
+  private UUID uuid;
+
   private ZonedDateTime matchTime;
+
   private Integer redScore;
+
   private Integer blueScore;
+
   private Integer points;
 
-  private PlayerEO blueDeffenseBefore;
-  private PlayerEO blueOffenseBefore;
-  private PlayerEO redDeffenseBefore;
-  private PlayerEO redOffenseBefore;
+  private UUID playerBlueDefenseUuid;
 
-  private PlayerEO blueDeffenseAfter;
-  private PlayerEO blueOffenseAfter;
-  private PlayerEO redDeffenseAfter;
-  private PlayerEO redOffenseAfter;
+  private UUID playerBlueOffenseUuid;
+
+  private UUID playerRedDefenseUuid;
+
+  private UUID playerRedOffenseUuid;
+
+  private Integer potentialBluePoints;
+
+  private Integer potentialRedPoints;
+
 }
