@@ -15,18 +15,18 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @RegisterForReflection
-public class MatchResultBO implements Match {
+public class MatchResultBO implements MatchResult
+{
 
   private UUID uuid;
   private ZonedDateTime matchTime;
   private Integer redScore;
   private Integer blueScore;
-  private Integer points;
 
-  private UUID playerBlueDefenseUuid;
-  private UUID playerBlueOffenseUuid;
-  private UUID playerRedDefenseUuid;
-  private UUID playerRedOffenseUuid;
+  private PlayerBO playerBlueDefense;
+  private PlayerBO playerBlueOffense;
+  private PlayerBO playerRedDefense;
+  private PlayerBO playerRedOffense;
 
   public static class Deserializer extends ObjectMapperDeserializer<MatchResultBO> {
     public Deserializer(){
