@@ -3,7 +3,7 @@ package io.spoud.data;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
-public interface Match extends MatchResult{
+public interface MatchResult {
   UUID getUuid();
 
   ZonedDateTime getMatchTime();
@@ -11,12 +11,4 @@ public interface Match extends MatchResult{
   Integer getRedScore();
 
   Integer getBlueScore();
-
-  UUID getPlayerBlueDefenseUuid();
-
-  UUID getPlayerBlueOffenseUuid();
-
-  UUID getPlayerRedDefenseUuid();
-
-  UUID getPlayerRedOffenseUuid();
 }

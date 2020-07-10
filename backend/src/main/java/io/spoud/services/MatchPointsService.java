@@ -2,9 +2,10 @@ package io.spoud.services;
 
 import io.spoud.data.Match;
 import io.spoud.data.MatchPropositionBO;
+import io.spoud.data.MatchResult;
 import io.spoud.data.MatchResultBO;
-import io.spoud.data.PlayerBO;
 import io.spoud.data.MatchResultWithPointsBO;
+import io.spoud.data.PlayerBO;
 import io.spoud.repositories.PlayerRepository;
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +21,8 @@ public class MatchPointsService {
 
   public static final int ADDITIONAL_POINT_FOR_PLAYING = 1;
 
-  @Inject PlayerRepository playerRepository;
+  @Inject
+  PlayerRepository playerRepository;
 
   public MatchResultWithPointsBO computePoints(MatchResultBO matchEO) {
     MatchResultWithPointsBO resultBO = MatchResultWithPointsBO.from(matchEO);
@@ -58,11 +60,11 @@ public class MatchPointsService {
     factor *= birthdayMultiplier(playersHelper.getLooserOffense());
     factor *= birthdayMultiplier(playersHelper.getLooserDefense());
     double winnerPoints =
-        playersHelper.getWinnerDefense().getDefensePoints()
-            + playersHelper.getWinnerOffense().getOffensePoints();
+      playersHelper.getWinnerDefense().getDefensePoints()
+        + playersHelper.getWinnerOffense().getOffensePoints();
     double looserPoints =
-        playersHelper.getLooserDefense().getDefensePoints()
-            + playersHelper.getLooserOffense().getOffensePoints();
+      playersHelper.getLooserDefense().getDefensePoints()
+        + playersHelper.getLooserOffense().getOffensePoints();
     double total = winnerPoints + looserPoints;
     double slope = slope(looserPoints, total);
     return (int) Math.round(slope * factor * BASE_POINTS);
@@ -74,30 +76,32 @@ public class MatchPointsService {
 
   public static double slope(double looserPoints, double totalPoints) {
     return clamp(
-        LI_POINTS_OFFSET + LI_POINTS_SLOPE * (double) (looserPoints) / (double) (totalPoints));
+      LI_POINTS_OFFSET + LI_POINTS_SLOPE * (double) (looserPoints) / (double) (totalPoints));
   }
 
   private double birthdayMultiplier(PlayerBO player) {
     return 1; // add birthdays
   }
 
-  private double zeroMultiplier(Match match) {
+  private double zeroMultiplier(MatchResult match) {
     return match.getBlueScore() != null
-            && match.getRedScore() != null
-            && (match.getBlueScore() == 0 || match.getRedScore() == 0)
-        ? 2
-        : 1;
+      && match.getRedScore() != null
+      && (match.getBlueScore() == 0 || match.getRedScore() == 0)
+      ? 2
+      : 1;
   }
 
   @Getter
   public static class PlayersHelper {
-    private final Match match;
+
+    private final MatchResult match;
     private final PlayerBO blueOffense;
     private final PlayerBO blueDefense;
     private final PlayerBO redOffense;
     private final PlayerBO redDefense;
 
-    @Setter private boolean wonByBlue;
+    @Setter
+    private boolean wonByBlue;
 
     public PlayersHelper(PlayerRepository playerRepository, Match match) {
       this.match = match;
@@ -106,9 +110,21 @@ public class MatchPointsService {
       redDefense = playerRepository.findByUuid(match.getPlayerRedDefenseUuid());
       redOffense = playerRepository.findByUuid(match.getPlayerRedOffenseUuid());
       this.wonByBlue =
-          match.getRedScore() == null
-              || match.getBlueScore() == null
-              || match.getBlueScore() > match.getRedScore();
+        match.getRedScore() == null
+          || match.getBlueScore() == null
+          || match.getBlueScore() > match.getRedScore();
+    }
+
+    public PlayersHelper(PlayerRepository playerRepository, MatchResultBO match) {
+      this.match = match;
+      blueDefense = match.getPlayerBlueDefense();
+      blueOffense = match.getPlayerBlueOffense();
+      redDefense = match.getPlayerRedDefense();
+      redOffense = match.getPlayerRedOffense();
+      this.wonByBlue =
+        match.getRedScore() == null
+          || match.getBlueScore() == null
+          || match.getBlueScore() > match.getRedScore();
     }
 
     public PlayerBO getWinnerDefense() {

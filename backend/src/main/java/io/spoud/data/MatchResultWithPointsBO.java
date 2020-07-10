@@ -2,13 +2,12 @@ package io.spoud.data;
 
 import io.quarkus.kafka.client.serialization.ObjectMapperDeserializer;
 import io.quarkus.runtime.annotations.RegisterForReflection;
+import java.time.ZonedDateTime;
+import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.ZonedDateTime;
-import java.util.UUID;
 
 @Data
 @Builder
@@ -16,6 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @RegisterForReflection
 public class MatchResultWithPointsBO {
+
   private UUID uuid;
   private ZonedDateTime matchTime;
   private Integer redScore;
@@ -35,18 +35,19 @@ public class MatchResultWithPointsBO {
 
   public static MatchResultWithPointsBO from(MatchResultBO other) {
     return MatchResultWithPointsBO.builder()
-        .uuid(other.getUuid())
-        .matchTime(other.getMatchTime())
-        .redScore(other.getRedScore())
-        .blueScore(other.getBlueScore())
-        .playerBlueDefenseUuid(other.getPlayerBlueDefenseUuid())
-        .playerBlueOffenseUuid(other.getPlayerBlueOffenseUuid())
-        .playerRedDefenseUuid(other.getPlayerRedDefenseUuid())
-        .playerRedOffenseUuid(other.getPlayerRedOffenseUuid())
-        .build();
+      .uuid(other.getUuid())
+      .matchTime(other.getMatchTime())
+      .redScore(other.getRedScore())
+      .blueScore(other.getBlueScore())
+      .playerBlueDefenseUuid(other.getPlayerBlueDefense().getUuid())
+      .playerBlueOffenseUuid(other.getPlayerBlueOffense().getUuid())
+      .playerRedDefenseUuid(other.getPlayerRedDefense().getUuid())
+      .playerRedOffenseUuid(other.getPlayerRedOffense().getUuid())
+      .build();
   }
 
   public static class Deserializer extends ObjectMapperDeserializer<MatchResultWithPointsBO> {
+
     public Deserializer() {
       super(MatchResultWithPointsBO.class);
     }
