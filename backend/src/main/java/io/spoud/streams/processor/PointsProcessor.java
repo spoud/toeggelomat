@@ -20,7 +20,6 @@ public class PointsProcessor {
 
   @Incoming("match-result-in")
   @Outgoing("scores-out")
-  //  @Broadcast
   public MatchResultWithPointsBO process(MatchResultBO result) {
     MatchResultWithPointsBO withPoints = matchPointsService.computePoints(result);
     log.info("Compute points for match {}", withPoints);
