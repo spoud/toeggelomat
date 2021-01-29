@@ -80,7 +80,7 @@ public class MatchPointsService {
   }
 
   private double birthdayMultiplier(PlayerBO player) {
-    return 1; // add birthdays
+    return 1; // TODO add birthdays rules
   }
 
   private double zeroMultiplier(MatchResult match) {
