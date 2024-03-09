@@ -1,11 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {SubscriptionHelper} from '../../utils/subscription-helper';
-import {PlayerEO} from '../../entities/playersl';
+import {PlayerEO} from '../../entities/players';
 import {select, Store} from '@ngrx/store';
 import {MatchEO, MatchWithPlayers} from '../../entities/match';
 import {combineLatest} from 'rxjs';
-import {selectLastMatches, selectPlayersList} from '../../store/players/players.selectors';
 import {GlobalStore} from '../../store/global';
+import {CommonModule, DatePipe} from "@angular/common";
 
 export class MatchWithWinnerLooser extends MatchWithPlayers {
 
@@ -18,7 +18,7 @@ export class MatchWithWinnerLooser extends MatchWithPlayers {
   }
 
 
-  public get winners(): PlayerEO[] {
+  public get winners(): (PlayerEO | undefined)[] {
     if (this.blueWon) {
       return [this.playerBlueDefense, this.playerBlueOffense];
     } else {
@@ -26,7 +26,7 @@ export class MatchWithWinnerLooser extends MatchWithPlayers {
     }
   }
 
-  public get loosers(): PlayerEO[] {
+  public get loosers(): (PlayerEO | undefined)[] {
     if (this.blueWon) {
       return [this.playerRedDefense, this.playerRedOffense];
     } else {
@@ -44,13 +44,18 @@ export class MatchWithWinnerLooser extends MatchWithPlayers {
 }
 
 @Component({
+  standalone: true,
   selector: 'app-last-matches',
   templateUrl: './last-matches.component.html',
-  styleUrls: ['./last-matches.component.css']
+  styleUrls: ['./last-matches.component.css'],
+  imports: [
+    CommonModule,
+    DatePipe
+  ]
 })
 export class LastMatchesComponent extends SubscriptionHelper implements OnInit, OnDestroy {
 
-  public matches: MatchWithWinnerLooser[];
+  public matches: MatchWithWinnerLooser[] = [];
 
   constructor(private store: Store<GlobalStore>) {
     super();

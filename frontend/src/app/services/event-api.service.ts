@@ -2,7 +2,9 @@ import {Observable} from 'rxjs';
 import {Injectable, NgZone} from '@angular/core';
 import {MatchEO} from '../entities/match';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class EventApiService {
 
   public constructor(private zone: NgZone) {

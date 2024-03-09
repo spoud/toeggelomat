@@ -11,8 +11,8 @@
   <tbody>
   <tr *ngFor="let match of matches; let i=index">
     <td>{{match.match.matchTime | date: 'dd.MM.yyyy H:mm'}}</td>
-    <td>{{match.winners[0].nickName}}, {{match.winners[1].nickName}}</td>
-    <td>{{match.loosers[0].nickName}}, {{match.loosers[1].nickName}}</td>
+    <td>{{match.winners[0]?.nickName}}, {{match.winners[1]?.nickName}}</td>
+    <td>{{match.loosers[0]?.nickName}}, {{match.loosers[1]?.nickName}}</td>
     <td>{{match.score}}</td>
     <td>{{match.match.points}}</td>
   </tr>
