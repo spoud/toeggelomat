@@ -47,15 +47,7 @@ services:
 
   kafka:
     container_name: toeggelomat_kafka
-    image: johnnypark/kafka-zookeeper
+    image: apache/kafka
     ports:
-      - 2181:2181
       - 9092:9092
-    environment:
-      ADVERTISED_HOST: kafka
 
-#  kafka_exporter:
-#    image: braedon/prometheus-kafka-consumer-group-exporter:0.5.2
-#    command: -b kafka
-#    ports:
-#      - 9208:9208
