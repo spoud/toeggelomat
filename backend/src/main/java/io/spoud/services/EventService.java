@@ -5,7 +5,7 @@ import io.smallrye.mutiny.operators.multi.processors.BroadcastProcessor;
 import io.spoud.data.MatchPropositionBO;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 @Slf4j
 @ApplicationScoped

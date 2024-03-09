@@ -7,15 +7,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.eclipse.microprofile.reactive.streams.operators.ReactiveStreams;
 import org.reactivestreams.Publisher;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
 
 @Slf4j
-@Path("/api/v1/sse")
+//@Path("/api/v1/sse")
 @ApplicationScoped
 public class ServerSentEventResource {
 
@@ -23,19 +23,19 @@ public class ServerSentEventResource {
 
   @Inject ObjectMapper objectMapper;
 
-  @GET
-  @Path("matches")
-  @Produces(MediaType.SERVER_SENT_EVENTS)
-  public Publisher<String> newMatch() {
-    return convertToJson(eventService.newMatchStream());
-  }
-
-  @GET
-  @Path("scores")
-  @Produces(MediaType.SERVER_SENT_EVENTS)
-  public Publisher<String> scoreChanged() {
-    return convertToJson(eventService.scoreChangedStream());
-  }
+//  @GET
+//  @Path("matches")
+//  @Produces(MediaType.SERVER_SENT_EVENTS)
+//  public Publisher<String> newMatch() {
+//    return convertToJson(eventService.newMatchStream());
+//  }
+//
+//  @GET
+//  @Path("scores")
+//  @Produces(MediaType.SERVER_SENT_EVENTS)
+//  public Publisher<String> scoreChanged() {
+//    return convertToJson(eventService.scoreChangedStream());
+//  }
 
   private Publisher<String> convertToJson(Publisher<?> objStream) {
     return ReactiveStreams.fromPublisher(objStream)

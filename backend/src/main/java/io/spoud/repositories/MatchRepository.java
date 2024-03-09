@@ -2,7 +2,7 @@ package io.spoud.repositories;
 
 import io.spoud.data.MatchResultWithPointsBO;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
