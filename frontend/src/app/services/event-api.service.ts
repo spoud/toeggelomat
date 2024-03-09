@@ -2,7 +2,9 @@ import {Observable, ReplaySubject, Subject} from 'rxjs';
 import {Injectable, NgZone} from '@angular/core';
 import {MatchEO} from '../entities/match';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class EventApiService {
 
   private scoreChanges: Subject<any>;

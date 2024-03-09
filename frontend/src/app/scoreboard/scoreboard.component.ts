@@ -1,12 +1,17 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {select, Store} from '@ngrx/store';
-import {PlayerEO} from '../entities/playersl';
-import {SubscriptionHelper} from '../utils/subscription-helper';
+import {Component} from '@angular/core';
+import {PlayersScoreboardComponent} from "./players-scoreboard/players-scoreboard.component";
+import {LastMatchesComponent} from "./last-matches/last-matches.component";
+import {CommonModule} from "@angular/common";
 
 @Component({
+  standalone: true,
   selector: 'app-scoreboard',
   templateUrl: './scoreboard.component.html',
-  styleUrls: ['./scoreboard.component.css']
+  styleUrls: ['./scoreboard.component.css'],
+  imports: [
+    PlayersScoreboardComponent,
+    LastMatchesComponent
+  ]
 })
 export class ScoreboardComponent {
 

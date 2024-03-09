@@ -4,7 +4,9 @@ import {PlayerEO} from '../entities/playersl';
 import {Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class PlayersApiService {
   constructor(private http: HttpClient) {
   }

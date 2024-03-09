@@ -1,9 +1,9 @@
-import {PlayerEO} from '../../entities/playersl';
+import {PlayerEO} from '../../entities/players';
 import {Action, createReducer, on} from '@ngrx/store';
 import {playersLoaded} from './players.action';
 
 export class PlayersState {
-  public list: PlayerEO[];
+  public list: PlayerEO[] = [];
 }
 
 export const initialState: PlayersState = new PlayersState();

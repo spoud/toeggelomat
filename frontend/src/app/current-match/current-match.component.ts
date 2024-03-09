@@ -3,19 +3,24 @@ import {select, Store} from '@ngrx/store';
 import {ScoreConfirmationModalComponent} from '../score-confirmation-modal/score-confirmation-modal.component';
 import {SubscriptionHelper} from '../utils/subscription-helper';
 import {MatchEO, MatchWithPlayers} from '../entities/match';
-import {PlayerEO} from '../entities/playersl';
+import {PlayerEO} from '../entities/players';
 import {combineLatest} from 'rxjs';
-import {selectCurrentMatch, selectPlayersList} from '../store/players/players.selectors';
 import {GlobalStore} from '../store/global';
+import {CommonModule} from "@angular/common";
 
 @Component({
+  standalone: true,
   selector: 'app-current-match',
   templateUrl: './current-match.component.html',
-  styleUrls: ['./current-match.component.css']
+  styleUrls: ['./current-match.component.css'],
+  imports: [
+    CommonModule,
+    ScoreConfirmationModalComponent
+  ]
 })
 export class CurrentMatchComponent extends SubscriptionHelper implements OnInit, OnDestroy {
 
-  public currentMatch: MatchWithPlayers;
+  public currentMatch?: MatchWithPlayers;
 
   public blueScoreList: number[] = [8, 7, 6, 5, 4, 3, 2, 1, 0];
   public redScoreList: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
@@ -23,7 +28,7 @@ export class CurrentMatchComponent extends SubscriptionHelper implements OnInit,
   public redScore = -1;
 
   @ViewChild('confirm')
-  private confirmDialog: ScoreConfirmationModalComponent;
+  private confirmDialog?: ScoreConfirmationModalComponent;
 
   constructor(private store: Store<GlobalStore>) {
     super();
@@ -35,9 +40,15 @@ export class CurrentMatchComponent extends SubscriptionHelper implements OnInit,
         this.store.pipe(select('matches'), select('currentMatch')),
         this.store.pipe(select('players'), select('list'))
       ])
-        .subscribe((arr: [MatchEO, PlayerEO[]]) =>
-          this.currentMatch = MatchWithPlayers.createMatchWithPlayer(arr[0], arr[1])
-        ));
+        .subscribe({
+            next: ([match, players]: [MatchEO | undefined, PlayerEO[]]) => {
+              if (match) {
+                this.currentMatch = MatchWithPlayers.createMatchWithPlayer(match, players)
+              }
+            }
+          }
+        )
+    );
   }
 
   ngOnDestroy(): void {
@@ -50,7 +61,7 @@ export class CurrentMatchComponent extends SubscriptionHelper implements OnInit,
       match.blueScore = this.blueScore;
       match.redScore = this.redScore;
       this.currentMatch.match = match;
-      this.confirmDialog.confirmMatchResult(this.currentMatch);
+      this.confirmDialog?.confirmMatchResult(this.currentMatch);
     }
   }
 

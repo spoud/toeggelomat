@@ -1,29 +1,28 @@
-import {PlayerEO} from './playersl';
-import {GlobalStore} from '../store/global';
+import {PlayerEO} from './players';
 
-export class MatchEO {
+export interface MatchEO {
 
-  public uuid: string;
+  uuid: string;
 
-  public matchTime: Date;
+  matchTime: Date;
 
-  public redScore: number;
+  redScore: number;
 
-  public blueScore: number;
+  blueScore: number;
 
-  public points: number;
+  points: number;
 
-  public playerRedDefenseUuid: string;
+  playerRedDefenseUuid: string;
 
-  public playerRedOffenseUuid: string;
+  playerRedOffenseUuid: string;
 
-  public playerBlueDefenseUuid: string;
+  playerBlueDefenseUuid: string;
 
-  public playerBlueOffenseUuid: string;
+  playerBlueOffenseUuid: string;
 
-  public potentialBluePoints: number;
+  potentialBluePoints: number;
 
-  public potentialRedPoints: number;
+  potentialRedPoints: number;
 }
 
 
@@ -32,13 +31,13 @@ export class MatchWithPlayers {
   constructor(public match: MatchEO) {
   }
 
-  public playerRedDefense: PlayerEO;
+  public playerRedDefense?: PlayerEO;
 
-  public playerRedOffense: PlayerEO;
+  public playerRedOffense?: PlayerEO;
 
-  public playerBlueDefense: PlayerEO;
+  public playerBlueDefense?: PlayerEO;
 
-  public playerBlueOffense: PlayerEO;
+  public playerBlueOffense?: PlayerEO;
 
   static createMatchWithPlayer(match: MatchEO, players: PlayerEO[]): MatchWithPlayers {
     const matchWithPlayer: MatchWithPlayers = new MatchWithPlayers(match);

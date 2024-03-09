@@ -1,10 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {select, Store} from '@ngrx/store';
-import {PlayerEO} from '../entities/playersl';
+import {PlayerEO} from '../entities/players';
 import {startMatch} from '../store/matches/maches.actions';
 import {SubscriptionHelper} from '../utils/subscription-helper';
-import {selectPlayersList} from '../store/players/players.selectors';
 import {GlobalStore} from '../store/global';
+import {SpoudAvatarComponent} from "../spoud-avatar/spoud-avatar.component";
+import {CommonModule} from "@angular/common";
 
 export class SelectablePlayer {
   constructor(public player: PlayerEO, public selected: boolean = false) {
@@ -12,13 +13,18 @@ export class SelectablePlayer {
 }
 
 @Component({
+  standalone: true,
   selector: 'app-players-selection',
   templateUrl: './players-selection.component.html',
-  styleUrls: ['./players-selection.component.css']
+  styleUrls: ['./players-selection.component.css'],
+  imports: [
+    CommonModule,
+    SpoudAvatarComponent
+  ]
 })
 export class PlayersSelectionComponent extends SubscriptionHelper implements OnInit, OnDestroy {
 
-  public players: SelectablePlayer[];
+  public players: SelectablePlayer[] = [];
   public enoughToStart = false;
   public playerCount = 0;
 

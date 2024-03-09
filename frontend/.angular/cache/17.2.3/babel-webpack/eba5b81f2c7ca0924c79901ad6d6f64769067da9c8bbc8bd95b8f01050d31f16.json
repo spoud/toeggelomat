@@ -1,0 +1,1 @@
+{"ast":null,"code":"export class SubscriptionHelper {\n  constructor() {\n    this.subscriptions = [];\n  }\n  addSubscription(sub) {\n    this.subscriptions.push(sub);\n  }\n  unsubscribeAll() {\n    this.subscriptions.forEach(s => s.unsubscribe());\n    this.subscriptions = [];\n  }\n}","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}
