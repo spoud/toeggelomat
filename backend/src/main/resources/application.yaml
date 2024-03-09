@@ -1,0 +1,27 @@
+kafka:
+  bootstrap:
+    servers: kafka:9092
+
+quarkus:
+  datasource:
+    db-kind: postgresql
+    username: postgres
+    password: postgres
+    jdbc:
+      url: jdbc:postgresql://postgres:5432/postgres
+      driver: org.postgresql.Driver
+  flyway:
+    migrate-at-start: true
+  ssl:
+    native: true
+  native:
+    container-build: true
+
+mp:
+  messaging:
+    outgoing:
+      match-result:
+        connector: smallrye-kafka
+        topic: toeggelomat-test
+        value-serializer: org.apache.kafka.common.serialization.StringSerializer
+

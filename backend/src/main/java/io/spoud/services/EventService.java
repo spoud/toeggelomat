@@ -1,7 +1,7 @@
 package io.spoud.services;
 
 import io.spoud.entities.MatchEO;
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscriber;
 import org.slf4j.Logger;
