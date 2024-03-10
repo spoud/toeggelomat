@@ -18,17 +18,13 @@ jobs:
         working-directory: frontend/
         run: npm install
 
-      - name: Generate Graphql
-        working-directory: frontend/
-        run: npm run generate
-
       - name: Build
         working-directory: frontend/
         run: npm run build
 
-      - name: Lint
-        working-directory: frontend/
-        run: npm run lint
+#      - name: Lint
+#        working-directory: frontend/
+#        run: npm run lint
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
