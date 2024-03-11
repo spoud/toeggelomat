@@ -1,1 +1,0 @@
-{"ast":null,"code":"import { createAction, props } from '@ngrx/store';\nexport const playersReload = createAction('[Players] reload');\nexport const playersLoaded = createAction('[Players] loaded', props());","map":null,"metadata":{},"sourceType":"module","externalDependencies":[]}
