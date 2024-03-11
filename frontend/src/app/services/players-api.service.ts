@@ -1,6 +1,6 @@
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {PlayerEO} from '../entities/playersl';
+import {PlayerEO} from '../entities/players';
 import {Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
 
@@ -18,11 +18,11 @@ export class PlayersApiService {
       })
       .pipe(
         map((res: HttpResponse<PlayerEO[]>) => res.body),
-        map(list => list.map((p: PlayerEO) => {
+        map(list => list?.map((p: PlayerEO) => {
           p.lastMatchTime = p.lastMatchTime && new Date(p.lastMatchTime);
           return p;
         })),
-      );
+      ) as Observable<PlayerEO[]>;
 
   }
 }

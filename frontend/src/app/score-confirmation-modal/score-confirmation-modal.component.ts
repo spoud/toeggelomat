@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, NgbModalModule} from '@ng-bootstrap/ng-bootstrap';
 import {saveMatchScore} from '../store/matches/maches.actions';
 import {Store} from '@ngrx/store';
 import {interval, Subscription} from 'rxjs';
@@ -14,6 +14,7 @@ import {CommonModule} from "@angular/common";
   styleUrls: ['./score-confirmation-modal.component.css'],
   imports: [
     CommonModule,
+    NgbModalModule
   ]
 })
 export class ScoreConfirmationModalComponent implements OnInit {

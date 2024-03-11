@@ -24,7 +24,7 @@ export class MatchesApiService {
       })
       .pipe(
         map((res: HttpResponse<MatchEO>) => res.body)
-      );
+      ) as Observable<MatchEO>;
   }
 
   public saveScore(match: MatchEO): Observable<MatchEO> {
@@ -35,7 +35,7 @@ export class MatchesApiService {
       })
       .pipe(
         map((res: HttpResponse<MatchEO>) => res.body)
-      );
+      ) as Observable<MatchEO>;
   }
 
   public getLastMaches(): Observable<MatchEO[]> {
@@ -45,11 +45,11 @@ export class MatchesApiService {
       })
       .pipe(
         map((res: HttpResponse<MatchEO[]>) => res.body),
-        map(list => list.map((m: MatchEO) => {
+        map(list => list?.map((m: MatchEO) => {
           m.matchTime = new Date(m.matchTime);
           return m;
         })),
-        map(list => list.sort((l, r) => r.matchTime.getTime() - l.matchTime.getTime()))
-      );
+        map(list => list?.sort((l, r) => r.matchTime.getTime() - l.matchTime.getTime()))
+      ) as Observable<MatchEO[]>;
   }
 }

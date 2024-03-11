@@ -7,6 +7,7 @@ import {PlayerEO} from '../entities/players';
 import {combineLatest} from 'rxjs';
 import {GlobalStore} from '../store/global';
 import {CommonModule} from "@angular/common";
+import {RouterModule} from "@angular/router";
 
 @Component({
   standalone: true,
@@ -15,6 +16,7 @@ import {CommonModule} from "@angular/common";
   styleUrls: ['./current-match.component.css'],
   imports: [
     CommonModule,
+    RouterModule,
     ScoreConfirmationModalComponent
   ]
 })

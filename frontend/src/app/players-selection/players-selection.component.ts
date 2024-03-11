@@ -6,6 +6,7 @@ import {SubscriptionHelper} from '../utils/subscription-helper';
 import {GlobalStore} from '../store/global';
 import {SpoudAvatarComponent} from "../spoud-avatar/spoud-avatar.component";
 import {CommonModule} from "@angular/common";
+import {RouterModule} from "@angular/router";
 
 export class SelectablePlayer {
   constructor(public player: PlayerEO, public selected: boolean = false) {
@@ -19,6 +20,7 @@ export class SelectablePlayer {
   styleUrls: ['./players-selection.component.css'],
   imports: [
     CommonModule,
+    RouterModule,
     SpoudAvatarComponent
   ]
 })
