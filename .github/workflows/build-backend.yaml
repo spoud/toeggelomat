@@ -3,6 +3,8 @@ name: Build backend
 on:
   push:
     branches: [ main ]
+    tags:
+      - '*'
   pull_request:
     branches: [ main ]
     paths: ['backend/**']
@@ -63,10 +65,20 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push
+      - name: Build and push latest
+        if: github.ref == 'refs/heads/main
         uses: docker/build-push-action@v5
         with:
           context: backend/
           file: backend/src/main/docker/Dockerfile.jvm
           push: true
           tags: spoud/toeggelomat-backend:latest
+
+      - name: Build and push tag
+        if: startsWith(github.event.ref, 'refs/tags/')
+        uses: docker/build-push-action@v5
+        with:
+          context: backend/
+          file: backend/src/main/docker/Dockerfile.jvm
+          push: true
+          tags: spoud/toeggelomat-backend:${{  github.ref_name }}
