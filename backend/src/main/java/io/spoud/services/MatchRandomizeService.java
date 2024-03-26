@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @ApplicationScoped
 public class MatchRandomizeService {
 
-  @Inject private Random random;
+  @Inject Random random;
 
   public MatchEO randomizeNewMatch(int retry, Set<PlayerEO> players) {
     ArrayList<PlayerEO> listCopy = new ArrayList<>(players);

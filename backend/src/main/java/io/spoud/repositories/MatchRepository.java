@@ -13,9 +13,9 @@ public class MatchRepository {
 
   public static final QMatchEO MATCH = QMatchEO.matchEO;
 
-  @Inject private JPAQueryFactory jpaQueryFactory;
+  @Inject JPAQueryFactory jpaQueryFactory;
 
-  @Inject private EntityManager em;
+  @Inject EntityManager em;
 
   public List<MatchEO> getLastMatches(int nb) {
     return jpaQueryFactory.selectFrom(MATCH).orderBy(MATCH.matchTime.desc()).limit(nb).fetch();

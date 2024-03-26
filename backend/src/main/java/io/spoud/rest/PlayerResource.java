@@ -14,7 +14,7 @@ import jakarta.ws.rs.core.MediaType;
 @Path("/api/v1/players")
 public class PlayerResource {
 
-  @Inject private PlayerRepository playerRepository;
+  @Inject PlayerRepository playerRepository;
 
   @GET
   @Produces(MediaType.APPLICATION_JSON)

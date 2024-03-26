@@ -14,7 +14,7 @@ public class PlayerRepository {
 
   public static final QPlayerEO PLAYER = QPlayerEO.playerEO;
 
-  @Inject private JPAQueryFactory jpaQueryFactory;
+  @Inject JPAQueryFactory jpaQueryFactory;
 
   public void updatePointsAndLastMatch(PlayerEO player) {
     jpaQueryFactory

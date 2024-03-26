@@ -18,9 +18,9 @@ import org.reactivestreams.Publisher;
 @ApplicationScoped
 public class ServerSentEventResource {
 
-  @Inject private EventService eventService;
+  @Inject EventService eventService;
 
-  @Inject private ObjectMapper objectMapper;
+  @Inject ObjectMapper objectMapper;
 
   @GET
   @Path("matches")

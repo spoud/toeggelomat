@@ -15,7 +15,7 @@ import jakarta.ws.rs.core.MediaType;
 @ApplicationScoped
 @Path("/api/v1/matches")
 public class MatchResource {
-  @Inject private MatchService matchService;
+  @Inject MatchService matchService;
 
   @POST
   @Path("set-score")

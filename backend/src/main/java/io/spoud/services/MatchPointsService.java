@@ -18,7 +18,7 @@ public class MatchPointsService {
 
   public static final int ADDITIONAL_POINT_FOR_PLAYING = 1;
 
-  @Inject private PlayerRepository playerRepository;
+  @Inject PlayerRepository playerRepository;
 
   public MatchEO computePointsAndUpdatePlayers(MatchEO matchEO) {
     PlayersHelper playersHelper = new PlayersHelper(playerRepository, matchEO);

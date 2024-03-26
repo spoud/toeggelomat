@@ -2,32 +2,29 @@ package io.spoud.services;
 
 import io.spoud.entities.MatchEO;
 import io.spoud.producer.MatchResultKafkaBO;
-import io.spoud.producer.ResultProducer;
 import io.spoud.repositories.MatchRepository;
 import io.spoud.repositories.PlayerRepository;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 
 @ApplicationScoped
 @Transactional
 public class MatchService {
 
-  @Inject private PlayerRepository playerRepository;
+  @Inject PlayerRepository playerRepository;
 
-  @Inject private ResultProducer resultProducer;
+  @Inject EventService eventService;
 
-  @Inject private EventService eventService;
+  @Inject MatchRepository matchRepository;
 
-  @Inject private MatchRepository matchRepository;
+  @Inject MatchRandomizeService matchRandomizeService;
 
-  @Inject private MatchRandomizeService matchRandomizeService;
-
-  @Inject private MatchPointsService matchPointsService;
+  @Inject MatchPointsService matchPointsService;
 
   public MatchEO randomizeMatch(List<UUID> playersUuid) {
     if (playersUuid.size() < 4) {
@@ -69,7 +66,6 @@ public class MatchService {
         .redDeffenseAfter(playerAfter.getRedDeffense())
         .redOffenseAfter(playerAfter.getRedOffense());
 
-    resultProducer.add(matchResultKafkaBOBuilder.build());
     eventService.scoreChangedEvent();
     return match;
   }
