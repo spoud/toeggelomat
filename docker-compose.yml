@@ -28,7 +28,7 @@ services:
     build: 
       context: backend/
       # dockerfile: src/main/docker/Dockerfile.jvm
-      dockerfile: src/main/docker/Dockerfile.native
+      dockerfile: src/main/docker/Dockerfile.native-micro
     ports:
       - 8080
     labels:
