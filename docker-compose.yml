@@ -24,7 +24,7 @@ services:
 
   backend:
     container_name: toeggelomat_backend
-    image: spoud/toeggelomat-backend:native
+    image: spoud/toeggelomat-backend
     build: 
       context: backend/
       # dockerfile: src/main/docker/Dockerfile.jvm

@@ -76,4 +76,4 @@ jobs:
           context: backend/
           file: backend/src/main/docker/Dockerfile.native-micro
           push: true
-          tags: spoud/toeggelomat-backend:${{  github.ref_name }}
+          tags: spoud/toeggelomat-backend:${{ github.ref_name }}
