@@ -3,19 +3,19 @@ package io.spoud.repositories;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import io.spoud.entities.MatchEO;
 import io.spoud.entities.QMatchEO;
-import java.util.List;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
+import java.util.List;
+import lombok.RequiredArgsConstructor;
 
 @ApplicationScoped
+@RequiredArgsConstructor
 public class MatchRepository {
 
   public static final QMatchEO MATCH = QMatchEO.matchEO;
 
-  @Inject JPAQueryFactory jpaQueryFactory;
-
-  @Inject EntityManager em;
+  private final JPAQueryFactory jpaQueryFactory;
+  private final EntityManager em;
 
   public List<MatchEO> getLastMatches(int nb) {
     return jpaQueryFactory.selectFrom(MATCH).orderBy(MATCH.matchTime.desc()).limit(nb).fetch();

@@ -29,7 +29,9 @@ export class PlayersScoreboardComponent extends SubscriptionHelper implements On
   ngOnInit() {
     this.addSubscription(this.store.pipe(select('players'), select('list'))
       .subscribe((list: PlayerEO[]) => {
-        this.players = list.slice().sort((l, r) => r.offensePoints + r.defensePoints - l.offensePoints - l.defensePoints);
+        this.players = list.slice()
+          .filter(player => player.lastMatchTime)
+          .sort((l, r) => r.offensePoints + r.defensePoints - l.offensePoints - l.defensePoints);
       }));
   }
 

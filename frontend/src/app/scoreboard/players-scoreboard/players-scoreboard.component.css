@@ -1,3 +1,9 @@
 .point-details{
   font-size: 0.85em;
 }
+
+.center{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}

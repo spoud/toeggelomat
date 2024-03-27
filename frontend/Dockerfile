@@ -1,4 +1,4 @@
-FROM nginx
+FROM nginx:alpine
 
 # Configure for angular fallback routes
 COPY nginx.conf /etc/nginx/nginx.conf

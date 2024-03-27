@@ -3,18 +3,19 @@ package io.spoud.repositories;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import io.spoud.entities.PlayerEO;
 import io.spoud.entities.QPlayerEO;
+import jakarta.enterprise.context.ApplicationScoped;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
+import lombok.RequiredArgsConstructor;
 
 @ApplicationScoped
+@RequiredArgsConstructor
 public class PlayerRepository {
 
   public static final QPlayerEO PLAYER = QPlayerEO.playerEO;
 
-  @Inject JPAQueryFactory jpaQueryFactory;
+  private final JPAQueryFactory jpaQueryFactory;
 
   public void updatePointsAndLastMatch(PlayerEO player) {
     jpaQueryFactory

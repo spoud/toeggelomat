@@ -3,22 +3,35 @@ package io.spoud.services;
 import io.spoud.entities.MatchEO;
 import io.spoud.entities.PlayerEO;
 import io.spoud.repositories.PlayerRepository;
+import jakarta.enterprise.context.ApplicationScoped;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.List;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ApplicationScoped
+@RequiredArgsConstructor
 public class MatchPointsService {
 
   public static final int ADDITIONAL_POINT_FOR_PLAYING = 1;
+  private static final double LI_POINTS_SLOPE = 4;
+  private static final double LI_POINTS_OFFSET = -1.5;
+  private static final int BASE_POINTS = 40;
 
-  @Inject PlayerRepository playerRepository;
+  private final PlayerRepository playerRepository;
+
+  private static double clamp(double d) {
+    return Math.max(Math.min(d, 1.0), 0);
+  }
+
+  public static double slope(double looserPoints, double totalPoints) {
+    return clamp(
+        LI_POINTS_OFFSET + LI_POINTS_SLOPE * (double) (looserPoints) / (double) (totalPoints));
+  }
 
   public MatchEO computePointsAndUpdatePlayers(MatchEO matchEO) {
     PlayersHelper playersHelper = new PlayersHelper(playerRepository, matchEO);
@@ -71,11 +84,6 @@ public class MatchPointsService {
     return matchEO;
   }
 
-  private static final double LI_POINTS_SLOPE = 4;
-  private static final double LI_POINTS_OFFSET = -1.5;
-
-  private static final int BASE_POINTS = 40;
-
   private int calcPoints(PlayersHelper playersHelper) {
     double factor = 1.0;
     factor *= zeroMultiplier(playersHelper.getMatch());
@@ -92,15 +100,6 @@ public class MatchPointsService {
     double total = winnerPoints + looserPoints;
     double slope = slope(looserPoints, total);
     return (int) Math.round(slope * factor * BASE_POINTS);
-  }
-
-  private static double clamp(double d) {
-    return Math.max(Math.min(d, 1.0), 0);
-  }
-
-  public static double slope(double looserPoints, double totalPoints) {
-    return clamp(
-        LI_POINTS_OFFSET + LI_POINTS_SLOPE * (double) (looserPoints) / (double) (totalPoints));
   }
 
   private double birthdayMultiplier(PlayerEO player) {

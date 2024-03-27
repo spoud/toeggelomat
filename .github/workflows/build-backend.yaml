@@ -22,24 +22,19 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: maven
-
-      - name: Cache SonarCloud packages
-        uses: actions/cache@v3
+      - name: Install UPX
+        uses: crazy-max/ghaction-upx@v3
         with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-          restore-keys: ${{ runner.os }}-sonar
+          install-only: true
       - name: Cache Maven packages
         uses: actions/cache@v3
         with:
           path: ~/.m2
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
-
       - name: Build with maven
         working-directory: backend/
-        run: mvn -B clean package
-
+        run: mvn -B clean package -Pnative
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -70,7 +65,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: backend/
-          file: backend/src/main/docker/Dockerfile.jvm
+          file: backend/src/main/docker/Dockerfile.native-micro
           push: true
           tags: spoud/toeggelomat-backend:latest
 
@@ -79,6 +74,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: backend/
-          file: backend/src/main/docker/Dockerfile.jvm
+          file: backend/src/main/docker/Dockerfile.native-micro
           push: true
           tags: spoud/toeggelomat-backend:${{  github.ref_name }}

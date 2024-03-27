@@ -2,6 +2,7 @@ package io.spoud.services;
 
 import io.spoud.entities.MatchEO;
 import io.spoud.entities.PlayerEO;
+import jakarta.enterprise.context.ApplicationScoped;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -9,15 +10,15 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.IntStream;
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ApplicationScoped
+@RequiredArgsConstructor
 public class MatchRandomizeService {
 
-  @Inject Random random;
+  private final Random random;
 
   public MatchEO randomizeNewMatch(int retry, Set<PlayerEO> players) {
     ArrayList<PlayerEO> listCopy = new ArrayList<>(players);
