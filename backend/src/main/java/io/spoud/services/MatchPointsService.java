@@ -17,7 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class MatchPointsService {
 
-  public static final int ADDITIONAL_POINT_FOR_PLAYING = 1;
+  public static final int ADDITIONAL_POINT_FOR_LOSING = 5;
+  public static final int ADDITIONAL_POINT_FOR_WINNING = 0;
   private static final double LI_POINTS_SLOPE = 4;
   private static final double LI_POINTS_OFFSET = -1.5;
   private static final int BASE_POINTS = 40;
@@ -42,25 +43,25 @@ public class MatchPointsService {
         .setDefensePoints(
             playersHelper.getWinnerDeffence().getDefensePoints()
                 + points
-                + ADDITIONAL_POINT_FOR_PLAYING);
+                + ADDITIONAL_POINT_FOR_WINNING);
     playersHelper
         .getWinnerOffense()
         .setOffensePoints(
             playersHelper.getWinnerOffense().getOffensePoints()
                 + points
-                + ADDITIONAL_POINT_FOR_PLAYING);
+                + ADDITIONAL_POINT_FOR_WINNING);
     playersHelper
         .getLooserDeffence()
         .setDefensePoints(
             playersHelper.getLooserDeffence().getDefensePoints()
                 - points
-                + ADDITIONAL_POINT_FOR_PLAYING);
+                + ADDITIONAL_POINT_FOR_LOSING);
     playersHelper
         .getLooserOffense()
         .setOffensePoints(
             playersHelper.getLooserOffense().getOffensePoints()
                 - points
-                + ADDITIONAL_POINT_FOR_PLAYING);
+                + ADDITIONAL_POINT_FOR_LOSING);
 
     ZonedDateTime now = ZonedDateTime.now();
     playersHelper
@@ -86,11 +87,7 @@ public class MatchPointsService {
 
   private int calcPoints(PlayersHelper playersHelper) {
     double factor = 1.0;
-    factor *= zeroMultiplier(playersHelper.getMatch());
-    factor *= birthdayMultiplier(playersHelper.getWinnerOffense());
-    factor *= birthdayMultiplier(playersHelper.getWinnerDeffence());
-    factor *= birthdayMultiplier(playersHelper.getLooserOffense());
-    factor *= birthdayMultiplier(playersHelper.getLooserDeffence());
+    factor *= sevenToZeroMultiplier(playersHelper.getMatch());
     double winnerPoints =
         playersHelper.getWinnerDeffence().getDefensePoints()
             + playersHelper.getWinnerOffense().getOffensePoints();
@@ -102,11 +99,7 @@ public class MatchPointsService {
     return (int) Math.round(slope * factor * BASE_POINTS);
   }
 
-  private double birthdayMultiplier(PlayerEO player) {
-    return 1; // add birthdays
-  }
-
-  private double zeroMultiplier(MatchEO match) {
+  private double sevenToZeroMultiplier(MatchEO match) {
     return match.getBlueScore() != null
             && match.getRedScore() != null
             && (match.getBlueScore() == 0 || match.getRedScore() == 0)
