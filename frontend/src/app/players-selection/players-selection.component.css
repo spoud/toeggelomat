@@ -33,12 +33,14 @@ div.jumbotron {
 .player {
   font-size: 1.5em;
   flex: 1 1 350px;
-  height: 60px;
   background: #303030;
   cursor: pointer;
   margin: 10px;
   border-radius: 0.3rem;
   padding: 10px;
+}
+.player:hover {
+  background: #1c2b39;
 }
 
 .player.selected {

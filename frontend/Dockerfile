@@ -1,11 +1,9 @@
-FROM nginx:1.16.0-alpine
+FROM nginx:alpine
 
-# copy artifact build from the 'build environment'
-COPY /dist/frontend /usr/share/nginx/html
-COPY /nginx.conf /etc/nginx/nginx.conf
+# Configure for angular fallback routes
+COPY nginx.conf /etc/nginx/nginx.conf
 
-# expose port 80
-EXPOSE 80
+# Copy built app to wwwroot
+COPY /dist/toeggelomat/browser /usr/share/nginx/html
 
-# run nginx
-CMD ["nginx", "-g", "daemon off;"]
+HEALTHCHECK --interval=5s CMD curl http://localhost:80

@@ -1,25 +1,31 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, NgbModalModule} from '@ng-bootstrap/ng-bootstrap';
 import {saveMatchScore} from '../store/matches/maches.actions';
 import {Store} from '@ngrx/store';
 import {interval, Subscription} from 'rxjs';
 import {take} from 'rxjs/operators';
 import {MatchWithPlayers} from '../entities/match';
+import {CommonModule} from "@angular/common";
 
 @Component({
+  standalone: true,
   selector: 'app-score-confirmation-modal',
   templateUrl: './score-confirmation-modal.component.html',
-  styleUrls: ['./score-confirmation-modal.component.css']
+  styleUrls: ['./score-confirmation-modal.component.css'],
+  imports: [
+    CommonModule,
+    NgbModalModule
+  ]
 })
 export class ScoreConfirmationModalComponent implements OnInit {
 
   @ViewChild('content')
   private content: any;
 
-  public redWon: boolean;
-  public match: MatchWithPlayers;
-  public timeout: number;
-  private intervalSubscription: Subscription;
+  public redWon?: boolean;
+  public match?: MatchWithPlayers;
+  public timeout: number = 0;
+  private intervalSubscription?: Subscription;
 
   constructor(private modalService: NgbModal, private store: Store<{ count: number }>) {
   }
@@ -35,7 +41,7 @@ export class ScoreConfirmationModalComponent implements OnInit {
       if (result === 'save') {
         this.confirmScore();
       }
-      this.intervalSubscription.unsubscribe();
+      this.intervalSubscription?.unsubscribe();
     });
 
     this.timeout = 10;
@@ -52,7 +58,9 @@ export class ScoreConfirmationModalComponent implements OnInit {
 
   private confirmScore(): void {
     console.log('confirm match', this.match);
-    this.store.dispatch(saveMatchScore({match: this.match.match}));
+    if (this.match) {
+      this.store.dispatch(saveMatchScore({match: this.match.match}));
+    }
   }
 
 }

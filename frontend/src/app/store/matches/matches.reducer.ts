@@ -3,12 +3,12 @@ import {Action, createReducer, on} from '@ngrx/store';
 import {matchesReloaded, matchStarted} from './maches.actions';
 
 export class MatchesState {
-  public currentMatch: MatchEO;
-  public lastMatches: MatchEO[];
+  public currentMatch?: MatchEO;
+  public lastMatches: MatchEO[] = [];
 }
 
 const initialState = new MatchesState();
-initialState.currentMatch = null;
+initialState.currentMatch = undefined;
 initialState.lastMatches = [];
 
 export function machesReducer(s: MatchesState | undefined, a: Action) {

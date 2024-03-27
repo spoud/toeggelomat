@@ -1,11 +1,12 @@
 import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
-import {Observable, of} from 'rxjs';
+import {Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
 import {map} from 'rxjs/operators';
-import {environment} from '../../environments/environment';
 import {MatchEO} from '../entities/match';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class MatchesApiService {
 
   private readonly headers = new HttpHeaders({
@@ -23,7 +24,7 @@ export class MatchesApiService {
       })
       .pipe(
         map((res: HttpResponse<MatchEO>) => res.body)
-      );
+      ) as Observable<MatchEO>;
   }
 
   public saveScore(match: MatchEO): Observable<MatchEO> {
@@ -34,7 +35,7 @@ export class MatchesApiService {
       })
       .pipe(
         map((res: HttpResponse<MatchEO>) => res.body)
-      );
+      ) as Observable<MatchEO>;
   }
 
   public getLastMaches(): Observable<MatchEO[]> {
@@ -44,11 +45,11 @@ export class MatchesApiService {
       })
       .pipe(
         map((res: HttpResponse<MatchEO[]>) => res.body),
-        map(list => list.map((m: MatchEO) => {
+        map(list => list?.map((m: MatchEO) => {
           m.matchTime = new Date(m.matchTime);
           return m;
         })),
-        map(list => list.sort((l, r) => r.matchTime.getTime() - l.matchTime.getTime()))
-      );
+        map(list => list?.sort((l, r) => r.matchTime.getTime() - l.matchTime.getTime()))
+      ) as Observable<MatchEO[]>;
   }
 }

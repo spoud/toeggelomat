@@ -3,7 +3,7 @@
   padding: 0;
 }
 
-body{
+body {
   margin: auto 20px;
   height: 1vw;
 }
@@ -24,4 +24,8 @@ body{
 .blue-team-backgroundcolor {
   background-color: #2980BA;
   color: white;
+}
+
+.modal {
+  z-index: 1060;
 }

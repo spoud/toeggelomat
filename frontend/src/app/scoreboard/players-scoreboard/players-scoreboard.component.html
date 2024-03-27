@@ -9,15 +9,17 @@
   </thead>
   <tbody>
   <tr *ngFor="let player of players; let i=index">
-    <th scope="row">{{i + 1}}</th>
+    <th scope="row">{{ i + 1 }}</th>
     <td>
-      <app-spoud-avatar [email]="player.email"></app-spoud-avatar>
-      {{player.nickName}}
+      <div class="center">
+        <app-spoud-avatar [player]="player"></app-spoud-avatar>
+        {{ player.nickName }}
+      </div>
     </td>
-    <td>{{player.offensePoints + player.defensePoints}}
-      <span class="point-details">(off: {{player.offensePoints}}, def: {{player.defensePoints}})</span>
+    <td>{{ player.offensePoints + player.defensePoints }}
+      <span class="point-details">(off: {{ player.offensePoints }}, def: {{ player.defensePoints }})</span>
     </td>
-    <td>{{player.lastMatchTime | lastMatchTime}}</td>
+    <td>{{ player.lastMatchTime | lastMatchTime }}</td>
   </tr>
   </tbody>
 </table>
