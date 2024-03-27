@@ -9,7 +9,6 @@ import {GlobalStore} from '../global';
 import {MatchEO} from '../../entities/match';
 import {Router} from '@angular/router';
 import {playersReload} from '../players/players.action';
-import {EventApiService} from '../../services/event-api.service';
 
 @Injectable()
 export class MatchesEffect {
@@ -29,24 +28,6 @@ export class MatchesEffect {
           catchError(() => EMPTY)
         ))
     ));
-
-  // TODO put back when we have slack integration
-  // initMatchStream$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(ROOT_EFFECTS_INIT),
-  //     mergeMap(param => {
-  //       return this.eventApiService.matchStream()
-  //         .pipe(
-  //           map(match => {
-  //             console.log('Start match from event', match);
-  //             this.router.navigate([`current-match`]);
-  //             return matchStarted({match});
-  //           }),
-  //           catchError(() => EMPTY)
-  //         );
-  //     })
-  //   )
-  // );
 
   startMatch$ = createEffect(() => this.actions$.pipe(
     ofType(startMatch),
@@ -77,7 +58,6 @@ export class MatchesEffect {
   constructor(
     private actions$: Actions,
     private matchesApiService: MatchesApiService,
-    private eventApiService: EventApiService,
     private store: Store<GlobalStore>,
     private router: Router
   ) {

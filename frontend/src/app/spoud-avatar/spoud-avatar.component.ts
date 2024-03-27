@@ -43,7 +43,6 @@ export class SpoudAvatarComponent implements OnInit {
     if (this.player) {
       this.initials = this.player.nickName.slice(0, 2);
       index = this.hashCode(this.player.email) % this.colors.length;
-      console.log('index', index, this.player.nickName, this.hashCode(this.player.email));
     } else {
       index = Math.floor(Math.random() * Math.floor(this.colors.length));
     }
