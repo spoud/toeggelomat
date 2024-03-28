@@ -60,6 +60,9 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Restore permission
+        run: sudo chmod +x backend/target/*-runner
+
       - name: Build and push latest
         if: github.ref == 'refs/heads/main'
         uses: docker/build-push-action@v5
