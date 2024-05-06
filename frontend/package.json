@@ -30,7 +30,7 @@
     "@ng-bootstrap/ng-bootstrap": "^16.0.0",
     "@ngrx/effects": "^17.1.1",
     "@ngrx/store": "^17.1.1",
-    "@ngrx/store-devtools": "^17.1.1",
+    "@ngrx/store-devtools": "^17.2.0",
     "ngrx-store-localstorage": "^17.0.0"
   },
   "devDependencies": {
