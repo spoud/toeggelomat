@@ -35,11 +35,11 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^17.2.3",
-    "@angular-eslint/builder": "17.2.1",
-    "@angular-eslint/eslint-plugin": "17.2.1",
-    "@angular-eslint/eslint-plugin-template": "17.2.1",
-    "@angular-eslint/schematics": "17.2.1",
-    "@angular-eslint/template-parser": "17.2.1",
+    "@angular-eslint/builder": "17.5.1",
+    "@angular-eslint/eslint-plugin": "17.5.1",
+    "@angular-eslint/eslint-plugin-template": "17.5.1",
+    "@angular-eslint/schematics": "17.5.1",
+    "@angular-eslint/template-parser": "17.5.1",
     "@angular/cli": "^17.2.3",
     "eslint": "^8.57.0",
     "typescript": "~5.3.3"
