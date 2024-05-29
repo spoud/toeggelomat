@@ -7,15 +7,20 @@ import jakarta.enterprise.context.ApplicationScoped;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import jakarta.persistence.EntityManager;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @ApplicationScoped
 @RequiredArgsConstructor
+@Transactional
 public class PlayerRepository {
 
   public static final QPlayerEO PLAYER = QPlayerEO.playerEO;
 
   private final JPAQueryFactory jpaQueryFactory;
+  private final EntityManager em;
 
   public void updatePointsAndLastMatch(PlayerEO player) {
     jpaQueryFactory
@@ -41,5 +46,11 @@ public class PlayerRepository {
         .selectFrom(PLAYER)
         .where(PLAYER.uuid.in(uuid.toArray(new UUID[0])))
         .fetch();
+  }
+
+  public PlayerEO insert(PlayerEO player){
+    player = em.merge(player);
+    em.flush();
+    return player;
   }
 }

@@ -5,10 +5,7 @@ kafka:
 quarkus:
   datasource:
     db-kind: postgresql
-    username: postgres
-    password: postgres
     jdbc:
-      url: jdbc:postgresql://localhost:5432/postgres
       driver: org.postgresql.Driver
   flyway:
     migrate-at-start: true
@@ -27,3 +24,10 @@ mp:
         topic: toeggelomat-test
         value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
+'%prod':
+  quarkus:
+    datasource:
+      username: postgres
+      password: postgres
+      jdbc:
+        url: jdbc:postgresql://localhost:5432/postgres

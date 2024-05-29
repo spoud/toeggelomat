@@ -107,6 +107,14 @@ public class MatchPointsService {
         : 1;
   }
 
+//  private double overTimeMultiplier(MatchEO match) {
+//    return match.getBlueScore() != null
+//            && match.getRedScore() != null
+//            && (match.getBlueScore() == 0 || match.getRedScore() == 0)
+//        ? 2
+//        : 1;
+//  }
+
   @Getter
   public static class PlayersHelper {
     private final PlayerEO blueDeffense;
