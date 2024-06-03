@@ -41,6 +41,6 @@
     "@angular-eslint/template-parser": "17.5.1",
     "@angular/cli": "^17.2.3",
     "eslint": "^8.57.0",
-    "typescript": "~5.3.3"
+    "typescript": "~5.4.5"
   }
 }
