@@ -33,7 +33,7 @@
     "ngrx-store-localstorage": "^17.0.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^17.2.3",
+    "@angular-devkit/build-angular": "^18.0.6",
     "@angular-eslint/builder": "18.0.1",
     "@angular-eslint/eslint-plugin": "17.5.1",
     "@angular-eslint/eslint-plugin-template": "17.5.1",
