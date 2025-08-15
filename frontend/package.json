@@ -27,7 +27,7 @@
     "tslib": "^2.8.1",
     "zone.js": "~0.14.10",
     "@ng-bootstrap/ng-bootstrap": "^16.0.0",
-    "@ngrx/effects": "^17.2.0",
+    "@ngrx/effects": "^20.0.0",
     "@ngrx/store": "^17.2.0",
     "@ngrx/store-devtools": "^17.2.0",
     "ngrx-store-localstorage": "^17.0.0"
