@@ -9,13 +9,13 @@
     </tr>
   </thead>
   <tbody>
-    @for (match of matches; track match; let i = $index) {
+    @for (match of matches(); track match.uuid;) {
       <tr>
-        <td>{{match.match.matchTime | date: 'dd.MM.yyyy H:mm'}}</td>
-        <td>{{match.winners[0]?.nickName}}, {{match.winners[1]?.nickName}}</td>
-        <td>{{match.loosers[0]?.nickName}}, {{match.loosers[1]?.nickName}}</td>
+        <td>{{match.matchTime | date: 'dd.MM.yyyy H:mm'}}</td>
+        <td>{{match.winners.offensePlayer.nickName}}, {{match.winners.defensePlayer.nickName}}</td>
+        <td>{{match.loosers.offensePlayer.nickName}}, {{match.loosers.defensePlayer.nickName}}</td>
         <td>{{match.score}}</td>
-        <td>{{match.match.points}}</td>
+        <td>{{match.points}}</td>
       </tr>
     }
   </tbody>

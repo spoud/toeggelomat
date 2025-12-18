@@ -13,20 +13,20 @@
     <form>
       @if (redWon) {
         <div class="form-group red-team-color">
-          {{match?.playerRedDefense?.nickName}} and {{match?.playerRedOffense?.nickName}} won this round {{match?.match?.redScore}} -
-          {{match?.match?.blueScore}}
+          {{match?.redTeam?.defensePlayer?.nickName}} and {{match?.redTeam?.offensePlayer?.nickName}} won this round {{match?.redScore}} -
+          {{match?.blueScore}}
         </div>
       }
       @if (!redWon) {
         <div class="form-group blue-team-color">
-          {{match?.playerBlueDefense?.nickName}} and {{match?.playerBlueOffense?.nickName}} won this round {{match?.match?.redScore}} -
-          {{match?.match?.blueScore}}
+          {{match?.blueTeam?.defensePlayer?.nickName}} and {{match?.blueTeam?.offensePlayer?.nickName}} won this round {{match?.blueScore}} -
+          {{match?.redScore}}
         </div>
       }
     </form>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="modal.close('cancel')">Shit cancel</button>
-    <button type="button" ngbAutofocus class="btn btn-primary" (click)="modal.close('save')">Confirm ({{timeout}})</button>
+    <button type="button" ngbAutofocus class="btn btn-primary" (click)="modal.close('save')">Confirm</button>
   </div>
 </ng-template>

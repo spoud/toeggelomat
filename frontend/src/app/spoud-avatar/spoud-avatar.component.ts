@@ -1,5 +1,5 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {PlayerEO} from "../entities/players";
+import {Component, input, OnInit} from '@angular/core';
+import {Player} from "../../generated/graphql";
 
 // inspired by https://github.com/8Tesla8/empty-avatar-photo
 @Component({
@@ -9,8 +9,7 @@ import {PlayerEO} from "../entities/players";
 })
 export class SpoudAvatarComponent implements OnInit {
 
-  @Input()
-  public player: PlayerEO | undefined;
+  public player = input.required<Player>();
 
   public initials: string = '';
   public circleColor: string = '';
@@ -35,9 +34,10 @@ export class SpoudAvatarComponent implements OnInit {
 
   ngOnInit() {
     let index;
-    if (this.player) {
-      this.initials = this.player.nickName.slice(0, 2);
-      index = this.hashCode(this.player.email) % this.colors.length;
+    const p = this.player();
+    if (p) {
+      this.initials = p.nickName.slice(0, 2);
+      index = this.hashCode(p.nickName) % this.colors.length;
     } else {
       index = Math.floor(Math.random() * Math.floor(this.colors.length));
     }

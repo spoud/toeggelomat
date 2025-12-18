@@ -1,26 +1,24 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {select, Store} from '@ngrx/store';
+import {Component, inject, ViewChild} from '@angular/core';
 import {ScoreConfirmationModalComponent} from '../score-confirmation-modal/score-confirmation-modal.component';
-import {SubscriptionHelper} from '../utils/subscription-helper';
-import {MatchEO, MatchWithPlayers} from '../entities/match';
-import {PlayerEO} from '../entities/players';
-import {combineLatest} from 'rxjs';
-import {GlobalStore} from '../store/global';
 
-import {RouterModule} from "@angular/router";
+import {Router, RouterModule} from "@angular/router";
+import {MatchesService} from "../services/matches-service";
 
 @Component({
-    selector: 'app-current-match',
-    templateUrl: './current-match.component.html',
-    styleUrls: ['./current-match.component.css'],
-    imports: [
+  selector: 'app-current-match',
+  templateUrl: './current-match.component.html',
+  styleUrls: ['./current-match.component.css'],
+  imports: [
     RouterModule,
     ScoreConfirmationModalComponent
-]
+  ]
 })
-export class CurrentMatchComponent extends SubscriptionHelper implements OnInit, OnDestroy {
+export class CurrentMatchComponent {
 
-  public currentMatch?: MatchWithPlayers;
+  private matchesService = inject(MatchesService);
+
+  public currentMatch = this.matchesService.currentMatch;
+  private router = inject(Router);
 
   public blueScoreList: number[] = [8, 7, 6, 5, 4, 3, 2, 1, 0];
   public redScoreList: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
@@ -30,38 +28,23 @@ export class CurrentMatchComponent extends SubscriptionHelper implements OnInit,
   @ViewChild('confirm')
   private confirmDialog?: ScoreConfirmationModalComponent;
 
-  constructor(private store: Store<GlobalStore>) {
-    super();
-  }
-
-  ngOnInit() {
-    this.addSubscription(
-      combineLatest([
-        this.store.pipe(select('matches'), select('currentMatch')),
-        this.store.pipe(select('players'), select('list'))
-      ])
-        .subscribe({
-            next: ([match, players]: [MatchEO | undefined, PlayerEO[]]) => {
-              if (match) {
-                this.currentMatch = MatchWithPlayers.createMatchWithPlayer(match, players)
-              }
-            }
-          }
-        )
-    );
-  }
-
-  ngOnDestroy(): void {
-    this.unsubscribeAll();
-  }
-
   public saveScore(): void {
-    if (this.currentMatch) {
-      const match = Object.assign({}, this.currentMatch.match);
+    let match = this.currentMatch();
+    if (match) {
+      const match = Object.assign({}, this.currentMatch());
       match.blueScore = this.blueScore;
       match.redScore = this.redScore;
-      this.currentMatch.match = match;
-      this.confirmDialog?.confirmMatchResult(this.currentMatch);
+      this.confirmDialog?.confirmMatchResult(match, () => {
+        this.matchesService.saveScore({
+          blueScore: this.blueScore,
+          redScore: this.redScore,
+          playerBlueDefenseUuid: match.blueTeam.defensePlayer.uuid,
+          playerBlueOffenseUuid: match.blueTeam.offensePlayer.uuid,
+          playerRedDefenseUuid: match.redTeam.defensePlayer.uuid,
+          playerRedOffenseUuid: match.redTeam.offensePlayer.uuid
+        });
+        this.router.navigate(['scoreboard']);
+      });
     }
   }
 

@@ -1,0 +1,22 @@
+fragment MatchTeams on Match{
+  blueTeam{
+    offensePlayer{
+      uuid
+      nickName
+    }
+    defensePlayer{
+      uuid
+      nickName
+    }
+  }
+  redTeam {
+    offensePlayer{
+      uuid
+      nickName
+    }
+    defensePlayer{
+      uuid
+      nickName
+    }
+  }
+}

@@ -3,7 +3,7 @@
   <button type="button"
     class="save-score-button btn btn-primary btn-lg"
     (click)="saveScore()"
-    [disabled]="currentMatch && (redScore===-1 || blueScore===-1)">Save score
+    [disabled]="currentMatch() && (redScore===-1 || blueScore===-1)">Save score
   </button>
 </div>
 
@@ -20,33 +20,33 @@
 <div class="match-container">
   <div class="red-players red-team-color">
     <div class="defense">
-      Points: {{currentMatch?.match?.potentialRedPoints}}
+      Points: {{currentMatch()?.potentialRedPoints}}
       <!--      TODO UGLY !!!--><br/>
       <br/>
       Defense <br/>
-      {{currentMatch?.playerRedDefense?.nickName}}
+      {{currentMatch()?.redTeam?.defensePlayer?.nickName}}
     </div>
     <div class="offense">
       <br/>
       <br/>
       Offense<br/>
-      {{currentMatch?.playerRedOffense?.nickName}}
+      {{currentMatch()?.redTeam?.offensePlayer?.nickName}}
     </div>
   </div>
   <img class="soccer-field" src="assets/soccer-table.png"/>
   <div class="blue-players blue-team-color">
     <div class="offense">
-      Points: {{currentMatch?.match?.potentialBluePoints}}
+      Points: {{currentMatch()?.potentialBluePoints}}
       <br/>
       <br/>
       Offense<br/>
-      {{currentMatch?.playerBlueOffense?.nickName}}
+      {{currentMatch()?.blueTeam?.offensePlayer?.nickName}}
     </div>
     <div class="defense">
       <br/>
       <br/>
       Defense <br/>
-      {{currentMatch?.playerBlueDefense?.nickName}}
+      {{currentMatch()?.blueTeam?.defensePlayer?.nickName}}
     </div>
   </div>
 </div>

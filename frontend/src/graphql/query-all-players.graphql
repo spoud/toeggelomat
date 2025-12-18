@@ -1,0 +1,9 @@
+query allPlayers{
+  allPlayers{
+    uuid
+    nickName
+    lastMatchTime
+    defensePoints
+    offensePoints
+  }
+}

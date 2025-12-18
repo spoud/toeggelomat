@@ -1,54 +1,43 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {select, Store} from '@ngrx/store';
-import {PlayerEO} from '../entities/players';
-import {startMatch} from '../store/matches/maches.actions';
-import {SubscriptionHelper} from '../utils/subscription-helper';
-import {GlobalStore} from '../store/global';
+import {Component, computed, inject} from '@angular/core';
 import {SpoudAvatarComponent} from "../spoud-avatar/spoud-avatar.component";
 
-import {RouterModule} from "@angular/router";
+import {Router, RouterModule} from "@angular/router";
+import {PlayersService} from "../services/players-service";
+import {Player} from "../../generated/graphql";
+import {MatchesService} from "../services/matches-service";
 
 export class SelectablePlayer {
-  constructor(public player: PlayerEO, public selected: boolean = false) {
+  constructor(public player: Player, public selected: boolean = false) {
   }
 }
 
 @Component({
-    selector: 'app-players-selection',
-    templateUrl: './players-selection.component.html',
-    styleUrls: ['./players-selection.component.css'],
-    imports: [
+  selector: 'app-players-selection',
+  templateUrl: './players-selection.component.html',
+  styleUrls: ['./players-selection.component.css'],
+  imports: [
     RouterModule,
     SpoudAvatarComponent
-]
+  ]
 })
-export class PlayersSelectionComponent extends SubscriptionHelper implements OnInit, OnDestroy {
+export class PlayersSelectionComponent {
 
-  public players: SelectablePlayer[] = [];
+  private playersService = inject(PlayersService);
+  private matchService = inject(MatchesService);
+  private router = inject(Router);
+
+  public players = computed(() => {
+    return this.playersService.players()
+      .slice()
+      .sort((l, r) => l.nickName.localeCompare(r.nickName)) // TODO sort by last match time?
+      .map(p => new SelectablePlayer(p));
+  })
+
   public enoughToStart = false;
   public playerCount = 0;
 
-  constructor(private store: Store<GlobalStore>) {
-    super();
-  }
-
-  ngOnInit() {
-    this.addSubscription(this.store.pipe(select('players'), select('list'))
-      .subscribe((list: PlayerEO[]) => {
-        this.players = list
-          .slice()
-          .sort((l, r) => l.nickName.localeCompare(r.nickName))
-          .map(p => new SelectablePlayer(p));
-        this.updateConditions();
-      }));
-  }
-
-  ngOnDestroy(): void {
-    this.unsubscribeAll();
-  }
-
   private updateConditions(): void {
-    this.playerCount = this.players.filter(p => p.selected).length;
+    this.playerCount = this.players().filter(p => p.selected).length;
     this.enoughToStart = this.playerCount >= 4;
   }
 
@@ -58,10 +47,9 @@ export class PlayersSelectionComponent extends SubscriptionHelper implements OnI
   }
 
   public startMatch(): void {
-    this.store.dispatch(startMatch({
-      playerUuids: this.players
-        .filter(p => p.selected)
-        .map(p => p.player.uuid)
-    }));
+    this.matchService.startMatch(this.players()
+      .filter(p => p.selected)
+      .map(p => p.player.uuid));
+    this.router.navigate(['current-match']);
   }
 }
