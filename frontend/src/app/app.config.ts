@@ -1,20 +1,48 @@
-import {ApplicationConfig} from '@angular/core';
+import {ApplicationConfig, inject, provideZonelessChangeDetection} from '@angular/core';
 import {provideRouter} from '@angular/router';
 
 import {routes} from './app.routes';
 import {provideHttpClient} from '@angular/common/http';
-import {provideStore} from "@ngrx/store";
-import {playersReducer} from "./store/players/players.reducer";
-import {machesReducer} from "./store/matches/matches.reducer";
-import {provideEffects} from "@ngrx/effects";
-import {MatchesEffect} from "./store/matches/maches.effect";
-import {PlayersEffect} from "./store/players/players.effect";
+import {provideApollo} from "apollo-angular";
+import {HttpLink} from "apollo-angular/http";
+import {InMemoryCache} from "@apollo/client/core";
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideZonelessChangeDetection(),
     provideRouter(routes),
     provideHttpClient(),
-    provideEffects([PlayersEffect, MatchesEffect]),
-    provideStore({players: playersReducer, matches: machesReducer})
+
+    provideApollo(() => {
+      const httpLink = inject(HttpLink);
+
+      return {
+        link: httpLink.create({uri: '/graphql', }),
+        cache: new InMemoryCache({
+          typePolicies: {
+            // Kind of hack to resolve scalar properly...
+            // found here: https://community.apollographql.com/t/custom-scalars-on-the-client-side/6587/3
+            Player:{
+              fields: {
+                lastMatchTime: {
+                  read: (str)=> new Date(str)
+                }
+              }
+            },
+            Match: {
+              fields: {
+                matchTime: {
+                  read: (str)=> new Date(str)
+                }
+              }
+            }
+          }
+        }),
+        defaultOptions: {
+          query: {fetchPolicy: 'network-only'},
+        },
+      };
+    })
+
   ],
 };

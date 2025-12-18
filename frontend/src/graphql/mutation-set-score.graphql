@@ -1,0 +1,9 @@
+mutation SaveScore($scores: SaveScoreInput!){
+  saveScore(scores: $scores){
+    uuid
+    matchTime
+    redScore
+    blueScore
+    ...MatchTeams
+  }
+}

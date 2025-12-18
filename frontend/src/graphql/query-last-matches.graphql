@@ -1,0 +1,10 @@
+query lastMatches{
+  lastMatches{
+    uuid
+    matchTime
+    blueScore
+    redScore
+    points
+    ...MatchTeams
+  }
+}

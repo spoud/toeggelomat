@@ -1,4 +1,6 @@
 quarkus:
+  smallrye-graphql:
+    schema-include-scalars: true
   flyway:
     migrate-at-start: true
   ssl:

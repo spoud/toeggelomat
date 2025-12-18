@@ -1,0 +1,56 @@
+type Match {
+  blueScore: Int
+  blueTeam: Team!
+  "ISO-8601"
+  matchTime: DateTime
+  points: Int
+  potentialBluePoints: Int
+  potentialRedPoints: Int
+  redScore: Int
+  redTeam: Team!
+  uuid: String!
+}
+
+"Mutation root"
+type Mutation {
+  randomizeMatch(players: [String!]!): Match!
+  saveScore(scores: SaveScoreInput!): Match!
+}
+
+type Player {
+  defensePoints: Int!
+  "ISO-8601"
+  lastMatchTime: DateTime
+  nickName: String!
+  offensePoints: Int!
+  uuid: String!
+}
+
+"Query root"
+type Query {
+  allPlayers: [Player!]!
+  lastMatches: [Match!]!
+}
+
+type Team {
+  defensePlayer: Player!
+  offensePlayer: Player!
+}
+
+"Scalar for BigDecimal"
+scalar BigDecimal
+
+"Scalar for BigInteger"
+scalar BigInteger
+
+"Scalar for DateTime"
+scalar DateTime
+
+input SaveScoreInput {
+  blueScore: Int!
+  playerBlueDefenseUuid: String!
+  playerBlueOffenseUuid: String!
+  playerRedDefenseUuid: String!
+  playerRedOffenseUuid: String!
+  redScore: Int!
+}

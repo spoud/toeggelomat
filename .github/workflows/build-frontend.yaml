@@ -21,6 +21,10 @@ jobs:
         # TODO remove force once ngrx is released
         run: npm ci --legacy-peer-deps
 
+      - name: Generate Graphql
+        working-directory: frontend/
+        run: npm run generate
+
       - name: Build
         working-directory: frontend/
         run: npm run build

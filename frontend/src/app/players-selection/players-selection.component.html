@@ -8,9 +8,8 @@
 </div>
 
 <div class="player-list">
-  @for (player of players; track player) {
+  @for (player of players(); track player) {
     <div class="player" (click)="selectPlayer(player)" [class.selected]="player.selected">
-      <!--    <img width="45px" src="assets/avatar.png" alt="avatar">-->
       <app-spoud-avatar [player]="player.player"></app-spoud-avatar>
       {{player.player.nickName}}
     </div>

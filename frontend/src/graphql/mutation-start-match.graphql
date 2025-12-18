@@ -1,0 +1,7 @@
+mutation StartMatch($playerUuids:[String!]!){
+  randomizeMatch(players: $playerUuids){
+    potentialBluePoints
+    potentialRedPoints
+    ...MatchTeams
+  }
+}
