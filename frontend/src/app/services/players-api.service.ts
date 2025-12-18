@@ -1,4 +1,4 @@
-import {HttpClient, HttpResponse} from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {PlayerEO} from '../entities/players';
 import {Injectable} from '@angular/core';

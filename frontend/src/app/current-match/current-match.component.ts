@@ -6,19 +6,17 @@ import {MatchEO, MatchWithPlayers} from '../entities/match';
 import {PlayerEO} from '../entities/players';
 import {combineLatest} from 'rxjs';
 import {GlobalStore} from '../store/global';
-import {CommonModule} from "@angular/common";
+
 import {RouterModule} from "@angular/router";
 
 @Component({
-  standalone: true,
-  selector: 'app-current-match',
-  templateUrl: './current-match.component.html',
-  styleUrls: ['./current-match.component.css'],
-  imports: [
-    CommonModule,
+    selector: 'app-current-match',
+    templateUrl: './current-match.component.html',
+    styleUrls: ['./current-match.component.css'],
+    imports: [
     RouterModule,
     ScoreConfirmationModalComponent
-  ]
+]
 })
 export class CurrentMatchComponent extends SubscriptionHelper implements OnInit, OnDestroy {
 

@@ -3,7 +3,7 @@ import {provideRouter} from '@angular/router';
 
 import {routes} from './app.routes';
 import {provideAnimations} from '@angular/platform-browser/animations';
-import {provideHttpClient} from '@angular/common/http';
+import { provideHttpClient } from '@angular/common/http';
 import {provideStore} from "@ngrx/store";
 import {playersReducer} from "./store/players/players.reducer";
 import {machesReducer} from "./store/matches/matches.reducer";

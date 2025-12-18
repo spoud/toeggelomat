@@ -1,20 +1,28 @@
 <ng-template #content let-modal>
   <div class="modal-header">
-    <h4 class="modal-title red-team-color"
-        *ngIf="redWon">Red team won</h4>
-    <h4 class="modal-title blue-team-color"
-        *ngIf="!redWon">Blue won</h4>
+    @if (redWon) {
+      <h4 class="modal-title red-team-color"
+      >Red team won</h4>
+    }
+    @if (!redWon) {
+      <h4 class="modal-title blue-team-color"
+      >Blue won</h4>
+    }
   </div>
   <div class="modal-body">
     <form>
-      <div *ngIf="redWon" class="form-group red-team-color">
-        {{match?.playerRedDefense?.nickName}} and {{match?.playerRedOffense?.nickName}} won this round {{match?.match?.redScore}} -
-        {{match?.match?.blueScore}}
-      </div>
-      <div *ngIf="!redWon" class="form-group blue-team-color">
-        {{match?.playerBlueDefense?.nickName}} and {{match?.playerBlueOffense?.nickName}} won this round {{match?.match?.redScore}} -
-        {{match?.match?.blueScore}}
-      </div>
+      @if (redWon) {
+        <div class="form-group red-team-color">
+          {{match?.playerRedDefense?.nickName}} and {{match?.playerRedOffense?.nickName}} won this round {{match?.match?.redScore}} -
+          {{match?.match?.blueScore}}
+        </div>
+      }
+      @if (!redWon) {
+        <div class="form-group blue-team-color">
+          {{match?.playerBlueDefense?.nickName}} and {{match?.playerBlueOffense?.nickName}} won this round {{match?.match?.redScore}} -
+          {{match?.match?.blueScore}}
+        </div>
+      }
     </form>
   </div>
   <div class="modal-footer">

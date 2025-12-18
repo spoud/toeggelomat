@@ -1,16 +1,11 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {NgOptimizedImage} from "@angular/common";
 import {PlayerEO} from "../entities/players";
 
 // inspired by https://github.com/8Tesla8/empty-avatar-photo
 @Component({
-  standalone: true,
-  selector: 'app-spoud-avatar',
-  templateUrl: './spoud-avatar.component.html',
-  imports: [
-    NgOptimizedImage
-  ],
-  styleUrls: ['./spoud-avatar.component.css']
+    selector: 'app-spoud-avatar',
+    templateUrl: './spoud-avatar.component.html',
+    styleUrls: ['./spoud-avatar.component.css']
 })
 export class SpoudAvatarComponent implements OnInit {
 
