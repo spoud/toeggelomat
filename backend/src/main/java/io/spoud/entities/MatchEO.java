@@ -17,7 +17,7 @@ import java.util.UUID;
 public class MatchEO extends PanacheEntityBase {
 
   @Id
-  @GeneratedValue(generator = "uuid")
+//  @GeneratedValue(generator = "uuid")
   //  @GenericGenerator(name = "uuid", strategy = "uuid2")
   @Column(name = "match_uuid", unique = true)
   public UUID uuid;

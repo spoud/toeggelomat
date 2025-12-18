@@ -40,7 +40,7 @@ public class MatchService {
 
     match.matchTime = ZonedDateTime.now();
     match = matchPointsService.computePointsAndUpdatePlayers(match);
-    matchRepository.persist(match);
+    matchRepository.persistAndFlush(match);
 
     return match;
   }

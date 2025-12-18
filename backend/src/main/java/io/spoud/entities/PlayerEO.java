@@ -15,7 +15,7 @@ import java.util.UUID;
 @RegisterForReflection
 public class PlayerEO extends PanacheEntityBase implements Cloneable {
   @Id
-  @GeneratedValue(generator = "uuid")
+//  @GeneratedValue(generator = "uuid")
 //  @GenericGenerator(name = "uuid", strategy = "uuid2")
   @Column(name = "player_uuid", unique = true)
   public UUID uuid;
