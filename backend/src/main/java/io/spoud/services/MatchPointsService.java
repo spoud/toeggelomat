@@ -5,6 +5,7 @@ import io.spoud.entities.PlayerEO;
 import io.spoud.repositories.PlayerRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+
 import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +19,8 @@ public class MatchPointsService {
   private static final double LI_POINTS_OFFSET = -1.5;
   private static final int BASE_POINTS = 40;
 
-  @Inject public PlayerRepository playerRepository;
+  @Inject
+  PlayerRepository playerRepository;
 
   private static double clamp(double d) {
     return Math.max(Math.min(d, 1.0), 0);
@@ -26,7 +28,7 @@ public class MatchPointsService {
 
   public static double slope(double looserPoints, double totalPoints) {
     return clamp(
-        LI_POINTS_OFFSET + LI_POINTS_SLOPE * (double) (looserPoints) / (double) (totalPoints));
+      LI_POINTS_OFFSET + LI_POINTS_SLOPE * (double) (looserPoints) / (double) (totalPoints));
   }
 
   public MatchEO computePointsAndUpdatePlayers(MatchEO matchEO) {
@@ -34,22 +36,22 @@ public class MatchPointsService {
     int points = calcPoints(playersHelper);
 
     playersHelper.getWinnerDeffence().defensePoints =
-        playersHelper.getWinnerDeffence().defensePoints + points + ADDITIONAL_POINT_FOR_WINNING;
+      playersHelper.getWinnerDeffence().defensePoints + points + ADDITIONAL_POINT_FOR_WINNING;
     playersHelper.getWinnerOffense().offensePoints =
-        playersHelper.getWinnerOffense().offensePoints + points + ADDITIONAL_POINT_FOR_WINNING;
+      playersHelper.getWinnerOffense().offensePoints + points + ADDITIONAL_POINT_FOR_WINNING;
     playersHelper.getLooserDeffence().defensePoints =
-        playersHelper.getLooserDeffence().defensePoints - points + ADDITIONAL_POINT_FOR_LOSING;
+      playersHelper.getLooserDeffence().defensePoints - points + ADDITIONAL_POINT_FOR_LOSING;
     playersHelper.getLooserOffense().offensePoints =
-        playersHelper.getLooserOffense().offensePoints - points + ADDITIONAL_POINT_FOR_LOSING;
+      playersHelper.getLooserOffense().offensePoints - points + ADDITIONAL_POINT_FOR_LOSING;
 
     ZonedDateTime now = ZonedDateTime.now();
     playersHelper
-        .getAll()
-        .forEach(
-            p -> {
-              p.lastMatchTime = now;
-              playerRepository.updatePointsAndLastMatch(p);
-            });
+      .getAll()
+      .forEach(
+        p -> {
+          p.lastMatchTime = now;
+          playerRepository.updatePointsAndLastMatch(p);
+        });
 
     matchEO.points = points;
     return matchEO;
@@ -68,11 +70,11 @@ public class MatchPointsService {
     double factor = 1.0;
     factor *= sevenToZeroMultiplier(playersHelper.match);
     double winnerPoints =
-        playersHelper.getWinnerDeffence().defensePoints
-            + playersHelper.getWinnerOffense().offensePoints;
+      playersHelper.getWinnerDeffence().defensePoints
+        + playersHelper.getWinnerOffense().offensePoints;
     double looserPoints =
-        playersHelper.getLooserDeffence().defensePoints
-            + playersHelper.getLooserOffense().offensePoints;
+      playersHelper.getLooserDeffence().defensePoints
+        + playersHelper.getLooserOffense().offensePoints;
     double total = winnerPoints + looserPoints;
     double slope = slope(looserPoints, total);
     return (int) Math.round(slope * factor * BASE_POINTS);
@@ -80,10 +82,10 @@ public class MatchPointsService {
 
   private double sevenToZeroMultiplier(MatchEO match) {
     return match.blueScore != null
-            && match.redScore != null
-            && (match.blueScore == 0 || match.redScore == 0)
-        ? 2
-        : 1;
+      && match.redScore != null
+      && (match.blueScore == 0 || match.redScore == 0)
+      ? 2
+      : 1;
   }
 
   public static class PlayersHelper {
@@ -98,9 +100,9 @@ public class MatchPointsService {
     public PlayersHelper(PlayerRepository playerRepository, MatchEO match) {
       this.match = match;
       this.wonByBlue =
-          match.redScore != null && match.blueScore != null
-              ? match.blueScore > match.redScore
-              : true;
+        match.redScore != null && match.blueScore != null
+          ? match.blueScore > match.redScore
+          : true;
       blueDefense = playerRepository.findByIdOptional(match.playerBlueDefenseUuid).get();
       blueOffense = playerRepository.findByIdOptional(match.playerBlueOffenseUuid).get();
       redDefense = playerRepository.findByIdOptional(match.playerRedDefenseUuid).get();
