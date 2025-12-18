@@ -18,7 +18,8 @@ jobs:
 
       - name: Install dependencies
         working-directory: frontend/
-        run: npm install
+        # TODO remove force once ngrx is released
+        run: npm ci --legacy-peer-deps
 
       - name: Build
         working-directory: frontend/

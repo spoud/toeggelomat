@@ -8,10 +8,11 @@
 </div>
 
 <div class="player-list">
-  <div class="player" *ngFor="let player of players" (click)="selectPlayer(player)" [class.selected]="player.selected">
-
-    <!--    <img width="45px" src="assets/avatar.png" alt="avatar">-->
-    <app-spoud-avatar [player]="player.player"></app-spoud-avatar>
-    {{player.player.nickName}}
-  </div>
+  @for (player of players; track player) {
+    <div class="player" (click)="selectPlayer(player)" [class.selected]="player.selected">
+      <!--    <img width="45px" src="assets/avatar.png" alt="avatar">-->
+      <app-spoud-avatar [player]="player.player"></app-spoud-avatar>
+      {{player.player.nickName}}
+    </div>
+  }
 </div>

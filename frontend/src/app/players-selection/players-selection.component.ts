@@ -5,7 +5,7 @@ import {startMatch} from '../store/matches/maches.actions';
 import {SubscriptionHelper} from '../utils/subscription-helper';
 import {GlobalStore} from '../store/global';
 import {SpoudAvatarComponent} from "../spoud-avatar/spoud-avatar.component";
-import {CommonModule} from "@angular/common";
+
 import {RouterModule} from "@angular/router";
 
 export class SelectablePlayer {
@@ -14,15 +14,13 @@ export class SelectablePlayer {
 }
 
 @Component({
-  standalone: true,
-  selector: 'app-players-selection',
-  templateUrl: './players-selection.component.html',
-  styleUrls: ['./players-selection.component.css'],
-  imports: [
-    CommonModule,
+    selector: 'app-players-selection',
+    templateUrl: './players-selection.component.html',
+    styleUrls: ['./players-selection.component.css'],
+    imports: [
     RouterModule,
     SpoudAvatarComponent
-  ]
+]
 })
 export class PlayersSelectionComponent extends SubscriptionHelper implements OnInit, OnDestroy {
 

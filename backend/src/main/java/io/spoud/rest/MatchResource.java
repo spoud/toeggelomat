@@ -3,6 +3,7 @@ package io.spoud.rest;
 import io.spoud.entities.MatchEO;
 import io.spoud.services.MatchService;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
@@ -10,13 +11,11 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import java.util.List;
 import java.util.UUID;
-import lombok.RequiredArgsConstructor;
 
 @ApplicationScoped
 @Path("/api/v1/matches")
-@RequiredArgsConstructor
 public class MatchResource {
-  private final MatchService matchService;
+  @Inject public MatchService matchService;
 
   @POST
   @Path("set-score")

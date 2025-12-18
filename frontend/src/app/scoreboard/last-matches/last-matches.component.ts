@@ -5,7 +5,7 @@ import {select, Store} from '@ngrx/store';
 import {MatchEO, MatchWithPlayers} from '../../entities/match';
 import {combineLatest} from 'rxjs';
 import {GlobalStore} from '../../store/global';
-import {CommonModule, DatePipe} from "@angular/common";
+import { CommonModule, DatePipe } from "@angular/common";
 
 export class MatchWithWinnerLooser extends MatchWithPlayers {
 
@@ -44,14 +44,13 @@ export class MatchWithWinnerLooser extends MatchWithPlayers {
 }
 
 @Component({
-  standalone: true,
-  selector: 'app-last-matches',
-  templateUrl: './last-matches.component.html',
-  styleUrls: ['./last-matches.component.css'],
-  imports: [
-    CommonModule,
-    DatePipe
-  ]
+    selector: 'app-last-matches',
+    templateUrl: './last-matches.component.html',
+    styleUrls: ['./last-matches.component.css'],
+    imports: [
+        CommonModule,
+        DatePipe
+    ]
 })
 export class LastMatchesComponent extends SubscriptionHelper implements OnInit, OnDestroy {
 

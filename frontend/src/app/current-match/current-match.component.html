@@ -1,19 +1,20 @@
 <div class="buttons-container">
   <button type="button" class="btn btn-secondary btn-lg" routerLink="/scoreboard">Cancel</button>
   <button type="button"
-          class="save-score-button btn btn-primary btn-lg"
-          (click)="saveScore()"
-          [disabled]="currentMatch && (redScore===-1 || blueScore===-1)">Save score
+    class="save-score-button btn btn-primary btn-lg"
+    (click)="saveScore()"
+    [disabled]="currentMatch && (redScore===-1 || blueScore===-1)">Save score
   </button>
 </div>
 
 
 <!--TODO make a component for this-->
 <div class="score-list">
-  <div class="score-item red-team-backgroundcolor"
-       (click)="redScore=s; autoFill()"
-       *ngFor="let s of redScoreList"
-       [class.selected]="s===redScore">{{s}}</div>
+  @for (s of redScoreList; track s) {
+    <div class="score-item red-team-backgroundcolor"
+      (click)="redScore=s; autoFill()"
+    [class.selected]="s===redScore">{{s}}</div>
+  }
 </div>
 
 <div class="match-container">
@@ -52,10 +53,11 @@
 
 <!--TODO make a component for this-->
 <div class="score-list">
-  <div class="score-item blue-team-backgroundcolor"
-       (click)="blueScore=s; autoFill()"
-       *ngFor="let s of blueScoreList"
-       [class.selected]="s===blueScore">{{s}}</div>
+  @for (s of blueScoreList; track s) {
+    <div class="score-item blue-team-backgroundcolor"
+      (click)="blueScore=s; autoFill()"
+    [class.selected]="s===blueScore">{{s}}</div>
+  }
 </div>
 
 <app-score-confirmation-modal #confirm></app-score-confirmation-modal>

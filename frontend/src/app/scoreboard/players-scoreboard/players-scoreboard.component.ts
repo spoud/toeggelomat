@@ -5,18 +5,16 @@ import {select, Store} from '@ngrx/store';
 import {GlobalStore} from '../../store/global';
 import {SpoudAvatarComponent} from "../../spoud-avatar/spoud-avatar.component";
 import {LastMatchTimePipe} from "./last-match-time.pipe";
-import {CommonModule} from "@angular/common";
+
 
 @Component({
-  standalone: true,
-  selector: 'app-players-scoreboard',
-  templateUrl: './players-scoreboard.component.html',
-  styleUrls: ['./players-scoreboard.component.css'],
-  imports: [
-    CommonModule,
+    selector: 'app-players-scoreboard',
+    templateUrl: './players-scoreboard.component.html',
+    styleUrls: ['./players-scoreboard.component.css'],
+    imports: [
     SpoudAvatarComponent,
     LastMatchTimePipe
-  ]
+]
 })
 export class PlayersScoreboardComponent extends SubscriptionHelper implements OnInit, OnDestroy {
 

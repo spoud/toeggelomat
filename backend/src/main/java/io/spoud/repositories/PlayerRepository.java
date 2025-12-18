@@ -1,45 +1,20 @@
 package io.spoud.repositories;
 
-import com.querydsl.jpa.impl.JPAQueryFactory;
+import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
+import io.quarkus.panache.common.Parameters;
 import io.spoud.entities.PlayerEO;
-import io.spoud.entities.QPlayerEO;
 import jakarta.enterprise.context.ApplicationScoped;
-import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
-import lombok.RequiredArgsConstructor;
 
 @ApplicationScoped
-@RequiredArgsConstructor
-public class PlayerRepository {
-
-  public static final QPlayerEO PLAYER = QPlayerEO.playerEO;
-
-  private final JPAQueryFactory jpaQueryFactory;
+public class PlayerRepository implements PanacheRepositoryBase<PlayerEO, UUID> {
 
   public void updatePointsAndLastMatch(PlayerEO player) {
-    jpaQueryFactory
-        .update(PLAYER)
-        .where(PLAYER.uuid.eq(player.getUuid()))
-        .set(PLAYER.offensePoints, player.getOffensePoints())
-        .set(PLAYER.defensePoints, player.getDefensePoints())
-        .set(PLAYER.lastMatchTime, player.getLastMatchTime())
-        .execute();
-  }
-
-  public List<PlayerEO> getAllPlayers() {
-    return jpaQueryFactory.selectFrom(PLAYER).fetch();
-  }
-
-  public Optional<PlayerEO> findByUuid(UUID uuid) {
-    return Optional.ofNullable(
-        jpaQueryFactory.selectFrom(PLAYER).where(PLAYER.uuid.eq(uuid)).fetchOne());
-  }
-
-  public List<PlayerEO> findByUuids(List<UUID> uuid) {
-    return jpaQueryFactory
-        .selectFrom(PLAYER)
-        .where(PLAYER.uuid.in(uuid.toArray(new UUID[0])))
-        .fetch();
+    update(
+        "offensePoints = :offensePoints, defensePoints = :defensePoints, lastMatchTime = :lastMatchTime where uuid = :uuid",
+        Parameters.with("offensePoints", player.offensePoints)
+            .and("defensePoints", player.defensePoints)
+            .and("lastMatchTime", player.lastMatchTime)
+            .and("uuid", player.uuid));
   }
 }

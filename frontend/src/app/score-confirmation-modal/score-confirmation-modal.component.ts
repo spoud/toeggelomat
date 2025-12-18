@@ -5,17 +5,15 @@ import {Store} from '@ngrx/store';
 import {interval, Subscription} from 'rxjs';
 import {take} from 'rxjs/operators';
 import {MatchWithPlayers} from '../entities/match';
-import {CommonModule} from "@angular/common";
+
 
 @Component({
-  standalone: true,
-  selector: 'app-score-confirmation-modal',
-  templateUrl: './score-confirmation-modal.component.html',
-  styleUrls: ['./score-confirmation-modal.component.css'],
-  imports: [
-    CommonModule,
+    selector: 'app-score-confirmation-modal',
+    templateUrl: './score-confirmation-modal.component.html',
+    styleUrls: ['./score-confirmation-modal.component.css'],
+    imports: [
     NgbModalModule
-  ]
+]
 })
 export class ScoreConfirmationModalComponent implements OnInit {
 

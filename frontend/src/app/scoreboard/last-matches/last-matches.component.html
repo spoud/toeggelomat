@@ -1,20 +1,22 @@
 <table class="table table-striped">
   <thead>
-  <tr>
-    <th scope="col">Date</th>
-    <th scope="col">Winner</th>
-    <th scope="col">Looser</th>
-    <th scope="col">Score</th>
-    <th scope="col">Points</th>
-  </tr>
+    <tr>
+      <th scope="col">Date</th>
+      <th scope="col">Winner</th>
+      <th scope="col">Looser</th>
+      <th scope="col">Score</th>
+      <th scope="col">Points</th>
+    </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let match of matches; let i=index">
-    <td>{{match.match.matchTime | date: 'dd.MM.yyyy H:mm'}}</td>
-    <td>{{match.winners[0]?.nickName}}, {{match.winners[1]?.nickName}}</td>
-    <td>{{match.loosers[0]?.nickName}}, {{match.loosers[1]?.nickName}}</td>
-    <td>{{match.score}}</td>
-    <td>{{match.match.points}}</td>
-  </tr>
+    @for (match of matches; track match; let i = $index) {
+      <tr>
+        <td>{{match.match.matchTime | date: 'dd.MM.yyyy H:mm'}}</td>
+        <td>{{match.winners[0]?.nickName}}, {{match.winners[1]?.nickName}}</td>
+        <td>{{match.loosers[0]?.nickName}}, {{match.loosers[1]?.nickName}}</td>
+        <td>{{match.score}}</td>
+        <td>{{match.match.points}}</td>
+      </tr>
+    }
   </tbody>
 </table>
