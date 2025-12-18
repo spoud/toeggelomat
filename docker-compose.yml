@@ -1,8 +1,7 @@
-version: '3.7'
 services:
   traefik:
     container_name: toeggelomat_traefik
-    image: traefik:v2.0
+    image: traefik:v2
     ports:
       - 81:80
       - 8181:8080
@@ -38,16 +37,11 @@ services:
 
   postgres:
     container_name: toeggelomat_postgres
-    image: postgres
+    image: postgres:17
     environment: 
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     ports:
       - 5432:5432
 
-  kafka:
-    container_name: toeggelomat_kafka
-    image: apache/kafka
-    ports:
-      - 9092:9092
 

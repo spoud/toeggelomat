@@ -4,17 +4,12 @@ import io.spoud.entities.MatchEO;
 import io.spoud.entities.PlayerEO;
 import io.spoud.repositories.PlayerRepository;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.List;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @ApplicationScoped
-@RequiredArgsConstructor
 public class MatchPointsService {
 
   public static final int ADDITIONAL_POINT_FOR_LOSING = 5;
@@ -23,7 +18,7 @@ public class MatchPointsService {
   private static final double LI_POINTS_OFFSET = -1.5;
   private static final int BASE_POINTS = 40;
 
-  private final PlayerRepository playerRepository;
+  @Inject public PlayerRepository playerRepository;
 
   private static double clamp(double d) {
     return Math.max(Math.min(d, 1.0), 0);
@@ -38,99 +33,82 @@ public class MatchPointsService {
     PlayersHelper playersHelper = new PlayersHelper(playerRepository, matchEO);
     int points = calcPoints(playersHelper);
 
-    playersHelper
-        .getWinnerDeffence()
-        .setDefensePoints(
-            playersHelper.getWinnerDeffence().getDefensePoints()
-                + points
-                + ADDITIONAL_POINT_FOR_WINNING);
-    playersHelper
-        .getWinnerOffense()
-        .setOffensePoints(
-            playersHelper.getWinnerOffense().getOffensePoints()
-                + points
-                + ADDITIONAL_POINT_FOR_WINNING);
-    playersHelper
-        .getLooserDeffence()
-        .setDefensePoints(
-            playersHelper.getLooserDeffence().getDefensePoints()
-                - points
-                + ADDITIONAL_POINT_FOR_LOSING);
-    playersHelper
-        .getLooserOffense()
-        .setOffensePoints(
-            playersHelper.getLooserOffense().getOffensePoints()
-                - points
-                + ADDITIONAL_POINT_FOR_LOSING);
+    playersHelper.getWinnerDeffence().defensePoints =
+        playersHelper.getWinnerDeffence().defensePoints + points + ADDITIONAL_POINT_FOR_WINNING;
+    playersHelper.getWinnerOffense().offensePoints =
+        playersHelper.getWinnerOffense().offensePoints + points + ADDITIONAL_POINT_FOR_WINNING;
+    playersHelper.getLooserDeffence().defensePoints =
+        playersHelper.getLooserDeffence().defensePoints - points + ADDITIONAL_POINT_FOR_LOSING;
+    playersHelper.getLooserOffense().offensePoints =
+        playersHelper.getLooserOffense().offensePoints - points + ADDITIONAL_POINT_FOR_LOSING;
 
     ZonedDateTime now = ZonedDateTime.now();
     playersHelper
         .getAll()
         .forEach(
             p -> {
-              p.setLastMatchTime(now);
+              p.lastMatchTime = now;
               playerRepository.updatePointsAndLastMatch(p);
             });
 
-    matchEO.setPoints(points);
+    matchEO.points = points;
     return matchEO;
   }
 
   public MatchEO computePotentialPoints(MatchEO matchEO) {
     PlayersHelper playersHelper = new PlayersHelper(playerRepository, matchEO);
-    playersHelper.setWonByBlue(true);
-    matchEO.setPotentialBluePoints(calcPoints(playersHelper));
-    playersHelper.setWonByBlue(false);
-    matchEO.setPotentialRedPoints(calcPoints(playersHelper));
+    playersHelper.wonByBlue = true;
+    matchEO.potentialBluePoints = calcPoints(playersHelper);
+    playersHelper.wonByBlue = false;
+    matchEO.potentialRedPoints = calcPoints(playersHelper);
     return matchEO;
   }
 
   private int calcPoints(PlayersHelper playersHelper) {
     double factor = 1.0;
-    factor *= sevenToZeroMultiplier(playersHelper.getMatch());
+    factor *= sevenToZeroMultiplier(playersHelper.match);
     double winnerPoints =
-        playersHelper.getWinnerDeffence().getDefensePoints()
-            + playersHelper.getWinnerOffense().getOffensePoints();
+        playersHelper.getWinnerDeffence().defensePoints
+            + playersHelper.getWinnerOffense().offensePoints;
     double looserPoints =
-        playersHelper.getLooserDeffence().getDefensePoints()
-            + playersHelper.getLooserOffense().getOffensePoints();
+        playersHelper.getLooserDeffence().defensePoints
+            + playersHelper.getLooserOffense().offensePoints;
     double total = winnerPoints + looserPoints;
     double slope = slope(looserPoints, total);
     return (int) Math.round(slope * factor * BASE_POINTS);
   }
 
   private double sevenToZeroMultiplier(MatchEO match) {
-    return match.getBlueScore() != null
-            && match.getRedScore() != null
-            && (match.getBlueScore() == 0 || match.getRedScore() == 0)
+    return match.blueScore != null
+            && match.redScore != null
+            && (match.blueScore == 0 || match.redScore == 0)
         ? 2
         : 1;
   }
 
-  @Getter
   public static class PlayersHelper {
-    private final PlayerEO blueDeffense;
-    private final PlayerEO blueOffense;
-    private final PlayerEO redDeffense;
-    private final PlayerEO redOffense;
-    private final MatchEO match;
+    public final PlayerEO blueDefense;
+    public final PlayerEO blueOffense;
+    public final PlayerEO redDefense;
+    public final PlayerEO redOffense;
+    public final MatchEO match;
 
-    @Setter private boolean wonByBlue;
+    public boolean wonByBlue;
 
     public PlayersHelper(PlayerRepository playerRepository, MatchEO match) {
       this.match = match;
       this.wonByBlue =
-          match.getRedScore() != null && match.getBlueScore() != null
-              ? match.getBlueScore() > match.getRedScore()
+          match.redScore != null && match.blueScore != null
+              ? match.blueScore > match.redScore
               : true;
-      blueDeffense = playerRepository.findByUuid(match.getPlayerBlueDefenseUuid()).get();
-      blueOffense = playerRepository.findByUuid(match.getPlayerBlueOffenseUuid()).get();
-      redDeffense = playerRepository.findByUuid(match.getPlayerRedDefenseUuid()).get();
-      redOffense = playerRepository.findByUuid(match.getPlayerRedOffenseUuid()).get();
+      blueDefense = playerRepository.findByIdOptional(match.playerBlueDefenseUuid).get();
+      blueOffense = playerRepository.findByIdOptional(match.playerBlueOffenseUuid).get();
+      redDefense = playerRepository.findByIdOptional(match.playerRedDefenseUuid).get();
+      redOffense = playerRepository.findByIdOptional(match.playerRedOffenseUuid).get();
     }
 
     public PlayerEO getWinnerDeffence() {
-      return wonByBlue ? blueDeffense : redDeffense;
+      return wonByBlue ? blueDefense : redDefense;
     }
 
     public PlayerEO getWinnerOffense() {
@@ -138,7 +116,7 @@ public class MatchPointsService {
     }
 
     public PlayerEO getLooserDeffence() {
-      return !wonByBlue ? blueDeffense : redDeffense;
+      return !wonByBlue ? blueDefense : redDefense;
     }
 
     public PlayerEO getLooserOffense() {
@@ -146,7 +124,7 @@ public class MatchPointsService {
     }
 
     public List<PlayerEO> getAll() {
-      return Arrays.asList(blueDeffense, blueOffense, redDeffense, redOffense);
+      return Arrays.asList(blueDefense, blueOffense, redDefense, redOffense);
     }
   }
 }
