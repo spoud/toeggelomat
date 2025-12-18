@@ -35,7 +35,7 @@ services:
     ports:
       - 8080
     labels:
-      - traefik.http.routers.toeggelomat_backend.rule=PathPrefix(`/api`)
+      - traefik.http.routers.toeggelomat_backend.rule=PathPrefix(`/graphql`)
       - traefik.http.services.toeggelomat_backend-service.loadbalancer.server.port=8080
       - traefik.enable=true
 
