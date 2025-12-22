@@ -6,17 +6,23 @@
       <th scope="col">Looser</th>
       <th scope="col">Score</th>
       <th scope="col">Points</th>
+      <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
-    @for (match of matches(); track match.uuid;) {
+    @for (match of matches(); track match.match.uuid;) {
       <tr>
-        <td>{{match.matchTime | date: 'dd.MM.yyyy H:mm'}}</td>
+        <td>{{match.match.matchTime | date: 'dd.MM.yyyy H:mm'}}</td>
         <td>{{match.winners.offensePlayer.nickName}}, {{match.winners.defensePlayer.nickName}}</td>
         <td>{{match.loosers.offensePlayer.nickName}}, {{match.loosers.defensePlayer.nickName}}</td>
         <td>{{match.score}}</td>
-        <td>{{match.points}}</td>
+        <td>{{match.match.points}}</td>
+        <td>
+          <button type="button" class="btn btn-outline-primary btn-sm" (click)="rematch(match.match)">Rematch</button>
+        </td>
       </tr>
     }
   </tbody>
 </table>
+
+<app-rematch-modal #rematchRef></app-rematch-modal>

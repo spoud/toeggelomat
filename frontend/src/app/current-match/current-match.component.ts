@@ -1,8 +1,10 @@
-import {Component, inject, ViewChild} from '@angular/core';
-import {ScoreConfirmationModalComponent} from '../score-confirmation-modal/score-confirmation-modal.component';
+import {Component, inject, signal, ViewChild} from '@angular/core';
+import {ScoreConfirmationModalComponent} from './score-confirmation-modal/score-confirmation-modal.component';
 
 import {Router, RouterModule} from "@angular/router";
 import {MatchesService} from "../services/matches-service";
+import {MatchDisplayComponent} from "../match-display/match-display.component";
+import {Score} from "../utils/types";
 
 @Component({
   selector: 'app-current-match',
@@ -10,7 +12,8 @@ import {MatchesService} from "../services/matches-service";
   styleUrls: ['./current-match.component.css'],
   imports: [
     RouterModule,
-    ScoreConfirmationModalComponent
+    ScoreConfirmationModalComponent,
+    MatchDisplayComponent
   ]
 })
 export class CurrentMatchComponent {
@@ -19,11 +22,8 @@ export class CurrentMatchComponent {
 
   public currentMatch = this.matchesService.currentMatch;
   private router = inject(Router);
+  public score = new Score();
 
-  public blueScoreList: number[] = [8, 7, 6, 5, 4, 3, 2, 1, 0];
-  public redScoreList: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8];
-  public blueScore = -1;
-  public redScore = -1;
 
   @ViewChild('confirm')
   private confirmDialog?: ScoreConfirmationModalComponent;
@@ -32,12 +32,12 @@ export class CurrentMatchComponent {
     let match = this.currentMatch();
     if (match) {
       const match = Object.assign({}, this.currentMatch());
-      match.blueScore = this.blueScore;
-      match.redScore = this.redScore;
+      match.blueScore = this.score.blueScore;
+      match.redScore = this.score.redScore;
       this.confirmDialog?.confirmMatchResult(match, () => {
         this.matchesService.saveScore({
-          blueScore: this.blueScore,
-          redScore: this.redScore,
+          blueScore: this.score.blueScore,
+          redScore: this.score.redScore,
           playerBlueDefenseUuid: match.blueTeam.defensePlayer.uuid,
           playerBlueOffenseUuid: match.blueTeam.offensePlayer.uuid,
           playerRedDefenseUuid: match.redTeam.defensePlayer.uuid,
@@ -48,12 +48,4 @@ export class CurrentMatchComponent {
     }
   }
 
-  public autoFill(): void {
-    if (this.blueScore === -1 && this.redScore !== 7) {
-      this.blueScore = 7;
-    }
-    if (this.redScore === -1 && this.blueScore !== 7) {
-      this.redScore = 7;
-    }
-  }
 }

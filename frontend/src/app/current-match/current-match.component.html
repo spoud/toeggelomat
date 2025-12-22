@@ -3,62 +3,63 @@
   <button type="button"
     class="save-score-button btn btn-primary btn-lg"
     (click)="saveScore()"
-    [disabled]="currentMatch() && (redScore===-1 || blueScore===-1)">Save score
+    [disabled]="currentMatch() && (score.isValid())">Save score
   </button>
 </div>
 
+<app-match-display [match]="currentMatch()" [editable]="true" [(score)]="score"></app-match-display>
 
-<!--TODO make a component for this-->
-<div class="score-list">
-  @for (s of redScoreList; track s) {
-    <div class="score-item red-team-backgroundcolor"
-      (click)="redScore=s; autoFill()"
-    [class.selected]="s===redScore">{{s}}</div>
-  }
-</div>
+<!--&lt;!&ndash;TODO make a component for this&ndash;&gt;-->
+<!--<div class="score-list">-->
+<!--  @for (s of redScoreList; track s) {-->
+<!--    <div class="score-item red-team-backgroundcolor"-->
+<!--      (click)="redScore=s; autoFill()"-->
+<!--    [class.selected]="s===redScore">{{s}}</div>-->
+<!--  }-->
+<!--</div>-->
 
-<div class="match-container">
-  <div class="red-players red-team-color">
-    <div class="defense">
-      Points: {{currentMatch()?.potentialRedPoints}}
-      <!--      TODO UGLY !!!--><br/>
-      <br/>
-      Defense <br/>
-      {{currentMatch()?.redTeam?.defensePlayer?.nickName}}
-    </div>
-    <div class="offense">
-      <br/>
-      <br/>
-      Offense<br/>
-      {{currentMatch()?.redTeam?.offensePlayer?.nickName}}
-    </div>
-  </div>
-  <img class="soccer-field" src="assets/soccer-table.png"/>
-  <div class="blue-players blue-team-color">
-    <div class="offense">
-      Points: {{currentMatch()?.potentialBluePoints}}
-      <br/>
-      <br/>
-      Offense<br/>
-      {{currentMatch()?.blueTeam?.offensePlayer?.nickName}}
-    </div>
-    <div class="defense">
-      <br/>
-      <br/>
-      Defense <br/>
-      {{currentMatch()?.blueTeam?.defensePlayer?.nickName}}
-    </div>
-  </div>
-</div>
+<!--<div class="match-container">-->
+<!--  <div class="red-players red-team-color">-->
+<!--    <div class="defense">-->
+<!--      Points: {{currentMatch()?.potentialRedPoints}}-->
+<!--      &lt;!&ndash;      TODO UGLY !!!&ndash;&gt;<br/>-->
+<!--      <br/>-->
+<!--      Defense <br/>-->
+<!--      {{currentMatch()?.redTeam?.defensePlayer?.nickName}}-->
+<!--    </div>-->
+<!--    <div class="offense">-->
+<!--      <br/>-->
+<!--      <br/>-->
+<!--      Offense<br/>-->
+<!--      {{currentMatch()?.redTeam?.offensePlayer?.nickName}}-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <img class="soccer-field" src="assets/soccer-table.png"/>-->
+<!--  <div class="blue-players blue-team-color">-->
+<!--    <div class="offense">-->
+<!--      Points: {{currentMatch()?.potentialBluePoints}}-->
+<!--      <br/>-->
+<!--      <br/>-->
+<!--      Offense<br/>-->
+<!--      {{currentMatch()?.blueTeam?.offensePlayer?.nickName}}-->
+<!--    </div>-->
+<!--    <div class="defense">-->
+<!--      <br/>-->
+<!--      <br/>-->
+<!--      Defense <br/>-->
+<!--      {{currentMatch()?.blueTeam?.defensePlayer?.nickName}}-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
 
-<!--TODO make a component for this-->
-<div class="score-list">
-  @for (s of blueScoreList; track s) {
-    <div class="score-item blue-team-backgroundcolor"
-      (click)="blueScore=s; autoFill()"
-    [class.selected]="s===blueScore">{{s}}</div>
-  }
-</div>
+<!--&lt;!&ndash;TODO make a component for this&ndash;&gt;-->
+<!--<div class="score-list">-->
+<!--  @for (s of blueScoreList; track s) {-->
+<!--    <div class="score-item blue-team-backgroundcolor"-->
+<!--      (click)="blueScore=s; autoFill()"-->
+<!--    [class.selected]="s===blueScore">{{s}}</div>-->
+<!--  }-->
+<!--</div>-->
 
 <app-score-confirmation-modal #confirm></app-score-confirmation-modal>
 
