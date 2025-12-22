@@ -7,8 +7,10 @@
 <div class="match-container">
   <div class="red-players red-team-color">
     <div class="defense">
-      Points: {{match()?.potentialRedPoints}}
-      <!--      TODO UGLY !!!--><br/>
+      @if (match()?.potentialRedPoints){
+        Points: {{match()?.potentialRedPoints}}
+      }
+      <br/>
       <br/>
       Defense <br/>
       {{match()?.redTeam?.defensePlayer?.nickName}}
@@ -23,7 +25,9 @@
   <img class="soccer-field" src="assets/soccer-table.png"/>
   <div class="blue-players blue-team-color">
     <div class="offense">
-      Points: {{match()?.potentialBluePoints}}
+      @if (match()?.potentialBluePoints){
+        Points: {{match()?.potentialBluePoints}}
+      }
       <br/>
       <br/>
       Offense<br/>

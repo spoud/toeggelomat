@@ -1,6 +1,7 @@
 import {inject, Injectable, Signal, signal} from "@angular/core";
 import {LastMatchesGQL, Match, SaveScoreGQL, SaveScoreInput, StartMatchGQL} from "../../generated/graphql";
 import {map} from "rxjs/operators";
+import {Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ export class MatchesService {
   private lastMatchesGql = inject(LastMatchesGQL);
   private startMatchGQL = inject(StartMatchGQL);
   private saveScoreGQL = inject(SaveScoreGQL);
+  private router = inject(Router);
 
   private _lastMatches = signal<Match[]>([]);
   private _currentMatch = signal<Match | undefined>(undefined);
@@ -36,7 +38,20 @@ export class MatchesService {
       .pipe(
         map(res => res.data?.randomizeMatch as Match),
       )
-      .subscribe(this._currentMatch.set)
+      .subscribe(m => {
+        this._currentMatch.set(m);
+        this.router.navigate(['current-match']);
+      })
+  }
+
+  rematch(match:Match) {
+    this._currentMatch.set({
+      ...match,
+      uuid: "",
+      blueScore: 0,
+      redScore: 0,
+    });
+    this.router.navigate(['current-match']);
   }
 
   saveScore(scores: SaveScoreInput) {

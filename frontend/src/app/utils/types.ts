@@ -7,8 +7,8 @@ export class Score {
   constructor(public readonly blueScore: number = NO_SCORE_SELECTED, public readonly redScore: number = NO_SCORE_SELECTED) {
   }
 
-  public isValid(): boolean {
-    return this.blueScore !== NO_SCORE_SELECTED && this.redScore !== NO_SCORE_SELECTED;
+  public isInValid(): boolean {
+    return this.blueScore === NO_SCORE_SELECTED || this.redScore === NO_SCORE_SELECTED;
   }
 
   public redScoreSelected(score: number): Score {

@@ -50,6 +50,5 @@ export class PlayersSelectionComponent {
     this.matchService.startMatch(this.players()
       .filter(p => p.selected)
       .map(p => p.player.uuid));
-    this.router.navigate(['current-match']);
   }
 }

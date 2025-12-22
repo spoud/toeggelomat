@@ -3,6 +3,8 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Match} from "../../../generated/graphql";
 import {MatchDisplayComponent} from "../../match-display/match-display.component";
 import {Score} from "../../utils/types";
+import {Router} from "@angular/router";
+import {MatchesService} from "../../services/matches-service";
 
 @Component({
   selector: 'app-rematch-modal',
@@ -15,6 +17,8 @@ import {Score} from "../../utils/types";
 export class RematchModalComponent {
 
   private modalService = inject(NgbModal);
+  private router = inject(Router);
+  private matchesService = inject(MatchesService);
 
   @ViewChild('content')
   private content: any;
@@ -27,9 +31,19 @@ export class RematchModalComponent {
     this.score = Score.fromMatch(match);
 
     this.modalService.open(this.content, {size: 'lg'}).result.then((result) => {
-      console.log(`Modal result: ${result}`);
-      // if (result === 'save') {
-      // }
+      switch (result) {
+        case 'same':
+          this.matchesService.rematch(match);
+          break;
+        case 'random':
+          this.matchesService.startMatch([
+            match.redTeam.defensePlayer.uuid,
+            match.redTeam.offensePlayer.uuid,
+            match.blueTeam.defensePlayer.uuid,
+            match.blueTeam.offensePlayer.uuid
+          ]);
+          break;
+      }
     });
 
   }

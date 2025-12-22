@@ -1,4 +1,4 @@
-import {Component, inject, signal, ViewChild} from '@angular/core';
+import {Component, inject, ViewChild} from '@angular/core';
 import {ScoreConfirmationModalComponent} from './score-confirmation-modal/score-confirmation-modal.component';
 
 import {Router, RouterModule} from "@angular/router";
@@ -13,7 +13,7 @@ import {Score} from "../utils/types";
   imports: [
     RouterModule,
     ScoreConfirmationModalComponent,
-    MatchDisplayComponent
+    MatchDisplayComponent,
   ]
 })
 export class CurrentMatchComponent {
