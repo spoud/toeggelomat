@@ -1,0 +1,13 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+      <h4 class="modal-title">Rematch</h4>
+  </div>
+  <div class="modal-body">
+    <app-match-display [match]="match" [score]="score"></app-match-display>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close('cancel')">Cancel</button>
+    <button type="button" ngbAutofocus class="btn btn-primary" (click)="modal.close('same')">Same position</button>
+    <button type="button" ngbAutofocus class="btn btn-primary" (click)="modal.close('random')">Random position</button>
+  </div>
+</ng-template>

@@ -1,6 +1,6 @@
 import {Component, inject, ViewChild} from '@angular/core';
 import {NgbModal, NgbModalModule} from '@ng-bootstrap/ng-bootstrap';
-import {Match} from "../../generated/graphql";
+import {Match} from "../../../generated/graphql";
 
 
 @Component({
@@ -25,7 +25,7 @@ export class ScoreConfirmationModalComponent {
     this.match = match;
     this.redWon = (match.redScore || 0) > (match.blueScore || 0);
 
-    const modalRef = this.modalService.open(this.content, {size: 'lg'}).result.then((result) => {
+    this.modalService.open(this.content, {size: 'lg'}).result.then((result) => {
       if (result === 'save') {
         confirmCallBack();
       }

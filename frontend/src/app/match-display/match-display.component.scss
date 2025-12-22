@@ -1,0 +1,32 @@
+
+.match-container {
+  display: flex;
+  flex-direction: row;
+  font-size: 2em;
+}
+
+.blue-players, .red-players {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+.red-players {
+  text-align: right;
+}
+
+.offense, .defense {
+  flex: 1;
+}
+
+.soccer-field {
+  flex: 1;
+}
+
+
+.potential-points{
+  margin-top: 20px;
+  text-align: center;
+  font-size: 2em;
+}

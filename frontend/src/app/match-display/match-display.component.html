@@ -1,0 +1,48 @@
+<app-score-display
+  [color]="TeamColor.RED"
+  [editable]="editable()"
+  [score]="score().redScore"
+  (scoreSelected)="redScoreSelected($event)"/>
+
+<div class="match-container">
+  <div class="red-players red-team-color">
+    <div class="defense">
+      @if (match()?.potentialRedPoints){
+        Points: {{match()?.potentialRedPoints}}
+      }
+      <br/>
+      <br/>
+      Defense <br/>
+      {{match()?.redTeam?.defensePlayer?.nickName}}
+    </div>
+    <div class="offense">
+      <br/>
+      <br/>
+      Offense<br/>
+      {{match()?.redTeam?.offensePlayer?.nickName}}
+    </div>
+  </div>
+  <img class="soccer-field" src="assets/soccer-table.png"/>
+  <div class="blue-players blue-team-color">
+    <div class="offense">
+      @if (match()?.potentialBluePoints){
+        Points: {{match()?.potentialBluePoints}}
+      }
+      <br/>
+      <br/>
+      Offense<br/>
+      {{match()?.blueTeam?.offensePlayer?.nickName}}
+    </div>
+    <div class="defense">
+      <br/>
+      <br/>
+      Defense <br/>
+      {{match()?.blueTeam?.defensePlayer?.nickName}}
+    </div>
+  </div>
+</div>
+<app-score-display
+  [color]="TeamColor.BLUE"
+  [editable]="editable()"
+  [score]="score().blueScore"
+  (scoreSelected)="blueScoreSelected($event)"/>
