@@ -25,14 +25,14 @@ export const appConfig: ApplicationConfig = {
             Player:{
               fields: {
                 lastMatchTime: {
-                  read: (str)=> new Date(str)
+                  read: (str)=> str ? new Date(str) : str
                 }
               }
             },
             Match: {
               fields: {
                 matchTime: {
-                  read: (str)=> new Date(str)
+                  read: (str)=> str ?  new Date(str) : str
                 }
               }
             }

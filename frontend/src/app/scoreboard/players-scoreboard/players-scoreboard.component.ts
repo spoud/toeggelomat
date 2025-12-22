@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, computed, inject} from '@angular/core';
 import {SpoudAvatarComponent} from "../../spoud-avatar/spoud-avatar.component";
 import {LastMatchTimePipe} from "./last-match-time.pipe";
 import {PlayersService} from "../../services/players-service";
@@ -17,6 +17,7 @@ export class PlayersScoreboardComponent {
 
   private playersService = inject(PlayersService);
 
-  public players = this.playersService.players;
+  public players = computed(() => this.playersService.players()
+    .filter(p => p.lastMatchTime));
 
 }

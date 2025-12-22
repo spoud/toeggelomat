@@ -7,21 +7,24 @@ import {map} from "rxjs/operators";
 })
 export class PlayersService {
 
-  private _players =  signal<Player[]>([]);
+  private _players = signal<Player[]>([]);
 
-  constructor(allPlayerGql: AllPlayersGQL) {
-    allPlayerGql.fetch()
+  constructor(private allPlayerGql: AllPlayersGQL) {
+    this.reloadPlayers();
+  }
+
+  public reloadPlayers(): void {
+    this.allPlayerGql.fetch()
       .pipe(
         map(res => res.data?.allPlayers as Player[]),
         map(list => list
           .slice()
-          // .map(p => p.lastMatchTime = p.lastMatchTime && new Date(p.lastMatchTime))
-          .sort((l, r) => (r.defensePoints  + r.offensePoints) - (l.defensePoints + l.offensePoints)))
+          .sort((l, r) => (r.defensePoints + r.offensePoints) - (l.defensePoints + l.offensePoints)))
       )
       .subscribe(this._players.set);
   }
 
-  get players():Signal<Player[]>{
+  get players(): Signal<Player[]> {
     return this._players;
   }
 }
