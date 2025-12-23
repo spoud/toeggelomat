@@ -1,17 +1,22 @@
 <div class="jumbotron">
   <h1 class="display-3">Who's in ?</h1>
-  <p class="lead">{{playerCount}} Players selected </p>
+  <p class="lead">{{playerCount()}} Players selected </p>
   <p class="lead">
+    @if (sortByName()) {
+      <button type="button" class="btn btn-secondary btn-lg" (click)="sortByName.set(false)">Sort by last match</button>
+    } @else {
+      <button type="button" class="btn btn-secondary btn-lg" (click)="sortByName.set(true)">Sort by name</button>
+    }
     <button type="button" class="btn btn-secondary btn-lg" routerLink="scoreboard">Cancel</button>
-    <button type="button" class="btn btn-primary btn-lg" [disabled]="!enoughToStart" (click)="startMatch()">Start</button>
+    <button type="button" class="btn btn-primary btn-lg" [disabled]="!enoughToStart()" (click)="startMatch()">Start</button>
   </p>
 </div>
 
 <div class="player-list">
-  @for (player of players(); track player) {
-    <div class="player" (click)="selectPlayer(player)" [class.selected]="player.selected">
-      <app-spoud-avatar [player]="player.player"></app-spoud-avatar>
-      {{player.player.nickName}}
+  @for (player of players(); track player.uuid) {
+    <div class="player" (click)="selectPlayer(player)" [class.selected]="selectedPlayers().has(player.uuid)">
+      <app-spoud-avatar [player]="player"></app-spoud-avatar>
+      {{player.nickName}}
     </div>
   }
 </div>

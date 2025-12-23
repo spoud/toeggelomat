@@ -2,6 +2,7 @@ import {inject, Injectable, Signal, signal} from "@angular/core";
 import {LastMatchesGQL, Match, SaveScoreGQL, SaveScoreInput, StartMatchGQL} from "../../generated/graphql";
 import {map} from "rxjs/operators";
 import {Router} from "@angular/router";
+import {PlayersService} from "./players-service";
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ export class MatchesService {
   private startMatchGQL = inject(StartMatchGQL);
   private saveScoreGQL = inject(SaveScoreGQL);
   private router = inject(Router);
+  private playersService = inject(PlayersService);
 
   private _lastMatches = signal<Match[]>([]);
   private _currentMatch = signal<Match | undefined>(undefined);
@@ -64,6 +66,7 @@ export class MatchesService {
         // clear current match
         this._currentMatch.set(undefined);
         this.reloadMatches();
+        this.playersService.reloadPlayers();
       })
   }
 

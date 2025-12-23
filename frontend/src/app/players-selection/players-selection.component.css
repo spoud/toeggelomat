@@ -25,14 +25,10 @@ div.jumbotron {
 
 .player-list{
   margin-top: 20px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-around;
 }
 
 .player {
   font-size: 1.5em;
-  flex: 1 1 350px;
   background: #303030;
   cursor: pointer;
   margin: 10px;
