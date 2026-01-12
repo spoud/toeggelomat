@@ -35,7 +35,7 @@
     "@angular-eslint/template-parser": "21.1.0",
     "@angular/build": "^21.0.5",
     "@angular/cli": "^21.0.5",
-    "@graphql-codegen/cli": "^6.1.0",
+    "@graphql-codegen/cli": "^6.1.1",
     "@graphql-codegen/fragment-matcher": "^6.0.0",
     "@graphql-codegen/typescript": "^5.0.7",
     "@graphql-codegen/typescript-apollo-angular": "^4.0.1",
