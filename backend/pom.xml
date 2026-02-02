@@ -13,7 +13,7 @@
     <quarkus.platform.group-id>io.quarkus.platform</quarkus.platform.group-id>
     <skipITs>true</skipITs>
     <surefire-plugin.version>3.5.4</surefire-plugin.version>
-    <compiler-plugin.version>3.14.1</compiler-plugin.version>
+    <compiler-plugin.version>3.15.0</compiler-plugin.version>
     <quarkus.platform.version>3.31.1</quarkus.platform.version>
   </properties>
   <dependencyManagement>
