@@ -40,7 +40,7 @@
     "@graphql-codegen/typescript": "^5.0.8",
     "@graphql-codegen/typescript-apollo-angular": "^4.0.1",
     "@graphql-codegen/typescript-apollo-client-helpers": "^3.0.1",
-    "@graphql-codegen/typescript-operations": "^5.0.5",
+    "@graphql-codegen/typescript-operations": "^5.0.8",
     "eslint": "^9.39.1",
     "typescript": "~5.9.3"
   }
