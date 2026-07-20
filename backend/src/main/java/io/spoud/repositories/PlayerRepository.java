@@ -4,10 +4,15 @@ import io.quarkus.hibernate.orm.panache.PanacheRepositoryBase;
 import io.quarkus.panache.common.Parameters;
 import io.spoud.entities.PlayerEO;
 import jakarta.enterprise.context.ApplicationScoped;
+import java.util.List;
 import java.util.UUID;
 
 @ApplicationScoped
 public class PlayerRepository implements PanacheRepositoryBase<PlayerEO, UUID> {
+
+  public List<PlayerEO> findAllActive() {
+    return list("active", true);
+  }
 
   public void updatePointsAndLastMatch(PlayerEO player) {
     update(

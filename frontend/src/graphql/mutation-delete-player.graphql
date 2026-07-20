@@ -1,0 +1,3 @@
+mutation DeletePlayer($uuid: String!) {
+  deletePlayer(uuid: $uuid)
+}
