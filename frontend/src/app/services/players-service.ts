@@ -1,5 +1,5 @@
 import {inject, Injectable, Signal, signal} from "@angular/core";
-import {AllPlayersGQL, Player} from "../../generated/graphql";
+import {AllPlayersGQL, CreatePlayerGQL, DeletePlayerGQL, Player} from "../../generated/graphql";
 import {map} from "rxjs/operators";
 
 @Injectable({
@@ -8,6 +8,8 @@ import {map} from "rxjs/operators";
 export class PlayersService {
 
   private allPlayerGql = inject(AllPlayersGQL);
+  private createPlayerGql = inject(CreatePlayerGQL);
+  private deletePlayerGql = inject(DeletePlayerGQL);
 
   private _players = signal<Player[]>([]);
 
@@ -24,6 +26,16 @@ export class PlayersService {
           .sort((l, r) => (r.defensePoints + r.offensePoints) - (l.defensePoints + l.offensePoints)))
       )
       .subscribe(this._players.set);
+  }
+
+  public createPlayer(nickName: string): void {
+    this.createPlayerGql.mutate({variables: {nickName}})
+      .subscribe(() => this.reloadPlayers());
+  }
+
+  public deletePlayer(uuid: string): void {
+    this.deletePlayerGql.mutate({variables: {uuid}})
+      .subscribe(() => this.reloadPlayers());
   }
 
   get players(): Signal<Player[]> {

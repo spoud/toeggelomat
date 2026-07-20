@@ -1,0 +1,9 @@
+mutation CreatePlayer($nickName: String!) {
+  createPlayer(nickName: $nickName) {
+    uuid
+    nickName
+    lastMatchTime
+    defensePoints
+    offensePoints
+  }
+}

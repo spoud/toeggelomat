@@ -35,6 +35,9 @@ public class PlayerEO extends PanacheEntityBase implements Cloneable {
   @Column(name = "last_match_time", nullable = true)
   public ZonedDateTime lastMatchTime;
 
+  @Column(name = "active", nullable = false)
+  public Boolean active = true;
+
   public PlayerEO clone() {
     PlayerEO player = new PlayerEO();
     player.uuid = uuid;
@@ -43,6 +46,7 @@ public class PlayerEO extends PanacheEntityBase implements Cloneable {
     player.defensePoints = defensePoints;
     player.offensePoints = offensePoints;
     player.lastMatchTime = lastMatchTime;
+    player.active = active;
     return player;
   }
 }

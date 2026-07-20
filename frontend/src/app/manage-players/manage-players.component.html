@@ -1,0 +1,34 @@
+<div class="jumbotron">
+  <h1 class="display-3">Manage players</h1>
+  <p class="lead">
+    <input type="text"
+           class="form-control d-inline-block"
+           placeholder="New player nickname"
+           [value]="newPlayerName()"
+           (input)="onNewPlayerNameInput($event)"
+           (keydown.enter)="addPlayer()"/>
+    <button type="button" class="btn btn-primary btn-lg" [disabled]="!newPlayerName().trim()"
+            (click)="addPlayer()">Add player
+    </button>
+    <button type="button" class="btn btn-secondary btn-lg" routerLink="/scoreboard">Back</button>
+  </p>
+</div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Nickname</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (player of players(); track player.uuid) {
+      <tr>
+        <td>{{ player.nickName }}</td>
+        <td>
+          <button type="button" class="btn btn-outline-danger btn-sm" (click)="archivePlayer(player.uuid)">Archive</button>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>
