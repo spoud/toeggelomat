@@ -1,21 +1,23 @@
 import {Component, inject, signal} from '@angular/core';
-import {RouterLink} from "@angular/router";
 import {PlayersService} from "../services/players-service";
 
 @Component({
   selector: 'app-manage-players',
   templateUrl: './manage-players.component.html',
   styleUrl: './manage-players.component.scss',
-  imports: [
-    RouterLink
-  ]
+  imports: []
 })
 export class ManagePlayersComponent {
 
   private playersService = inject(PlayersService);
 
   public players = this.playersService.players;
+  public archivedPlayers = this.playersService.archivedPlayers;
   public newPlayerName = signal('');
+
+  constructor() {
+    this.playersService.reloadArchivedPlayers();
+  }
 
   public onNewPlayerNameInput(event: Event): void {
     this.newPlayerName.set((event.target as HTMLInputElement).value);
@@ -31,5 +33,9 @@ export class ManagePlayersComponent {
 
   public archivePlayer(uuid: string): void {
     this.playersService.deletePlayer(uuid);
+  }
+
+  public unarchivePlayer(uuid: string): void {
+    this.playersService.unarchivePlayer(uuid);
   }
 }

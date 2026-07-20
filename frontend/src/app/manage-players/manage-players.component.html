@@ -10,7 +10,6 @@
     <button type="button" class="btn btn-primary btn-lg" [disabled]="!newPlayerName().trim()"
             (click)="addPlayer()">Add player
     </button>
-    <button type="button" class="btn btn-secondary btn-lg" routerLink="/scoreboard">Back</button>
   </p>
 </div>
 
@@ -32,3 +31,25 @@
     }
   </tbody>
 </table>
+
+@if (archivedPlayers().length > 0) {
+  <h2>Archived players</h2>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Nickname</th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (player of archivedPlayers(); track player.uuid) {
+        <tr>
+          <td>{{ player.nickName }}</td>
+          <td>
+            <button type="button" class="btn btn-outline-success btn-sm" (click)="unarchivePlayer(player.uuid)">Unarchive</button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}

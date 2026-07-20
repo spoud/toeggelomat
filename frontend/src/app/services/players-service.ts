@@ -1,5 +1,12 @@
 import {inject, Injectable, Signal, signal} from "@angular/core";
-import {AllPlayersGQL, CreatePlayerGQL, DeletePlayerGQL, Player} from "../../generated/graphql";
+import {
+  AllPlayersGQL,
+  ArchivedPlayersGQL,
+  CreatePlayerGQL,
+  DeletePlayerGQL,
+  Player,
+  UnarchivePlayerGQL
+} from "../../generated/graphql";
 import {map} from "rxjs/operators";
 
 @Injectable({
@@ -8,10 +15,13 @@ import {map} from "rxjs/operators";
 export class PlayersService {
 
   private allPlayerGql = inject(AllPlayersGQL);
+  private archivedPlayersGql = inject(ArchivedPlayersGQL);
   private createPlayerGql = inject(CreatePlayerGQL);
   private deletePlayerGql = inject(DeletePlayerGQL);
+  private unarchivePlayerGql = inject(UnarchivePlayerGQL);
 
   private _players = signal<Player[]>([]);
+  private _archivedPlayers = signal<Player[]>([]);
 
   constructor() {
     this.reloadPlayers();
@@ -28,6 +38,12 @@ export class PlayersService {
       .subscribe(this._players.set);
   }
 
+  public reloadArchivedPlayers(): void {
+    this.archivedPlayersGql.fetch()
+      .pipe(map(res => res.data?.archivedPlayers as Player[]))
+      .subscribe(this._archivedPlayers.set);
+  }
+
   public createPlayer(nickName: string): void {
     this.createPlayerGql.mutate({variables: {nickName}})
       .subscribe(() => this.reloadPlayers());
@@ -35,10 +51,25 @@ export class PlayersService {
 
   public deletePlayer(uuid: string): void {
     this.deletePlayerGql.mutate({variables: {uuid}})
-      .subscribe(() => this.reloadPlayers());
+      .subscribe(() => {
+        this.reloadPlayers();
+        this.reloadArchivedPlayers();
+      });
+  }
+
+  public unarchivePlayer(uuid: string): void {
+    this.unarchivePlayerGql.mutate({variables: {uuid}})
+      .subscribe(() => {
+        this.reloadPlayers();
+        this.reloadArchivedPlayers();
+      });
   }
 
   get players(): Signal<Player[]> {
     return this._players;
+  }
+
+  get archivedPlayers(): Signal<Player[]> {
+    return this._archivedPlayers;
   }
 }

@@ -14,6 +14,10 @@ public class PlayerRepository implements PanacheRepositoryBase<PlayerEO, UUID> {
     return list("active", true);
   }
 
+  public List<PlayerEO> findAllArchived() {
+    return list("active", false);
+  }
+
   public void updatePointsAndLastMatch(PlayerEO player) {
     update(
         "offensePoints = :offensePoints, defensePoints = :defensePoints, lastMatchTime = :lastMatchTime where uuid = :uuid",
