@@ -40,10 +40,10 @@
     "@angular/compiler-cli": "^22.0.7",
     "@graphql-codegen/cli": "^7.2.0",
     "@graphql-codegen/fragment-matcher": "^7.1.0",
-    "@graphql-codegen/typescript": "^5.0.9",
+    "@graphql-codegen/typescript": "^6.1.0",
     "@graphql-codegen/typescript-apollo-angular": "^5.0.1",
     "@graphql-codegen/typescript-apollo-client-helpers": "^4.0.1",
-    "@graphql-codegen/typescript-operations": "^5.1.0",
+    "@graphql-codegen/typescript-operations": "^6.1.0",
     "eslint": "^9.39.1",
     "typescript": "~6.0.3"
   }
