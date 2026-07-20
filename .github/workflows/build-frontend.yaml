@@ -7,11 +7,27 @@ on:
       - '*'
   pull_request:
     branches: [ main ]
-    paths: [ 'frontend/**' ]
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    outputs:
+      frontend: ${{ steps.filter.outputs.frontend }}
+    steps:
+      - uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3.0.2
+        id: filter
+        with:
+          filters: |
+            frontend:
+              - 'frontend/**'
+
   build:
     runs-on: ubuntu-latest
+    needs: changes
+    # required check must always report, so only skip the real work when this
+    # is a PR that doesn't touch frontend/ - push/tag builds always run
+    if: always() && (github.event_name != 'pull_request' || needs.changes.outputs.frontend == 'true')
 
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
