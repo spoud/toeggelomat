@@ -1,0 +1,20 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="/scoreboard">Toeggelomat</a>
+    <button class="navbar-toggler" type="button"
+            [attr.aria-expanded]="!isCollapsed()"
+            aria-label="Toggle navigation"
+            (click)="isCollapsed.set(!isCollapsed())">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-collapse" [ngbCollapse]="isCollapsed()">
+      <ul class="navbar-nav">
+        @for (link of links; track link.path) {
+          <li class="nav-item">
+            <a class="nav-link" [routerLink]="link.path" routerLinkActive="active">{{ link.label }}</a>
+          </li>
+        }
+      </ul>
+    </div>
+  </div>
+</nav>

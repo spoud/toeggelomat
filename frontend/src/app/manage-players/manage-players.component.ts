@@ -1,14 +1,11 @@
 import {Component, inject, signal} from '@angular/core';
-import {RouterLink} from "@angular/router";
 import {PlayersService} from "../services/players-service";
 
 @Component({
   selector: 'app-manage-players',
   templateUrl: './manage-players.component.html',
   styleUrl: './manage-players.component.scss',
-  imports: [
-    RouterLink
-  ]
+  imports: []
 })
 export class ManagePlayersComponent {
 
