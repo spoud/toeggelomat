@@ -31,6 +31,9 @@ public class MatchService {
     if (playersUuid.size() < 4) {
       throw new IllegalArgumentException("To few players");
     }
+    if (seasonRepository.findActive().isEmpty()) {
+      throw new IllegalStateException("No active season");
+    }
     MatchEO match =
         matchRandomizeService.randomizeNewMatch(
             2, new HashSet<>(playerRepository.findByIds(playersUuid)));

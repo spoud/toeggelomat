@@ -1,7 +1,10 @@
 div.jumbotron {
   margin: auto;
-  text-align: center;
   padding: 5px;
+}
+
+.jumbotron .lead {
+  text-align: center;
 }
 
 .lead button{

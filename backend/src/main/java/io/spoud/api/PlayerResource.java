@@ -6,6 +6,7 @@ import io.spoud.api.data.TeamTO;
 import io.spoud.entities.PlayerEO;
 import io.spoud.repositories.PlayerRepository;
 import io.spoud.services.PlayerService;
+import io.spoud.services.SeasonRankingService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.GET;
@@ -28,6 +29,8 @@ public class PlayerResource {
 
   @Inject PlayerService playerService;
 
+  @Inject SeasonRankingService seasonRankingService;
+
   @Query("allPlayers")
   public @NonNull List<@NonNull PlayerTO> findAll() {
     return playerRepository.findAllActive().stream().map(PlayerTO::from).toList();
@@ -36,6 +39,22 @@ public class PlayerResource {
   @Query("archivedPlayers")
   public @NonNull List<@NonNull PlayerTO> findAllArchived() {
     return playerRepository.findAllArchived().stream().map(PlayerTO::from).toList();
+  }
+
+  @Query("seasonRanking")
+  public @NonNull List<@NonNull PlayerTO> seasonRanking(@NonNull UUID seasonUuid) {
+    return seasonRankingService.computeRanking(seasonUuid).stream()
+        .map(
+            ranked -> {
+              PlayerEO player = playerRepository.findById(ranked.uuid);
+              return new PlayerTO(
+                  ranked.uuid,
+                  player.nickName,
+                  ranked.defensePoints,
+                  ranked.offensePoints,
+                  ranked.lastMatchTime);
+            })
+        .toList();
   }
 
   @Mutation("createPlayer")

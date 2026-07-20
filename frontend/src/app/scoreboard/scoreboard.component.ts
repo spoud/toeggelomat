@@ -23,4 +23,7 @@ export class ScoreboardComponent {
     const label = this.seasonsService.activeSeason()?.label;
     return label ? `Score board (${label})` : 'Score board';
   });
+
+  public hasActiveSeason = computed(() => !!this.seasonsService.activeSeason());
+  public activeSeasonUuid = computed(() => this.seasonsService.activeSeason()?.uuid);
 }

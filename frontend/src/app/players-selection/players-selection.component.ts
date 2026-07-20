@@ -5,6 +5,7 @@ import {RouterModule} from "@angular/router";
 import {PlayersService} from "../services/players-service";
 import {Player} from "../../generated/graphql";
 import {MatchesService} from "../services/matches-service";
+import {SeasonsService} from "../services/seasons-service";
 
 @Component({
   selector: 'app-players-selection',
@@ -19,6 +20,7 @@ export class PlayersSelectionComponent {
 
   private playersService = inject(PlayersService);
   private matchService = inject(MatchesService);
+  private seasonsService = inject(SeasonsService);
 
   sortByName = signal<boolean>(false);
   players = computed(() => {
@@ -30,6 +32,8 @@ export class PlayersSelectionComponent {
   selectedPlayers = signal(new Set<string>());
   playerCount = computed(() => this.selectedPlayers().size);
   enoughToStart = computed(() => this.playerCount() >= 4);
+  hasActiveSeason = computed(() => !!this.seasonsService.activeSeason());
+  canStart = computed(() => this.enoughToStart() && this.hasActiveSeason());
 
   public selectPlayer(player: Player) {
     this.selectedPlayers.update(list => {

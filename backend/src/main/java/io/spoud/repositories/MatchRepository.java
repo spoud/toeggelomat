@@ -19,4 +19,8 @@ public class MatchRepository implements PanacheRepositoryBase<MatchEO, UUID> {
         .page(Page.ofSize(nb))
         .list();
   }
+
+  public List<MatchEO> findBySeasonOrderedByTime(UUID seasonUuid) {
+    return find("seasonUuid", Sort.ascending("matchTime"), seasonUuid).list();
+  }
 }

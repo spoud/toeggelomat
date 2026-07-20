@@ -37,6 +37,7 @@ type Query {
   allSeasons: [Season!]!
   archivedPlayers: [Player!]!
   lastMatches(seasonUuid: String): [Match!]!
+  seasonRanking(seasonUuid: String!): [Player!]!
 }
 
 type Season {

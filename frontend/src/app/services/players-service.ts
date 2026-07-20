@@ -5,6 +5,7 @@ import {
   CreatePlayerGQL,
   DeletePlayerGQL,
   Player,
+  SeasonRankingGQL,
   UnarchivePlayerGQL
 } from "../../generated/graphql";
 import {map} from "rxjs/operators";
@@ -19,6 +20,7 @@ export class PlayersService {
   private createPlayerGql = inject(CreatePlayerGQL);
   private deletePlayerGql = inject(DeletePlayerGQL);
   private unarchivePlayerGql = inject(UnarchivePlayerGQL);
+  private seasonRankingGql = inject(SeasonRankingGQL);
 
   private _players = signal<Player[]>([]);
   private _archivedPlayers = signal<Player[]>([]);
@@ -36,6 +38,11 @@ export class PlayersService {
           .sort((l, r) => (r.defensePoints + r.offensePoints) - (l.defensePoints + l.offensePoints)))
       )
       .subscribe(this._players.set);
+  }
+
+  public fetchSeasonRanking(seasonUuid: string) {
+    return this.seasonRankingGql.fetch({variables: {seasonUuid}})
+      .pipe(map(res => res.data?.seasonRanking as Player[]));
   }
 
   public reloadArchivedPlayers(): void {
