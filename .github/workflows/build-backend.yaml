@@ -23,7 +23,7 @@ jobs:
           distribution: 'temurin'
           cache: maven
       - name: Install UPX
-        uses: crazy-max/ghaction-upx@db8cc9515a4a7ea1b312cb82fbeae6d716daf777 # v3
+        uses: crazy-max/ghaction-upx@c83f378efc804f828e988debb88ed6116feb2368 # v4.0.0
         with:
           install-only: true
       - name: Cache Maven packages
