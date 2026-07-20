@@ -30,8 +30,8 @@ public class MatchResource {
   }
 
   @Query("lastMatches")
-  public @NonNull List<@NonNull MatchTO> lastMaches() {
-    return matchService.getLastMatchOfTheSeason().stream().map(MatchTO::from).toList();
+  public @NonNull List<@NonNull MatchTO> lastMaches(UUID seasonUuid) {
+    return matchService.getLastMatches(seasonUuid).stream().map(MatchTO::from).toList();
   }
 
   public @NonNull TeamTO redTeam(@Source @NonNull MatchTO match) {

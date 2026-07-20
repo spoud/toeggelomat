@@ -1,3 +1,13 @@
+<div class="season-filter mb-2">
+  <label for="season-filter-select">Season</label>
+  <select id="season-filter-select" class="form-select d-inline-block w-auto" (change)="onSeasonFilterChange($event)">
+    <option value="">All seasons</option>
+    @for (season of seasons(); track season.uuid) {
+      <option [value]="season.uuid">{{ season.label }}</option>
+    }
+  </select>
+</div>
+
 <table class="table table-striped">
   <thead>
     <tr>

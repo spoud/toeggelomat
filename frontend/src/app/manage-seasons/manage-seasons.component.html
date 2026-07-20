@@ -1,0 +1,46 @@
+<div class="jumbotron">
+  <h1 class="display-3">Manage seasons</h1>
+  <p class="lead">
+    <input type="text"
+           class="form-control d-inline-block"
+           placeholder="New season label"
+           [value]="newSeasonLabel()"
+           (input)="onNewSeasonLabelInput($event)"
+           (keydown.enter)="startSeason()"/>
+    <button type="button" class="btn btn-primary btn-lg" [disabled]="!newSeasonLabel().trim()"
+            (click)="startSeason()">Start season
+    </button>
+  </p>
+  <p class="text-muted">Starting a new season automatically closes the currently active one.</p>
+</div>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Label</th>
+      <th scope="col">Start</th>
+      <th scope="col">End</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (season of seasons(); track season.uuid) {
+      <tr>
+        <td>{{ season.label }}</td>
+        <td>{{ season.startTime | date: 'dd.MM.yyyy H:mm' }}</td>
+        <td>
+          @if (season.endTime) {
+            {{ season.endTime | date: 'dd.MM.yyyy H:mm' }}
+          } @else {
+            <span class="badge bg-success">Active</span>
+          }
+        </td>
+        <td>
+          @if (!season.endTime) {
+            <button type="button" class="btn btn-outline-danger btn-sm" (click)="closeSeason(season.uuid)">Close</button>
+          }
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>

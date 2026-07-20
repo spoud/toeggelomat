@@ -46,6 +46,9 @@ public class MatchEO extends PanacheEntityBase {
   @Column(name = "player_blue_offense_uuid", nullable = false)
   public UUID playerBlueOffenseUuid;
 
+  @Column(name = "season_uuid", nullable = true)
+  public UUID seasonUuid;
+
   @Transient public Integer potentialBluePoints;
 
   @Transient public Integer potentialRedPoints;

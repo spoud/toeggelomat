@@ -1,5 +1,5 @@
-query lastMatches{
-  lastMatches{
+query lastMatches($seasonUuid: String) {
+  lastMatches(seasonUuid: $seasonUuid) {
     uuid
     matchTime
     blueScore

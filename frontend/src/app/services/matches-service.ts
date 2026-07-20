@@ -17,18 +17,24 @@ export class MatchesService {
 
   private _lastMatches = signal<Match[]>([]);
   private _currentMatch = signal<Match | undefined>(undefined);
+  private seasonUuid: string | undefined = undefined;
 
   public constructor() {
     this.reloadMatches();
   }
 
   public reloadMatches(): void {
-    this.lastMatchesGql.fetch()
+    this.lastMatchesGql.fetch({variables: {seasonUuid: this.seasonUuid}})
       .pipe(
         map(res => res.data?.lastMatches as Match[]),
         map(list => list.slice().sort((l, r) => r.matchTime.getTime() - l.matchTime.getTime()))
       )
       .subscribe(this._lastMatches.set);
+  }
+
+  public filterBySeason(seasonUuid: string | undefined): void {
+    this.seasonUuid = seasonUuid;
+    this.reloadMatches();
   }
 
   startMatch(playerUuids: string[]) {

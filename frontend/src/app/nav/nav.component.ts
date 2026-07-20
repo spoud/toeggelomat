@@ -21,6 +21,7 @@ export class NavComponent {
   public links: NavLink[] = [
     {label: 'Scoreboard', path: '/scoreboard'},
     {label: 'Manage players', path: '/manage-players'},
+    {label: 'Manage seasons', path: '/manage-seasons'},
   ];
 
   public isCollapsed = signal(true);

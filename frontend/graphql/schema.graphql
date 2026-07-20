@@ -13,7 +13,9 @@ type Match {
 
 "Mutation root"
 type Mutation {
+  closeSeason(uuid: String!): Boolean!
   createPlayer(nickName: String!): Player!
+  createSeason(label: String!): Season!
   deletePlayer(uuid: String!): Boolean!
   randomizeMatch(players: [String!]!): Match!
   saveScore(scores: SaveScoreInput!): Match!
@@ -32,8 +34,18 @@ type Player {
 "Query root"
 type Query {
   allPlayers: [Player!]!
+  allSeasons: [Season!]!
   archivedPlayers: [Player!]!
-  lastMatches: [Match!]!
+  lastMatches(seasonUuid: String): [Match!]!
+}
+
+type Season {
+  "ISO-8601"
+  endTime: DateTime
+  label: String!
+  "ISO-8601"
+  startTime: DateTime!
+  uuid: String!
 }
 
 type Team {
