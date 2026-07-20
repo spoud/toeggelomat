@@ -1,4 +1,4 @@
-import {Injectable, Signal, signal} from "@angular/core";
+import {inject, Injectable, Signal, signal} from "@angular/core";
 import {AllPlayersGQL, Player} from "../../generated/graphql";
 import {map} from "rxjs/operators";
 
@@ -7,9 +7,11 @@ import {map} from "rxjs/operators";
 })
 export class PlayersService {
 
+  private allPlayerGql = inject(AllPlayersGQL);
+
   private _players = signal<Player[]>([]);
 
-  constructor(private allPlayerGql: AllPlayersGQL) {
+  constructor() {
     this.reloadPlayers();
   }
 

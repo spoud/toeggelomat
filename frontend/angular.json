@@ -17,7 +17,6 @@
         "build": {
           "builder": "@angular/build:application",
           "options": {
-            "statsJson": true,
             "outputPath": "dist/toeggelomat",
             "index": "src/index.html",
             "browser": "src/main.ts",
@@ -84,6 +83,13 @@
               "src/**/*.ts",
               "src/**/*.html"
             ]
+          }
+        },
+        "test": {
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "runner": "vitest",
+            "buildTarget": "::development"
           }
         }
       }

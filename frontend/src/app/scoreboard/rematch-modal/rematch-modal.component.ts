@@ -1,4 +1,4 @@
-import {Component, inject, ViewChild} from '@angular/core';
+import {Component, inject, TemplateRef, ViewChild} from '@angular/core';
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Match} from "../../../generated/graphql";
 import {MatchDisplayComponent} from "../../match-display/match-display.component";
@@ -21,7 +21,7 @@ export class RematchModalComponent {
   private matchesService = inject(MatchesService);
 
   @ViewChild('content')
-  private content: any;
+  private content!: TemplateRef<unknown>;
 
   public match?: Match;
   public score: Score = new Score();

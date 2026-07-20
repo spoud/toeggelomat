@@ -22,7 +22,7 @@ export class PlayersSelectionComponent {
 
   sortByName = signal<boolean>(false);
   players = computed(() => {
-    let sortByName = this.sortByName();
+    const sortByName = this.sortByName();
     return this.playersService.players()
       .slice()
       .sort((l, r) => this.comparePlayer(sortByName, l, r));

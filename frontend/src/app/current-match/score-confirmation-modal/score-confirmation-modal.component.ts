@@ -1,4 +1,4 @@
-import {Component, inject, ViewChild} from '@angular/core';
+import {Component, inject, TemplateRef, ViewChild} from '@angular/core';
 import {NgbModal, NgbModalModule} from '@ng-bootstrap/ng-bootstrap';
 import {Match} from "../../../generated/graphql";
 
@@ -16,7 +16,7 @@ export class ScoreConfirmationModalComponent {
   private modalService = inject(NgbModal);
 
   @ViewChild('content')
-  private content: any;
+  private content!: TemplateRef<unknown>;
 
   public redWon?: boolean;
   public match?: Match;

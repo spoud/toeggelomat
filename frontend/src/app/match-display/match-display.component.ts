@@ -1,4 +1,4 @@
-import {Component, input, output, signal} from '@angular/core';
+import {Component, input, output} from '@angular/core';
 import {Match} from "../../generated/graphql";
 import {ScoreDisplayComponent} from "./score-display/score-display.component";
 import {Score, TeamColor} from "../utils/types";
