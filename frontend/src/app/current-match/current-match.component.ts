@@ -29,7 +29,7 @@ export class CurrentMatchComponent {
   private confirmDialog?: ScoreConfirmationModalComponent;
 
   public saveScore(): void {
-    let match = this.currentMatch();
+    const match = this.currentMatch();
     if (match) {
       const match = Object.assign({}, this.currentMatch());
       match.blueScore = this.score.blueScore;

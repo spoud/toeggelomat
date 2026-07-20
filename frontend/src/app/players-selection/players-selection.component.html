@@ -14,7 +14,13 @@
 
 <div class="player-list">
   @for (player of players(); track player.uuid) {
-    <div class="player" (click)="selectPlayer(player)" [class.selected]="selectedPlayers().has(player.uuid)">
+    <div class="player"
+         role="button"
+         tabindex="0"
+         (click)="selectPlayer(player)"
+         (keydown.enter)="selectPlayer(player)"
+         (keydown.space)="selectPlayer(player)"
+         [class.selected]="selectedPlayers().has(player.uuid)">
       <app-spoud-avatar [player]="player"></app-spoud-avatar>
       {{player.nickName}}
     </div>

@@ -62,7 +62,7 @@ export class MatchesService {
         scores
       }
     })
-      .subscribe(res => {
+      .subscribe(() => {
         // clear current match
         this._currentMatch.set(undefined);
         this.reloadMatches();

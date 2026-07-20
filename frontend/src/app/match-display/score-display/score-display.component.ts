@@ -1,4 +1,4 @@
-import {Component, computed, HostBinding, input, output} from '@angular/core';
+import {Component, computed, input, output} from '@angular/core';
 import {TeamColor} from "../../utils/types";
 
 @Component({

@@ -1,9 +1,8 @@
-import {ChangeDetectionStrategy, Component, computed, effect, inject, ViewChild} from '@angular/core';
+import {Component, computed, inject, ViewChild} from '@angular/core';
 import {CommonModule, DatePipe} from "@angular/common";
 import {MatchesService} from "../../services/matches-service";
 import {Match, Team} from "../../../generated/graphql";
 import {RematchModalComponent} from "../rematch-modal/rematch-modal.component";
-import {ScoreConfirmationModalComponent} from "../../current-match/score-confirmation-modal/score-confirmation-modal.component";
 
 export class MatchWithWinnerLooser {
   match: Match;

@@ -2,9 +2,13 @@
      [class.editable]="editable()">
   @for (s of scoreList(); track s) {
     <div class="score-item "
-         [class.red-team-backgroundcolor]="color()==TeamColor.RED"
-         [class.blue-team-backgroundcolor]="color()==TeamColor.BLUE"
+         role="button"
+         tabindex="0"
+         [class.red-team-backgroundcolor]="color()===TeamColor.RED"
+         [class.blue-team-backgroundcolor]="color()===TeamColor.BLUE"
          (click)="clickOnScore(s)"
+         (keydown.enter)="clickOnScore(s)"
+         (keydown.space)="clickOnScore(s)"
          [class.selected]="s===score()">{{ s }}
     </div>
   }
