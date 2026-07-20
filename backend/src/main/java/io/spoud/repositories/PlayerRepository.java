@@ -26,4 +26,10 @@ public class PlayerRepository implements PanacheRepositoryBase<PlayerEO, UUID> {
             .and("lastMatchTime", player.lastMatchTime)
             .and("uuid", player.uuid));
   }
+
+  public void resetAllPoints(int startingPoints) {
+    update(
+        "offensePoints = :points, defensePoints = :points",
+        Parameters.with("points", startingPoints));
+  }
 }

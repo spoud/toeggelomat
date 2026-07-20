@@ -2,6 +2,7 @@ package io.spoud.api;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.spoud.api.data.SeasonTO;
+import io.spoud.entities.PlayerEO;
 import io.spoud.entities.SeasonEO;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -16,6 +17,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @QuarkusTest
 class SeasonResourceTest {
 
+  private static final List<UUID> SEED_PLAYER_UUIDS = List.of(
+    UUID.fromString("f7ec8a9c-09d6-11ea-8d71-362b9e155667"),
+    UUID.fromString("b480afb4-00c5-11ea-8d71-362b9e155667"),
+    UUID.fromString("b480ac12-00c5-11ea-8d71-362b9e155667"),
+    UUID.fromString("b480a9a6-00c5-11ea-8d71-362b9e155667"));
+
   @Inject
   SeasonResource seasonResource;
 
@@ -23,6 +30,8 @@ class SeasonResourceTest {
   @Transactional
   void cleanup() {
     SeasonEO.deleteAll();
+    PlayerEO.update(
+        "offensePoints = 500, defensePoints = 500 where uuid in ?1", SEED_PLAYER_UUIDS);
   }
 
   @Test
@@ -82,5 +91,18 @@ class SeasonResourceTest {
 
     assertThat(seasons).hasSize(2);
     assertThat(seasons.get(0).label()).isEqualTo("Season Two");
+  }
+
+  @Test
+  @Transactional
+  void should_reset_player_points_when_starting_a_new_season() {
+    UUID playerUuid = SEED_PLAYER_UUIDS.get(0);
+    PlayerEO.update("offensePoints = 700, defensePoints = 300 where uuid = ?1", playerUuid);
+
+    seasonResource.createSeason("Season One");
+
+    PlayerEO after = PlayerEO.findById(playerUuid);
+    assertThat(after.offensePoints).isEqualTo(500);
+    assertThat(after.defensePoints).isEqualTo(500);
   }
 }

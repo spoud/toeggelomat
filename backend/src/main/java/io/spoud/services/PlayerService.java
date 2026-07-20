@@ -45,4 +45,8 @@ public class PlayerService {
     playerRepository.persistAndFlush(player);
     return true;
   }
+
+  public void resetAllPointsToStarting() {
+    playerRepository.resetAllPoints(STARTING_POINTS);
+  }
 }

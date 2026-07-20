@@ -14,6 +14,8 @@ public class SeasonService {
 
   @Inject SeasonRepository seasonRepository;
 
+  @Inject PlayerService playerService;
+
   public SeasonEO createSeason(String label) {
     ZonedDateTime now = ZonedDateTime.now();
     seasonRepository
@@ -29,6 +31,9 @@ public class SeasonService {
     season.label = label;
     season.startTime = now;
     seasonRepository.persistAndFlush(season);
+
+    playerService.resetAllPointsToStarting();
+
     return season;
   }
 

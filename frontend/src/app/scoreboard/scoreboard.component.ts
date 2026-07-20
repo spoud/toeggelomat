@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {PlayersScoreboardComponent} from "./players-scoreboard/players-scoreboard.component";
-import {LastMatchesComponent} from "./last-matches/last-matches.component";
 
 import {RouterModule} from "@angular/router";
 
@@ -10,8 +9,7 @@ import {RouterModule} from "@angular/router";
   styleUrls: ['./scoreboard.component.css'],
   imports: [
     RouterModule,
-    PlayersScoreboardComponent,
-    LastMatchesComponent
+    PlayersScoreboardComponent
   ]
 })
 export class ScoreboardComponent {
