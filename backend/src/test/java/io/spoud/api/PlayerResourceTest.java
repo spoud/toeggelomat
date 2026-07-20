@@ -65,4 +65,34 @@ class PlayerResourceTest {
 
     assertThat(deleted).isFalse();
   }
+
+  @Test
+  void should_list_archived_players() {
+    PlayerTO created = playerResource.createPlayer("Testy");
+    playerResource.deletePlayer(created.uuid());
+
+    List<PlayerTO> archived = playerResource.findAllArchived();
+
+    assertThat(archived).extracting(PlayerTO::uuid).containsExactly(created.uuid());
+    assertThat(playerResource.findAll()).hasSize(4);
+  }
+
+  @Test
+  void should_unarchive_a_player() {
+    PlayerTO created = playerResource.createPlayer("Testy");
+    playerResource.deletePlayer(created.uuid());
+
+    boolean unarchived = playerResource.unarchivePlayer(created.uuid());
+
+    assertThat(unarchived).isTrue();
+    assertThat(playerResource.findAll()).hasSize(5);
+    assertThat(playerResource.findAllArchived()).isEmpty();
+  }
+
+  @Test
+  void should_return_false_when_unarchiving_unknown_player() {
+    boolean unarchived = playerResource.unarchivePlayer(UUID.randomUUID());
+
+    assertThat(unarchived).isFalse();
+  }
 }

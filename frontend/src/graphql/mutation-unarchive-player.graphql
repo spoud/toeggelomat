@@ -1,0 +1,3 @@
+mutation UnarchivePlayer($uuid: String!) {
+  unarchivePlayer(uuid: $uuid)
+}

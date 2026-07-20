@@ -33,6 +33,11 @@ public class PlayerResource {
     return playerRepository.findAllActive().stream().map(PlayerTO::from).toList();
   }
 
+  @Query("archivedPlayers")
+  public @NonNull List<@NonNull PlayerTO> findAllArchived() {
+    return playerRepository.findAllArchived().stream().map(PlayerTO::from).toList();
+  }
+
   @Mutation("createPlayer")
   public @NonNull PlayerTO createPlayer(@NonNull String nickName) {
     return PlayerTO.from(playerService.createPlayer(nickName));
@@ -41,6 +46,11 @@ public class PlayerResource {
   @Mutation("deletePlayer")
   public @NonNull Boolean deletePlayer(@NonNull UUID uuid) {
     return playerService.archivePlayer(uuid);
+  }
+
+  @Mutation("unarchivePlayer")
+  public @NonNull Boolean unarchivePlayer(@NonNull UUID uuid) {
+    return playerService.unarchivePlayer(uuid);
   }
 
   public @NonNull PlayerTO offensePlayer(@Source @NonNull TeamTO teamTO) {

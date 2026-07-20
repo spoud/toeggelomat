@@ -35,4 +35,14 @@ public class PlayerService {
     playerRepository.persistAndFlush(player);
     return true;
   }
+
+  public boolean unarchivePlayer(UUID uuid) {
+    PlayerEO player = playerRepository.findById(uuid);
+    if (player == null) {
+      return false;
+    }
+    player.active = true;
+    playerRepository.persistAndFlush(player);
+    return true;
+  }
 }
