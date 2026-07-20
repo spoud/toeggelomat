@@ -1,4 +1,4 @@
-<h1>Score board</h1>
+<h1>{{ heading() }}</h1>
 <div class="start-game-container">
   <button type="button" class="btn btn-primary btn-lg" routerLink="/players-selection">Start a game</button>
 </div>
@@ -7,6 +7,9 @@
   <div class="row">
     <div class="col-md-6">
       <app-players-scoreboard></app-players-scoreboard>
+    </div>
+    <div class="col-md-6">
+      <app-last-matches mode="current"></app-last-matches>
     </div>
   </div>
 </div>

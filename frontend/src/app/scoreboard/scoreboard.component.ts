@@ -1,5 +1,7 @@
-import {Component} from '@angular/core';
+import {Component, computed, inject} from '@angular/core';
 import {PlayersScoreboardComponent} from "./players-scoreboard/players-scoreboard.component";
+import {LastMatchesComponent} from "./last-matches/last-matches.component";
+import {SeasonsService} from "../services/seasons-service";
 
 import {RouterModule} from "@angular/router";
 
@@ -9,9 +11,16 @@ import {RouterModule} from "@angular/router";
   styleUrls: ['./scoreboard.component.css'],
   imports: [
     RouterModule,
-    PlayersScoreboardComponent
+    PlayersScoreboardComponent,
+    LastMatchesComponent
   ]
 })
 export class ScoreboardComponent {
 
+  private seasonsService = inject(SeasonsService);
+
+  public heading = computed(() => {
+    const label = this.seasonsService.activeSeason()?.label;
+    return label ? `Score board (${label})` : 'Score board';
+  });
 }

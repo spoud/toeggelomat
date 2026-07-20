@@ -1,4 +1,4 @@
-import {inject, Injectable, Signal, signal} from "@angular/core";
+import {computed, inject, Injectable, Signal, signal} from "@angular/core";
 import {AllSeasonsGQL, CloseSeasonGQL, CreateSeasonGQL, Season} from "../../generated/graphql";
 import {map} from "rxjs/operators";
 
@@ -12,6 +12,7 @@ export class SeasonsService {
   private closeSeasonGql = inject(CloseSeasonGQL);
 
   private _seasons = signal<Season[]>([]);
+  private _activeSeason = computed(() => this._seasons().find(s => !s.endTime));
 
   constructor() {
     this.reloadSeasons();
@@ -35,5 +36,9 @@ export class SeasonsService {
 
   get seasons(): Signal<Season[]> {
     return this._seasons;
+  }
+
+  get activeSeason(): Signal<Season | undefined> {
+    return this._activeSeason;
   }
 }

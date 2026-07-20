@@ -1,4 +1,4 @@
-import {Component, computed, inject, ViewChild} from '@angular/core';
+import {Component, computed, effect, inject, input, ViewChild} from '@angular/core';
 import {CommonModule, DatePipe} from "@angular/common";
 import {MatchesService} from "../../services/matches-service";
 import {SeasonsService} from "../../services/seasons-service";
@@ -40,6 +40,7 @@ export class LastMatchesComponent {
   private matchesService = inject(MatchesService);
   private seasonsService = inject(SeasonsService);
 
+  public mode = input<'current' | 'browse'>('browse');
 
   @ViewChild('rematchRef')
   private rematchModal?: RematchModalComponent;
@@ -49,6 +50,17 @@ export class LastMatchesComponent {
   });
 
   public seasons = this.seasonsService.seasons;
+  public showSeasonFilter = computed(() => this.mode() === 'browse');
+
+  constructor() {
+    effect(() => {
+      if (this.mode() === 'current') {
+        this.matchesService.filterBySeason(this.seasonsService.activeSeason()?.uuid);
+      } else {
+        this.matchesService.filterBySeason(undefined);
+      }
+    });
+  }
 
   public onSeasonFilterChange(event: Event): void {
     const value = (event.target as HTMLSelectElement).value;
