@@ -18,6 +18,11 @@ updates:
         applies-to: version-updates
         patterns:
           - "@angular*"
+          - "@ng-bootstrap/ng-bootstrap"
+      graphql-codegen:
+        applies-to: version-updates
+        patterns:
+          - "@graphql-codegen*"
   - package-ecosystem: "docker"
     directory: "/frontend"
     schedule:
