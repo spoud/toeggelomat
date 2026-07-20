@@ -29,9 +29,26 @@ public class SeasonRankingService {
     public int offensePoints = STARTING_POINTS;
     public int defensePoints = STARTING_POINTS;
     public ZonedDateTime lastMatchTime;
+    public int wins = 0;
+    public int losses = 0;
+    public int goalDifference = 0;
+
+    /** Positive = current win streak, negative = current loss streak, 0 = no matches yet. */
+    public int currentStreak = 0;
 
     public RankedPlayer(UUID uuid) {
       this.uuid = uuid;
+    }
+
+    void applyOutcome(boolean won, int goalDiff) {
+      goalDifference += goalDiff;
+      if (won) {
+        wins++;
+        currentStreak = currentStreak >= 0 ? currentStreak + 1 : 1;
+      } else {
+        losses++;
+        currentStreak = currentStreak <= 0 ? currentStreak - 1 : -1;
+      }
     }
   }
 
@@ -68,6 +85,13 @@ public class SeasonRankingService {
       winnerOffense.offensePoints += points + MatchPointsService.ADDITIONAL_POINT_FOR_WINNING;
       looserDefense.defensePoints += -points + MatchPointsService.ADDITIONAL_POINT_FOR_LOSING;
       looserOffense.offensePoints += -points + MatchPointsService.ADDITIONAL_POINT_FOR_LOSING;
+
+      int blueGoalDiff =
+          match.blueScore != null && match.redScore != null ? match.blueScore - match.redScore : 0;
+      blueDefense.applyOutcome(wonByBlue, blueGoalDiff);
+      blueOffense.applyOutcome(wonByBlue, blueGoalDiff);
+      redDefense.applyOutcome(!wonByBlue, -blueGoalDiff);
+      redOffense.applyOutcome(!wonByBlue, -blueGoalDiff);
 
       blueDefense.lastMatchTime = match.matchTime;
       blueOffense.lastMatchTime = match.matchTime;

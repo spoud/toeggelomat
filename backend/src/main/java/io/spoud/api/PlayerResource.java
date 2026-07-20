@@ -1,6 +1,7 @@
 package io.spoud.api;
 
 import io.spoud.api.data.MatchTO;
+import io.spoud.api.data.PlayerStatsTO;
 import io.spoud.api.data.PlayerTO;
 import io.spoud.api.data.TeamTO;
 import io.spoud.entities.PlayerEO;
@@ -53,6 +54,28 @@ public class PlayerResource {
                   ranked.defensePoints,
                   ranked.offensePoints,
                   ranked.lastMatchTime);
+            })
+        .toList();
+  }
+
+  @Query("playerStats")
+  public @NonNull List<@NonNull PlayerStatsTO> playerStats(@NonNull UUID seasonUuid) {
+    return seasonRankingService.computeRanking(seasonUuid).stream()
+        .map(
+            ranked -> {
+              PlayerEO player = playerRepository.findById(ranked.uuid);
+              int gamesPlayed = ranked.wins + ranked.losses;
+              Double winRate = gamesPlayed == 0 ? null : (double) ranked.wins / gamesPlayed;
+              return new PlayerStatsTO(
+                  ranked.uuid,
+                  player.nickName,
+                  ranked.wins,
+                  ranked.losses,
+                  winRate,
+                  ranked.currentStreak,
+                  ranked.goalDifference,
+                  ranked.offensePoints,
+                  ranked.defensePoints);
             })
         .toList();
   }

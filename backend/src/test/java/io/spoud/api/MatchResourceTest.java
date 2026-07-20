@@ -2,6 +2,7 @@ package io.spoud.api;
 
 import io.quarkus.test.junit.QuarkusTest;
 import io.spoud.api.data.MatchTO;
+import io.spoud.api.data.PlayerStatsTO;
 import io.spoud.api.data.PlayerTO;
 import io.spoud.api.data.SaveScoreInput;
 import io.spoud.api.data.SeasonTO;
@@ -49,6 +50,16 @@ class MatchResourceTest {
     return new SaveScoreInput(
       1,
       7,
+      UUID.fromString("f7ec8a9c-09d6-11ea-8d71-362b9e155667"),
+      UUID.fromString("b480afb4-00c5-11ea-8d71-362b9e155667"),
+      UUID.fromString("b480ac12-00c5-11ea-8d71-362b9e155667"),
+      UUID.fromString("b480a9a6-00c5-11ea-8d71-362b9e155667"));
+  }
+
+  private SaveScoreInput redWinsScore() {
+    return new SaveScoreInput(
+      7,
+      1,
       UUID.fromString("f7ec8a9c-09d6-11ea-8d71-362b9e155667"),
       UUID.fromString("b480afb4-00c5-11ea-8d71-362b9e155667"),
       UUID.fromString("b480ac12-00c5-11ea-8d71-362b9e155667"),
@@ -154,9 +165,62 @@ class MatchResourceTest {
         .allSatisfy(p -> assertThat(p.defensePoints()).isEqualTo(500));
   }
 
+  @Test
+  void should_compute_win_loss_streak_and_goal_difference() {
+    SeasonTO season = seasonResource.createSeason("Season One");
+    matchResource.finishMatch(sampleScore());
+    matchResource.finishMatch(sampleScore());
+    matchResource.finishMatch(sampleScore());
+
+    List<PlayerStatsTO> stats = playerResource.playerStats(season.uuid());
+
+    PlayerStatsTO anna = findStats(stats, "b480ac12-00c5-11ea-8d71-362b9e155667");
+    assertThat(anna.wins()).isEqualTo(3);
+    assertThat(anna.losses()).isEqualTo(0);
+    assertThat(anna.winRate()).isEqualTo(1.0);
+    assertThat(anna.currentStreak()).isEqualTo(3);
+    assertThat(anna.goalDifference()).isEqualTo(18);
+
+    PlayerStatsTO gaetan = findStats(stats, "f7ec8a9c-09d6-11ea-8d71-362b9e155667");
+    assertThat(gaetan.wins()).isEqualTo(0);
+    assertThat(gaetan.losses()).isEqualTo(3);
+    assertThat(gaetan.winRate()).isEqualTo(0.0);
+    assertThat(gaetan.currentStreak()).isEqualTo(-3);
+    assertThat(gaetan.goalDifference()).isEqualTo(-18);
+  }
+
+  @Test
+  void should_reset_streak_when_result_changes() {
+    SeasonTO season = seasonResource.createSeason("Season One");
+    matchResource.finishMatch(sampleScore());
+    matchResource.finishMatch(sampleScore());
+    matchResource.finishMatch(redWinsScore());
+
+    List<PlayerStatsTO> stats = playerResource.playerStats(season.uuid());
+
+    PlayerStatsTO anna = findStats(stats, "b480ac12-00c5-11ea-8d71-362b9e155667");
+    assertThat(anna.wins()).isEqualTo(2);
+    assertThat(anna.losses()).isEqualTo(1);
+    assertThat(anna.currentStreak()).isEqualTo(-1);
+  }
+
+  @Test
+  void should_return_null_win_rate_when_no_games_played() {
+    SeasonTO season = seasonResource.createSeason("Season One");
+
+    assertThat(playerResource.playerStats(season.uuid())).isEmpty();
+  }
+
   private PlayerTO findPlayer(List<PlayerTO> players, String uuid) {
     return players.stream()
         .filter(p -> p.uuid().equals(UUID.fromString(uuid)))
+        .findFirst()
+        .orElseThrow();
+  }
+
+  private PlayerStatsTO findStats(List<PlayerStatsTO> stats, String uuid) {
+    return stats.stream()
+        .filter(s -> s.uuid().equals(UUID.fromString(uuid)))
         .findFirst()
         .orElseThrow();
   }
