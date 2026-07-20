@@ -1,0 +1,9 @@
+query archivedPlayers {
+  archivedPlayers {
+    uuid
+    nickName
+    lastMatchTime
+    defensePoints
+    offensePoints
+  }
+}

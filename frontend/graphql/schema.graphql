@@ -17,6 +17,7 @@ type Mutation {
   deletePlayer(uuid: String!): Boolean!
   randomizeMatch(players: [String!]!): Match!
   saveScore(scores: SaveScoreInput!): Match!
+  unarchivePlayer(uuid: String!): Boolean!
 }
 
 type Player {
@@ -31,6 +32,7 @@ type Player {
 "Query root"
 type Query {
   allPlayers: [Player!]!
+  archivedPlayers: [Player!]!
   lastMatches: [Match!]!
 }
 
