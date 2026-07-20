@@ -1,0 +1,3 @@
+mutation CloseSeason($uuid: String!) {
+  closeSeason(uuid: $uuid)
+}

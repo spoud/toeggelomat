@@ -1,0 +1,9 @@
+query seasonRanking($seasonUuid: String!) {
+  seasonRanking(seasonUuid: $seasonUuid) {
+    uuid
+    nickName
+    lastMatchTime
+    defensePoints
+    offensePoints
+  }
+}

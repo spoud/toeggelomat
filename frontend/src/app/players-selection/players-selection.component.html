@@ -1,5 +1,8 @@
 <div class="jumbotron">
   <h1 class="display-3">Who's in ?</h1>
+  @if (!hasActiveSeason()) {
+    <p class="lead text-danger">No active season — start one on the Manage seasons page before playing.</p>
+  }
   <p class="lead">{{playerCount()}} Players selected </p>
   <p class="lead">
     @if (sortByName()) {
@@ -8,7 +11,7 @@
       <button type="button" class="btn btn-secondary btn-lg" (click)="sortByName.set(true)">Sort by name</button>
     }
     <button type="button" class="btn btn-secondary btn-lg" routerLink="scoreboard">Cancel</button>
-    <button type="button" class="btn btn-primary btn-lg" [disabled]="!enoughToStart()" (click)="startMatch()">Start</button>
+    <button type="button" class="btn btn-primary btn-lg" [disabled]="!canStart()" (click)="startMatch()">Start</button>
   </p>
 </div>
 

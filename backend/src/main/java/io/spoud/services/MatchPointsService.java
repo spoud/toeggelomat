@@ -67,25 +67,26 @@ public class MatchPointsService {
   }
 
   private int calcPoints(PlayersHelper playersHelper) {
-    double factor = 1.0;
-    factor *= sevenToZeroMultiplier(playersHelper.match);
-    double winnerPoints =
+    int winnerPoints =
       playersHelper.getWinnerDeffence().defensePoints
         + playersHelper.getWinnerOffense().offensePoints;
-    double looserPoints =
+    int looserPoints =
       playersHelper.getLooserDeffence().defensePoints
         + playersHelper.getLooserOffense().offensePoints;
+    return calcPoints(winnerPoints, looserPoints, isSevenToZero(playersHelper.match));
+  }
+
+  public static int calcPoints(int winnerPoints, int looserPoints, boolean sevenToZero) {
+    double factor = sevenToZero ? 2 : 1;
     double total = winnerPoints + looserPoints;
     double slope = slope(looserPoints, total);
     return (int) Math.round(slope * factor * BASE_POINTS);
   }
 
-  private double sevenToZeroMultiplier(MatchEO match) {
+  public static boolean isSevenToZero(MatchEO match) {
     return match.blueScore != null
       && match.redScore != null
-      && (match.blueScore == 0 || match.redScore == 0)
-      ? 2
-      : 1;
+      && (match.blueScore == 0 || match.redScore == 0);
   }
 
   public static class PlayersHelper {

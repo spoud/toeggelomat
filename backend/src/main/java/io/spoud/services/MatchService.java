@@ -4,6 +4,7 @@ import io.spoud.api.data.SaveScoreInput;
 import io.spoud.entities.MatchEO;
 import io.spoud.repositories.MatchRepository;
 import io.spoud.repositories.PlayerRepository;
+import io.spoud.repositories.SeasonRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -20,6 +21,8 @@ public class MatchService {
 
   @Inject MatchRepository matchRepository;
 
+  @Inject SeasonRepository seasonRepository;
+
   @Inject MatchRandomizeService matchRandomizeService;
 
   @Inject MatchPointsService matchPointsService;
@@ -27,6 +30,9 @@ public class MatchService {
   public MatchEO randomizeMatch(List<UUID> playersUuid) {
     if (playersUuid.size() < 4) {
       throw new IllegalArgumentException("To few players");
+    }
+    if (seasonRepository.findActive().isEmpty()) {
+      throw new IllegalStateException("No active season");
     }
     MatchEO match =
         matchRandomizeService.randomizeNewMatch(
@@ -45,6 +51,7 @@ public class MatchService {
     match.playerRedOffenseUuid = score.playerRedOffenseUuid();
     match.playerBlueDefenseUuid = score.playerBlueDefenseUuid();
     match.playerBlueOffenseUuid = score.playerBlueOffenseUuid();
+    match.seasonUuid = seasonRepository.findActive().map(season -> season.uuid).orElse(null);
 
     match = matchPointsService.computePointsAndUpdatePlayers(match);
     matchRepository.persistAndFlush(match);
@@ -52,7 +59,7 @@ public class MatchService {
     return match;
   }
 
-  public List<MatchEO> getLastMatchOfTheSeason() {
-    return matchRepository.getLastMatches(20);
+  public List<MatchEO> getLastMatches(UUID seasonUuid) {
+    return matchRepository.getLastMatches(20, seasonUuid);
   }
 }

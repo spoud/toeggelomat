@@ -1,6 +1,11 @@
-<h1>Score board</h1>
-<div class="start-game-container">
-  <button type="button" class="btn btn-primary btn-lg" routerLink="/players-selection">Start a game</button>
+<div class="jumbotron">
+  <h1 class="display-3">{{ heading() }}</h1>
+  @if (!hasActiveSeason()) {
+    <p class="lead text-danger">No active season — start one on the Manage seasons page before playing.</p>
+  }
+  <p class="lead">
+    <button type="button" class="btn btn-primary btn-lg" [disabled]="!hasActiveSeason()" routerLink="/players-selection">Start a game</button>
+  </p>
 </div>
 
 <div class="container-fluid">
@@ -9,7 +14,7 @@
       <app-players-scoreboard></app-players-scoreboard>
     </div>
     <div class="col-md-6">
-      <app-last-matches></app-last-matches>
+      <app-last-matches [seasonUuid]="activeSeasonUuid()"></app-last-matches>
     </div>
   </div>
 </div>

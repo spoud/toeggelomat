@@ -1,0 +1,30 @@
+<div class="jumbotron">
+  <h1 class="display-3">History</h1>
+  @if (hasSeasons()) {
+    <p class="lead">
+      <label for="season-filter-select">Season</label>
+      <select id="season-filter-select" class="form-select d-inline-block w-auto" [value]="selectedSeasonUuid()" (change)="onSeasonFilterChange($event)">
+        @for (season of seasons(); track season.uuid) {
+          <option [value]="season.uuid">{{ season.label }}</option>
+        }
+      </select>
+    </p>
+  } @else {
+    <p class="lead">No seasons yet — create one on the Manage seasons page.</p>
+  }
+</div>
+
+@if (hasSeasons()) {
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-6">
+        <h2>Ranking</h2>
+        <app-players-scoreboard [seasonUuid]="selectedSeasonUuid()"></app-players-scoreboard>
+      </div>
+      <div class="col-md-6">
+        <h2>Matches</h2>
+        <app-last-matches [seasonUuid]="selectedSeasonUuid()"></app-last-matches>
+      </div>
+    </div>
+  </div>
+}

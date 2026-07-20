@@ -1,0 +1,8 @@
+query allSeasons {
+  allSeasons {
+    uuid
+    label
+    startTime
+    endTime
+  }
+}

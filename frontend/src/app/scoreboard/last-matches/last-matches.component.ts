@@ -1,4 +1,4 @@
-import {Component, computed, inject, ViewChild} from '@angular/core';
+import {Component, computed, effect, inject, input, ViewChild} from '@angular/core';
 import {CommonModule, DatePipe} from "@angular/common";
 import {MatchesService} from "../../services/matches-service";
 import {Match, Team} from "../../../generated/graphql";
@@ -38,6 +38,7 @@ export class MatchWithWinnerLooser {
 export class LastMatchesComponent {
   private matchesService = inject(MatchesService);
 
+  public seasonUuid = input<string | undefined>(undefined);
 
   @ViewChild('rematchRef')
   private rematchModal?: RematchModalComponent;
@@ -45,6 +46,12 @@ export class LastMatchesComponent {
   public matches = computed(() => {
     return this.matchesService.lastMatches().map(m => new MatchWithWinnerLooser(m));
   });
+
+  constructor() {
+    effect(() => {
+      this.matchesService.filterBySeason(this.seasonUuid());
+    });
+  }
 
   public rematch(match: Match) {
     this.rematchModal?.rematch(match);

@@ -1,0 +1,8 @@
+mutation CreateSeason($label: String!) {
+  createSeason(label: $label) {
+    uuid
+    label
+    startTime
+    endTime
+  }
+}
