@@ -1,0 +1,32 @@
+# Routes through the cluster's existing shared gateway (default/oauth-gateway),
+# which already terminates TLS for the wildcard *.sdm.spoud.io - no separate
+# Gateway/cert needed here, same as the kafka-cost-control apps.
+#
+# Confirm the hostname below actually resolves to this cluster before relying
+# on it (DNS for *.sdm.spoud.io may need a record added for this specific name
+# depending on how it's managed).
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: toeggelomat-virtualservice
+  namespace: toeggelomat
+spec:
+  gateways:
+    - default/oauth-gateway
+  hosts:
+    - toeggelomat.sdm.spoud.io
+  http:
+    - match:
+        - uri:
+            prefix: /graphql
+      name: toeggelomat-backend
+      route:
+        - destination:
+            host: toeggelomat-backend-service
+            port:
+              number: 8080
+    - route:
+        - destination:
+            host: toeggelomat-frontend-service
+            port:
+              number: 80

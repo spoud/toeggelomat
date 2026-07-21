@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: toeggelomat-backend
+  namespace: toeggelomat
+  labels:
+    k8s-app: toeggelomat-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: toeggelomat-backend
+  template:
+    metadata:
+      labels:
+        k8s-app: toeggelomat-backend
+    spec:
+      containers:
+        - name: toeggelomat-backend
+          image: spoud/toeggelomat-backend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: http
+          env:
+            - name: QUARKUS_DATASOURCE_JDBC_URL
+              value: jdbc:postgresql://postgres-service:5432/postgres
+            - name: QUARKUS_DATASOURCE_USERNAME
+              value: postgres
+            - name: QUARKUS_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: toeggelomat-secret
+                  key: POSTGRES_PASSWORD
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          readinessProbe:
+            httpGet:
+              path: /q/health/ready
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /q/health/live
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 20
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: toeggelomat-backend-service
+  namespace: toeggelomat
+  labels:
+    k8s-app: toeggelomat-backend
+spec:
+  selector:
+    k8s-app: toeggelomat-backend
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
