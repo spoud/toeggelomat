@@ -1,10 +1,9 @@
 # Routes through the cluster's existing shared gateway (default/oauth-gateway),
 # which already terminates TLS for the wildcard *.sdm.spoud.io - no separate
-# Gateway/cert needed here, same as the kafka-cost-control apps.
+# Gateway/cert needed, same as the kafka-cost-control apps.
 #
-# Confirm the hostname below actually resolves to this cluster before relying
-# on it (DNS for *.sdm.spoud.io may need a record added for this specific name
-# depending on how it's managed).
+# ${HOSTNAME} is a placeholder, not a real value - see ../.env.example and
+# apply.sh, which substitutes it before this file is applied.
 apiVersion: networking.istio.io/v1
 kind: VirtualService
 metadata:
@@ -14,7 +13,7 @@ spec:
   gateways:
     - default/oauth-gateway
   hosts:
-    - toeggelomat.sdm.spoud.io
+    - ${HOSTNAME}
   http:
     - match:
         - uri:

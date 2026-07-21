@@ -31,6 +31,12 @@ spec:
                 secretKeyRef:
                   name: toeggelomat-secret
                   key: POSTGRES_PASSWORD
+            # Fresh EBS-backed PVCs often come with a pre-existing lost+found
+            # directory, and initdb refuses to init into a non-empty mount
+            # point. Point PGDATA at a subdirectory instead, per postgres's
+            # own recommendation, rather than mounting the volume root directly.
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
           volumeMounts:
             - name: postgres-data
               mountPath: /var/lib/postgresql/data
