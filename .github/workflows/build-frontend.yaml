@@ -59,7 +59,11 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     needs: build
-    if: github.ref == 'refs/heads/main'
+    # needs.build.result must be checked explicitly: build's own condition
+    # uses always() to run despite the (intentionally, on push) skipped
+    # changes job, but that means the default implicit success() check here
+    # would still see a skipped job upstream and skip publish too.
+    if: always() && needs.build.result == 'success' && github.ref == 'refs/heads/main'
 
     steps:
 
