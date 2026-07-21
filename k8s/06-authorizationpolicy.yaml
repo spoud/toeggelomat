@@ -1,0 +1,27 @@
+# Restricts the whole namespace (frontend + backend, no selector = applies
+# to every workload in toeggelomat) to the office's public IP only.
+#
+# Uses remoteIpBlocks rather than ipBlocks: traffic hits the shared
+# istio-ingressgateway before reaching these pods, so the direct
+# connection source would otherwise be the gateway's own IP, not the real
+# client's. remoteIpBlocks instead reads the original client IP from the
+# XFF chain, which the mesh already trusts 2 hops deep
+# (meshConfig.defaultConfig.gatewayTopology.numTrustedProxies: 2, confirmed
+# on this cluster) and the gateway's AWS load balancer is configured with
+# PROXY protocol, so this should reflect the real office IP correctly -
+# worth verifying from outside the office once applied, though.
+#
+# ${OFFICE_IP} is a placeholder, not a real value - see ../.env.example and
+# apply.sh, which substitutes it before this file is applied.
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: toeggelomat-office-only
+  namespace: toeggelomat
+spec:
+  action: ALLOW
+  rules:
+    - from:
+        - source:
+            remoteIpBlocks:
+              - "${OFFICE_IP}"
