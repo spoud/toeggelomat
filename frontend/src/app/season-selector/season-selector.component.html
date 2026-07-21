@@ -1,0 +1,12 @@
+@if (seasons().length > 0) {
+  <p class="lead">
+    <label for="season-filter-select">Season</label>
+    <select id="season-filter-select" class="form-select d-inline-block w-auto" [value]="selectedSeasonUuid()" (change)="onSeasonFilterChange($event)">
+      @for (season of seasons(); track season.uuid) {
+        <option [value]="season.uuid">{{ season.label }}</option>
+      }
+    </select>
+  </p>
+} @else {
+  <p class="lead">No seasons yet — create one on the Manage seasons page.</p>
+}

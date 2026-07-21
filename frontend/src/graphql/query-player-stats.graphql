@@ -1,0 +1,13 @@
+query playerStats($seasonUuid: String!) {
+  playerStats(seasonUuid: $seasonUuid) {
+    uuid
+    nickName
+    wins
+    losses
+    winRate
+    currentStreak
+    goalDifference
+    offensePoints
+    defensePoints
+  }
+}

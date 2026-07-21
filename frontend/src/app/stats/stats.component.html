@@ -1,0 +1,49 @@
+<div class="jumbotron">
+  <h1 class="display-3">Statistics</h1>
+  <app-season-selector [(selectedSeasonUuid)]="selectedSeasonUuid"></app-season-selector>
+</div>
+
+@if (hasSeasons()) {
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nickname</th>
+        <th scope="col">Points</th>
+        <th scope="col">Wins</th>
+        <th scope="col">Losses</th>
+        <th scope="col">Win rate</th>
+        <th scope="col">Streak</th>
+        <th scope="col">Goal diff.</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (stat of sortedStats(); track stat.uuid; let i = $index) {
+        <tr>
+          <th scope="row">{{ i + 1 }}</th>
+          <td>{{ stat.nickName }}</td>
+          <td>{{ stat.offensePoints + stat.defensePoints }}</td>
+          <td>{{ stat.wins }}</td>
+          <td>{{ stat.losses }}</td>
+          <td>
+            @if (stat.winRate === null || stat.winRate === undefined) {
+              -
+            } @else {
+              {{ stat.winRate | percent }}
+            }
+          </td>
+          <td>
+            @if (stat.currentStreak > 0) {
+              <span class="badge bg-success">W{{ stat.currentStreak }}</span>
+            } @else if (stat.currentStreak < 0) {
+              <span class="badge bg-danger">L{{ -stat.currentStreak }}</span>
+            } @else {
+              -
+            }
+          </td>
+          <td>{{ stat.goalDifference > 0 ? '+' + stat.goalDifference : stat.goalDifference }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+}

@@ -31,12 +31,25 @@ type Player {
   uuid: String!
 }
 
+type PlayerStats {
+  currentStreak: Int!
+  defensePoints: Int!
+  goalDifference: Int!
+  losses: Int!
+  nickName: String!
+  offensePoints: Int!
+  uuid: String!
+  winRate: Float
+  wins: Int!
+}
+
 "Query root"
 type Query {
   allPlayers: [Player!]!
   allSeasons: [Season!]!
   archivedPlayers: [Player!]!
   lastMatches(seasonUuid: String): [Match!]!
+  playerStats(seasonUuid: String!): [PlayerStats!]!
   seasonRanking(seasonUuid: String!): [Player!]!
 }
 
