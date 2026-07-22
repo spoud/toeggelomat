@@ -22,14 +22,11 @@ export class PlayersScoreboardComponent {
 
   private seasonRanking = signal<Player[]>([]);
 
-  public players = computed(() => {
-    if (!this.seasonUuid()) {
-      return this.playersService.players().filter(p => p.lastMatchTime);
-    }
-    return this.seasonRanking()
+  public players = computed(() =>
+    this.seasonRanking()
       .slice()
-      .sort((l, r) => (r.defensePoints + r.offensePoints) - (l.defensePoints + l.offensePoints));
-  });
+      .sort((l, r) => (r.defensePoints + r.offensePoints) - (l.defensePoints + l.offensePoints))
+  );
 
   constructor() {
     effect(() => {

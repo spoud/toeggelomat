@@ -60,6 +60,6 @@ public class MatchService {
   }
 
   public List<MatchEO> getLastMatches(UUID seasonUuid) {
-    return matchRepository.getLastMatches(20, seasonUuid);
+    return matchRepository.getLastMatches(seasonUuid);
   }
 }
