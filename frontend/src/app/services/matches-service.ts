@@ -24,12 +24,21 @@ export class MatchesService {
   }
 
   public reloadMatches(): void {
-    this.lastMatchesGql.fetch({variables: {seasonUuid: this.seasonUuid}})
+    // Guard against out-of-order responses: switching seasons quickly (or the
+    // initial undefined -> active-season transition) can have an earlier,
+    // larger request (e.g. the unscoped "all seasons" fetch) resolve after a
+    // later, smaller one, clobbering it with stale/wrongly-scoped data.
+    const requestedSeasonUuid = this.seasonUuid;
+    this.lastMatchesGql.fetch({variables: {seasonUuid: requestedSeasonUuid}})
       .pipe(
         map(res => res.data?.lastMatches as Match[]),
         map(list => list.slice().sort((l, r) => r.matchTime.getTime() - l.matchTime.getTime()))
       )
-      .subscribe(this._lastMatches.set);
+      .subscribe(list => {
+        if (this.seasonUuid === requestedSeasonUuid) {
+          this._lastMatches.set(list);
+        }
+      });
   }
 
   public filterBySeason(seasonUuid: string | undefined): void {
