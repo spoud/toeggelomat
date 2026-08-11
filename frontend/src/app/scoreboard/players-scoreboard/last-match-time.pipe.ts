@@ -9,7 +9,7 @@ export class LastMatchTimePipe implements PipeTransform {
   private HOURS = 3600 * 1000;
   private MINUTES = 60 * 1000;
 
-  transform(value: Date): string {
+  transform(value: Date | null | undefined): string {
     if (value) {
       const now = new Date().getTime();
       const time = value.getTime();

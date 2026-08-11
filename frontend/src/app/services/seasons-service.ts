@@ -1,5 +1,6 @@
 import {computed, inject, Injectable, Signal, signal} from "@angular/core";
-import {AllSeasonsGQL, CloseSeasonGQL, CreateSeasonGQL, Season} from "../../generated/graphql";
+import {Season} from "../../generated/graphql";
+import {AllSeasonsGQL, CloseSeasonGQL, CreateSeasonGQL} from "../../generated/graphql-operations";
 import {map} from "rxjs/operators";
 
 @Injectable({

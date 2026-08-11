@@ -1,14 +1,14 @@
 import {inject, Injectable, Signal, signal} from "@angular/core";
+import {Player} from "../../generated/graphql";
 import {
   AllPlayersGQL,
   ArchivedPlayersGQL,
   CreatePlayerGQL,
   DeletePlayerGQL,
-  Player,
   PlayerStatsGQL,
   SeasonRankingGQL,
   UnarchivePlayerGQL
-} from "../../generated/graphql";
+} from "../../generated/graphql-operations";
 import {map} from "rxjs/operators";
 
 @Injectable({

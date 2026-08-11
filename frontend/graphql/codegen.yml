@@ -1,8 +1,15 @@
 schema: "./graphql/schema.graphql"
+config:
+  scalars:
+    DateTime: Date
 generates:
   src/generated/graphql.ts:
-    documents: "src/graphql/**/*.graphql"
     plugins:
       - typescript
+  src/generated/graphql-operations.ts:
+    documents: "src/graphql/**/*.graphql"
+    config:
+      importSchemaTypesFrom: "./src/generated/graphql"
+    plugins:
       - typescript-operations
       - typescript-apollo-angular
