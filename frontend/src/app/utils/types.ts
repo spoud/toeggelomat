@@ -30,7 +30,7 @@ export class Score {
   }
 
   public static fromMatch(match: Match): Score {
-    return new Score(match.blueScore || NO_SCORE_SELECTED, match.redScore || NO_SCORE_SELECTED);
+    return new Score(match.blueScore ?? NO_SCORE_SELECTED, match.redScore ?? NO_SCORE_SELECTED);
   }
 }
 

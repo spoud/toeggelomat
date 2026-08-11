@@ -3,7 +3,7 @@
     <tr>
       <th scope="col">Date</th>
       <th scope="col">Winner</th>
-      <th scope="col">Looser</th>
+      <th scope="col">Loser</th>
       <th scope="col">Score</th>
       <th scope="col">Points</th>
       <th scope="col"></th>
@@ -14,7 +14,7 @@
       <tr>
         <td>{{match.match.matchTime | date: 'dd.MM.yyyy H:mm'}}</td>
         <td>{{match.winners.offensePlayer.nickName}}, {{match.winners.defensePlayer.nickName}}</td>
-        <td>{{match.loosers.offensePlayer.nickName}}, {{match.loosers.defensePlayer.nickName}}</td>
+        <td>{{match.losers.offensePlayer.nickName}}, {{match.losers.defensePlayer.nickName}}</td>
         <td>{{match.score}}</td>
         <td>{{match.match.points}}</td>
         <td>
