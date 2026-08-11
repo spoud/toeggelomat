@@ -1,5 +1,6 @@
 import {inject, Injectable, Signal, signal} from "@angular/core";
-import {LastMatchesGQL, Match, SaveScoreGQL, SaveScoreInput, StartMatchGQL} from "../../generated/graphql";
+import {Match, SaveScoreInput} from "../../generated/graphql";
+import {LastMatchesGQL, SaveScoreGQL, StartMatchGQL} from "../../generated/graphql-operations";
 import {map} from "rxjs/operators";
 import {Router} from "@angular/router";
 import {PlayersService} from "./players-service";
@@ -32,7 +33,7 @@ export class MatchesService {
     this.lastMatchesGql.fetch({variables: {seasonUuid: requestedSeasonUuid}})
       .pipe(
         map(res => res.data?.lastMatches as Match[]),
-        map(list => list.slice().sort((l, r) => r.matchTime.getTime() - l.matchTime.getTime()))
+        map(list => list.slice().sort((l, r) => (r.matchTime?.getTime() ?? 0) - (l.matchTime?.getTime() ?? 0)))
       )
       .subscribe(list => {
         if (this.seasonUuid === requestedSeasonUuid) {
