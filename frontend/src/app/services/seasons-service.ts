@@ -1,6 +1,7 @@
 import {computed, inject, Injectable, Signal, signal} from "@angular/core";
 import {Season} from "../../generated/graphql";
-import {AllSeasonsGQL, CloseSeasonGQL, CreateSeasonGQL} from "../../generated/graphql-operations";
+import {AllSeasonsDocument, CloseSeasonDocument, CreateSeasonDocument} from "../../generated/graphql-operations";
+import {Apollo} from "apollo-angular";
 import {map} from "rxjs/operators";
 
 @Injectable({
@@ -8,9 +9,7 @@ import {map} from "rxjs/operators";
 })
 export class SeasonsService {
 
-  private allSeasonsGql = inject(AllSeasonsGQL);
-  private createSeasonGql = inject(CreateSeasonGQL);
-  private closeSeasonGql = inject(CloseSeasonGQL);
+  private apollo = inject(Apollo);
 
   private _seasons = signal<Season[]>([]);
   private _activeSeason = computed(() => this._seasons().find(s => !s.endTime));
@@ -20,18 +19,18 @@ export class SeasonsService {
   }
 
   public reloadSeasons(): void {
-    this.allSeasonsGql.fetch()
+    this.apollo.query({query: AllSeasonsDocument})
       .pipe(map(res => res.data?.allSeasons as Season[]))
       .subscribe(this._seasons.set);
   }
 
   public createSeason(label: string): void {
-    this.createSeasonGql.mutate({variables: {label}})
+    this.apollo.mutate({mutation: CreateSeasonDocument, variables: {label}})
       .subscribe(() => this.reloadSeasons());
   }
 
   public closeSeason(uuid: string): void {
-    this.closeSeasonGql.mutate({variables: {uuid}})
+    this.apollo.mutate({mutation: CloseSeasonDocument, variables: {uuid}})
       .subscribe(() => this.reloadSeasons());
   }
 

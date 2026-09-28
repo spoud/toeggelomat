@@ -1,14 +1,15 @@
 import {inject, Injectable, Signal, signal} from "@angular/core";
 import {Player} from "../../generated/graphql";
 import {
-  AllPlayersGQL,
-  ArchivedPlayersGQL,
-  CreatePlayerGQL,
-  DeletePlayerGQL,
-  PlayerStatsGQL,
-  SeasonRankingGQL,
-  UnarchivePlayerGQL
+  AllPlayersDocument,
+  ArchivedPlayersDocument,
+  CreatePlayerDocument,
+  DeletePlayerDocument,
+  PlayerStatsDocument,
+  SeasonRankingDocument,
+  UnarchivePlayerDocument
 } from "../../generated/graphql-operations";
+import {Apollo} from "apollo-angular";
 import {map} from "rxjs/operators";
 
 @Injectable({
@@ -16,13 +17,7 @@ import {map} from "rxjs/operators";
 })
 export class PlayersService {
 
-  private allPlayerGql = inject(AllPlayersGQL);
-  private archivedPlayersGql = inject(ArchivedPlayersGQL);
-  private createPlayerGql = inject(CreatePlayerGQL);
-  private deletePlayerGql = inject(DeletePlayerGQL);
-  private unarchivePlayerGql = inject(UnarchivePlayerGQL);
-  private seasonRankingGql = inject(SeasonRankingGQL);
-  private playerStatsGql = inject(PlayerStatsGQL);
+  private apollo = inject(Apollo);
 
   private _players = signal<Player[]>([]);
   private _archivedPlayers = signal<Player[]>([]);
@@ -32,7 +27,7 @@ export class PlayersService {
   }
 
   public reloadPlayers(): void {
-    this.allPlayerGql.fetch()
+    this.apollo.query({query: AllPlayersDocument})
       .pipe(
         map(res => res.data?.allPlayers as Player[]),
         map(list => list
@@ -43,28 +38,28 @@ export class PlayersService {
   }
 
   public fetchSeasonRanking(seasonUuid: string) {
-    return this.seasonRankingGql.fetch({variables: {seasonUuid}})
+    return this.apollo.query({query: SeasonRankingDocument, variables: {seasonUuid}})
       .pipe(map(res => res.data?.seasonRanking as Player[]));
   }
 
   public fetchPlayerStats(seasonUuid: string) {
-    return this.playerStatsGql.fetch({variables: {seasonUuid}})
+    return this.apollo.query({query: PlayerStatsDocument, variables: {seasonUuid}})
       .pipe(map(res => res.data?.playerStats ?? []));
   }
 
   public reloadArchivedPlayers(): void {
-    this.archivedPlayersGql.fetch()
+    this.apollo.query({query: ArchivedPlayersDocument})
       .pipe(map(res => res.data?.archivedPlayers as Player[]))
       .subscribe(this._archivedPlayers.set);
   }
 
   public createPlayer(nickName: string): void {
-    this.createPlayerGql.mutate({variables: {nickName}})
+    this.apollo.mutate({mutation: CreatePlayerDocument, variables: {nickName}})
       .subscribe(() => this.reloadPlayers());
   }
 
   public deletePlayer(uuid: string): void {
-    this.deletePlayerGql.mutate({variables: {uuid}})
+    this.apollo.mutate({mutation: DeletePlayerDocument, variables: {uuid}})
       .subscribe(() => {
         this.reloadPlayers();
         this.reloadArchivedPlayers();
@@ -72,7 +67,7 @@ export class PlayersService {
   }
 
   public unarchivePlayer(uuid: string): void {
-    this.unarchivePlayerGql.mutate({variables: {uuid}})
+    this.apollo.mutate({mutation: UnarchivePlayerDocument, variables: {uuid}})
       .subscribe(() => {
         this.reloadPlayers();
         this.reloadArchivedPlayers();

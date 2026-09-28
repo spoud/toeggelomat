@@ -12,4 +12,4 @@ generates:
       importSchemaTypesFrom: "./src/generated/graphql"
     plugins:
       - typescript-operations
-      - typescript-apollo-angular
+      - typed-document-node
