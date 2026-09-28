@@ -1,6 +1,7 @@
 import {inject, Injectable, Signal, signal} from "@angular/core";
 import {Match, SaveScoreInput} from "../../generated/graphql";
-import {LastMatchesGQL, SaveScoreGQL, StartMatchGQL} from "../../generated/graphql-operations";
+import {LastMatchesDocument, SaveScoreDocument, StartMatchDocument} from "../../generated/graphql-operations";
+import {Apollo} from "apollo-angular";
 import {map} from "rxjs/operators";
 import {Router} from "@angular/router";
 import {PlayersService} from "./players-service";
@@ -10,9 +11,7 @@ import {PlayersService} from "./players-service";
 })
 export class MatchesService {
 
-  private lastMatchesGql = inject(LastMatchesGQL);
-  private startMatchGQL = inject(StartMatchGQL);
-  private saveScoreGQL = inject(SaveScoreGQL);
+  private apollo = inject(Apollo);
   private router = inject(Router);
   private playersService = inject(PlayersService);
 
@@ -30,7 +29,7 @@ export class MatchesService {
     // larger request (e.g. the unscoped "all seasons" fetch) resolve after a
     // later, smaller one, clobbering it with stale/wrongly-scoped data.
     const requestedSeasonUuid = this.seasonUuid;
-    this.lastMatchesGql.fetch({variables: {seasonUuid: requestedSeasonUuid}})
+    this.apollo.query({query: LastMatchesDocument, variables: {seasonUuid: requestedSeasonUuid}})
       .pipe(
         map(res => res.data?.lastMatches as Match[]),
         map(list => list.slice().sort((l, r) => (r.matchTime?.getTime() ?? 0) - (l.matchTime?.getTime() ?? 0)))
@@ -48,7 +47,8 @@ export class MatchesService {
   }
 
   startMatch(playerUuids: string[]) {
-    this.startMatchGQL.mutate({
+    this.apollo.mutate({
+      mutation: StartMatchDocument,
       variables: {
         playerUuids
       }
@@ -73,7 +73,8 @@ export class MatchesService {
   }
 
   saveScore(scores: SaveScoreInput) {
-    this.saveScoreGQL.mutate({
+    this.apollo.mutate({
+      mutation: SaveScoreDocument,
       variables: {
         scores
       }
