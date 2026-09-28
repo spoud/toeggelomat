@@ -10,11 +10,13 @@ import java.util.UUID;
 @ApplicationScoped
 public class MatchRepository implements PanacheRepositoryBase<MatchEO, UUID> {
 
-  public List<MatchEO> getLastMatches(UUID seasonUuid) {
+  public List<MatchEO> getLastMatches(UUID seasonUuid, int limit, int offset) {
     if (seasonUuid == null) {
-      return findAll(Sort.descending("matchTime")).list();
+      return findAll(Sort.descending("matchTime")).range(offset, offset + limit - 1).list();
     }
-    return find("seasonUuid", Sort.descending("matchTime"), seasonUuid).list();
+    return find("seasonUuid", Sort.descending("matchTime"), seasonUuid)
+        .range(offset, offset + limit - 1)
+        .list();
   }
 
   public List<MatchEO> findBySeasonOrderedByTime(UUID seasonUuid) {
