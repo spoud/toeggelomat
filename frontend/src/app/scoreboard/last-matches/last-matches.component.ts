@@ -39,9 +39,13 @@ export class LastMatchesComponent {
   private matchesService = inject(MatchesService);
 
   public seasonUuid = input<string | undefined>(undefined);
+  public pageSize = input<number>(20);
+  public showLoadMore = input<boolean>(false);
 
   @ViewChild('rematchRef')
   private rematchModal?: RematchModalComponent;
+
+  public hasMoreMatches = this.matchesService.hasMoreMatches;
 
   public matches = computed(() => {
     return this.matchesService.lastMatches().map(m => new MatchWithWinnerLoser(m));
@@ -49,12 +53,16 @@ export class LastMatchesComponent {
 
   constructor() {
     effect(() => {
-      this.matchesService.filterBySeason(this.seasonUuid());
+      this.matchesService.filterBySeason(this.seasonUuid(), this.pageSize());
     });
   }
 
   public rematch(match: Match) {
     this.rematchModal?.rematch(match);
+  }
+
+  public loadMore() {
+    this.matchesService.loadMore();
   }
 
 }

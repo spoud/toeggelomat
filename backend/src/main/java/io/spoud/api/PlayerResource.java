@@ -6,6 +6,7 @@ import io.spoud.api.data.PlayerTO;
 import io.spoud.api.data.TeamTO;
 import io.spoud.entities.PlayerEO;
 import io.spoud.repositories.PlayerRepository;
+import io.spoud.services.PlayerLookupService;
 import io.spoud.services.PlayerService;
 import io.spoud.services.SeasonRankingService;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -31,6 +32,8 @@ public class PlayerResource {
   @Inject PlayerService playerService;
 
   @Inject SeasonRankingService seasonRankingService;
+
+  @Inject PlayerLookupService playerLookupService;
 
   @Query("allPlayers")
   public @NonNull List<@NonNull PlayerTO> findAll() {
@@ -96,11 +99,11 @@ public class PlayerResource {
   }
 
   public @NonNull PlayerTO offensePlayer(@Source @NonNull TeamTO teamTO) {
-    return PlayerTO.from(playerRepository.findById(teamTO.playerOffenseUuid()));
+    return playerLookupService.getByUuid(teamTO.playerOffenseUuid());
   }
 
   public @NonNull PlayerTO defensePlayer(@Source @NonNull TeamTO teamTO) {
-    return PlayerTO.from(playerRepository.findById(teamTO.playerDefenseUuid()));
+    return playerLookupService.getByUuid(teamTO.playerDefenseUuid());
   }
 
 }

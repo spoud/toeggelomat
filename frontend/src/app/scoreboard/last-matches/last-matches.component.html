@@ -25,4 +25,8 @@
   </tbody>
 </table>
 
+@if (showLoadMore() && hasMoreMatches()) {
+  <button type="button" class="btn btn-outline-secondary btn-sm" (click)="loadMore()">Load more</button>
+}
+
 <app-rematch-modal #rematchRef></app-rematch-modal>

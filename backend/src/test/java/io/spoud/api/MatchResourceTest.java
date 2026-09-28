@@ -68,7 +68,7 @@ class MatchResourceTest {
 
   @Test
   void should_return_empty_matches() {
-    List<MatchTO> matches = matchResource.lastMaches(null);
+    List<MatchTO> matches = matchResource.lastMaches(null, 20, 0);
     assertThat(matches).isEmpty();
   }
 
@@ -92,7 +92,7 @@ class MatchResourceTest {
   void should_leave_match_unassigned_when_no_active_season() {
     matchResource.finishMatch(sampleScore());
 
-    assertThat(matchResource.lastMaches(null)).hasSize(1);
+    assertThat(matchResource.lastMaches(null, 20, 0)).hasSize(1);
   }
 
   @Test
@@ -101,7 +101,7 @@ class MatchResourceTest {
 
     matchResource.finishMatch(sampleScore());
 
-    assertThat(matchResource.lastMaches(season.uuid())).hasSize(1);
+    assertThat(matchResource.lastMaches(season.uuid(), 20, 0)).hasSize(1);
   }
 
   @Test
@@ -112,9 +112,38 @@ class MatchResourceTest {
     SeasonTO seasonTwo = seasonResource.createSeason("Season Two");
     matchResource.finishMatch(sampleScore());
 
-    assertThat(matchResource.lastMaches(seasonOne.uuid())).hasSize(1);
-    assertThat(matchResource.lastMaches(seasonTwo.uuid())).hasSize(1);
-    assertThat(matchResource.lastMaches(null)).hasSize(2);
+    assertThat(matchResource.lastMaches(seasonOne.uuid(), 20, 0)).hasSize(1);
+    assertThat(matchResource.lastMaches(seasonTwo.uuid(), 20, 0)).hasSize(1);
+    assertThat(matchResource.lastMaches(null, 20, 0)).hasSize(2);
+  }
+
+  @Test
+  void should_page_last_matches_with_limit_and_offset() {
+    for (int i = 0; i < 5; i++) {
+      matchResource.finishMatch(sampleScore());
+    }
+
+    List<MatchTO> firstPage = matchResource.lastMaches(null, 2, 0);
+    List<MatchTO> secondPage = matchResource.lastMaches(null, 2, 2);
+    List<MatchTO> lastPage = matchResource.lastMaches(null, 2, 4);
+
+    assertThat(firstPage).hasSize(2);
+    assertThat(secondPage).hasSize(2);
+    assertThat(lastPage).hasSize(1);
+    assertThat(firstPage).extracting(MatchTO::uuid)
+        .doesNotContainAnyElementsOf(secondPage.stream().map(MatchTO::uuid).toList());
+  }
+
+  @Test
+  void should_clamp_invalid_limit_and_offset() {
+    for (int i = 0; i < 3; i++) {
+      matchResource.finishMatch(sampleScore());
+    }
+
+    assertThat(matchResource.lastMaches(null, 0, 0)).hasSize(1);
+    assertThat(matchResource.lastMaches(null, -5, 0)).hasSize(1);
+    assertThat(matchResource.lastMaches(null, 20, -1)).hasSize(3);
+    assertThat(matchResource.lastMaches(null, null, null)).hasSize(3);
   }
 
   @Test

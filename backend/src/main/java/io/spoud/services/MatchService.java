@@ -59,7 +59,7 @@ public class MatchService {
     return match;
   }
 
-  public List<MatchEO> getLastMatches(UUID seasonUuid) {
-    return matchRepository.getLastMatches(seasonUuid);
+  public List<MatchEO> getLastMatches(UUID seasonUuid, int limit, int offset) {
+    return matchRepository.getLastMatches(seasonUuid, limit, offset);
   }
 }
