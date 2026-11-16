@@ -15,6 +15,10 @@ spec:
     metadata:
       labels:
         k8s-app: postgres
+        # The namespace has istio-injection=enabled, but postgres must run without a
+        # sidecar: behind istio-proxy the backend's JDBC SSL negotiation gets an EOF
+        # and the backend crash-loops. Keep it out of the mesh explicitly.
+        sidecar.istio.io/inject: "false"
     spec:
       containers:
         - name: postgres
